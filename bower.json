@@ -1,0 +1,25 @@
+{
+  "name": "dinoradio",
+  "description": "Jquery plugin for listening to web radio.",
+  "main": "example/index.html",
+  "authors": [
+    "MCX-Systems <casardavorin@gmail.com>"
+  ],
+  "license": "GPL-3.0-or-later",
+  "keywords": [
+    "radio",
+    "plugin",
+    "jquery",
+    "stations",
+    "data",
+    "RDS"
+  ],
+  "homepage": "https://github.com/MCX-Systems/DinoRadio",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

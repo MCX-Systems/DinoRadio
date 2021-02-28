@@ -1,7 +1,7 @@
 {
   "name": "dinoradio",
   "version": "1.0.0",
-  "description": "Web radio, jquery plugin",
+  "description": "Jquery plugin for listening to web radio.",
   "main": "example/index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -13,12 +13,19 @@
   "keywords": [
     "radio",
     "plugin",
-    "jquery"
+    "jquery",
+    "stations",
+    "data",
+    "RDS"
   ],
   "author": "MCX-Systems <casardavorin@gmail.com>",
   "license": "GPL-3.0-or-later",
   "bugs": {
     "url": "https://github.com/MCX-Systems/DinoRadio/issues"
   },
-  "homepage": "https://github.com/MCX-Systems/DinoRadio#readme"
+  "homepage": "https://github.com/MCX-Systems/DinoRadio#readme",
+  "dependencies": {
+    "bootstrap": "^5.0.0-beta2",
+    "jquery": "^3.5.1"
+  }
 }
