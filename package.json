@@ -1,0 +1,24 @@
+{
+  "name": "dinoradio",
+  "version": "1.0.0",
+  "description": "Web radio, jquery plugin",
+  "main": "example/index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MCX-Systems/DinoRadio.git"
+  },
+  "keywords": [
+    "radio",
+    "plugin",
+    "jquery"
+  ],
+  "author": "MCX-Systems <casardavorin@gmail.com>",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/MCX-Systems/DinoRadio/issues"
+  },
+  "homepage": "https://github.com/MCX-Systems/DinoRadio#readme"
+}
