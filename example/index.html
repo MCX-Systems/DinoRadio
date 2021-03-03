@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>DinoRadio Widget Example</title>
-	<meta content="Jquery plugin for listening to web radio." name="description"/>
+	<meta content="Jquery plugin for listening to web radio with playlist support." name="description"/>
 	<meta content="radio, jquery, plugin, stations, data, RDS" name="keywords"/>
 	<meta content="Davorin Casar (MCX-Systems)" name="author"/>
 	<!-- FavIcon -->
@@ -21,7 +21,7 @@
 	<script src="../node_modules/jquery/dist/jquery.min.js?v=m2n8Lznqb0"></script>
 	<script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js?v=m2n8Lznqb0"></script>
 	<!-- DinoKnob Plugin -->
-	<script src="../dist/dinoRadio.min.js?v=m2n8Lznqb0"></script>
+	<script src="../dist/dinoRadio.js?v=m2n8Lznqb0"></script>
 	<style>
 		body
 		{
@@ -64,6 +64,15 @@
 			margin-top: -12px;
 		}
 	</style>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-92Z320V70M"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+
+		gtag('config', 'G-92Z320V70M');
+	</script>
 </head>
 
 <body>
@@ -71,7 +80,7 @@
 	<header class="fixed-top btn-dark d-flex align-items-center justify-content-between">
 		<span class="app-download bg-danger text-center d-none d-md-flex">
 			<a href="https://mcx-systems.github.io/DinoRadio/" target="_blank">
-				<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAMAAADXqc3KAAAATlBMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADEoqZZAAAAGXRSTlMAOJigQFC3xqZ7HgjKg3NtM/Xq45N/UxgF/u6CEAAAAGxJREFUKM/V0DkShDAMRNEezMgL66zQ978ouKAokE1Gwgv7lxJh03NWIlXG8LxHqPzPxGCdqXDguPrqE7vsdoQyfOL+Dkj0r5Nf4U96ZHmHnU6khdKKdChIA8WQxcVBHoqsIRVDkw8NQs2MOkwsHBBgJY/YWAAAAABJRU5ErkJggg==" alt="Download DinoMoon" />
+				<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAMAAADXqc3KAAAATlBMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADEoqZZAAAAGXRSTlMAOJigQFC3xqZ7HgjKg3NtM/Xq45N/UxgF/u6CEAAAAGxJREFUKM/V0DkShDAMRNEezMgL66zQ978ouKAokE1Gwgv7lxJh03NWIlXG8LxHqPzPxGCdqXDguPrqE7vsdoQyfOL+Dkj0r5Nf4U96ZHmHnU6khdKKdChIA8WQxcVBHoqsIRVDkw8NQs2MOkwsHBBgJY/YWAAAAABJRU5ErkJggg==" alt="Download DinoRadio" />
 			</a>
 		</span>
 		<span>&nbsp;</span>
@@ -84,15 +93,15 @@
 
 	<section class="row align-items-center">
 		<div class="col-md-12 col-lg-4 bg-primary d-flex justify-content-center p-4">
-			<div id="RadioExample1">bmb</div>
+			<div id="RadioExample1"></div>
 		</div>
 
 		<div class="col-md-12 col-lg-4 bg-warning d-flex justify-content-center p-4">
-			<div id="RadioExample2">bnm</div>
+			<div id="RadioExample2"></div>
 		</div>
 
 		<div class="col-md-12 col-lg-4 bg-dark d-flex justify-content-around p-4">
-			<div id="RadioExample3">bnm</div>
+			<div id="RadioExample3"></div>
 		</div>
 	</section>
 
@@ -105,7 +114,50 @@
 <script>
 	$(document).ready(function()
 	{
+		$('#RadioExample1').dinoRadio({
+			autoPlay: false,
+			showEqOnPlay: true,
+			showPlaylistNumber: false,
+			stationPlaylist: [{
+				url: 'http://107.155.111.170:8282/;',
+				station: 'Station Name'
+			}],
+			// Enable plugin debug
+			debug: true
+		});
 
+		$('#RadioExample2').dinoRadio({
+			stationPlaylist: [
+			{
+				url: 'http://cast.streams.ovh:8008/stream',
+				station: 'Trance Athena Radio Stream'
+			},
+			{
+				url: 'http://5.189.142.165:8032/stream',
+				station: '70s 80s All Time Greatest'
+			},
+			{
+				url: 'http://uk3.internet-radio.com:8405/live',
+				station: 'Majestic Jukebox Radio'
+			},
+			{
+				url: 'http://51.255.127.128:8016/stream',
+				station: 'The Mix Radio 80s'
+			}],
+			// Widget background color
+			bgColor: 'rgb(250, 22, 140)',
+			// Enable plugin debug
+			debug: true
+		});
+
+		$('#RadioExample3').dinoRadio({
+			showPlaylistOnInit: true,
+			showEqOnPlay: true,
+			// Widget background color
+			bgColor: 'rgb(215, 183, 24)',
+			// Enable plugin debug
+			debug: true
+		});
 	});
 </script>
 </body>
