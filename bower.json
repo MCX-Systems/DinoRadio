@@ -1,6 +1,6 @@
 {
   "name": "dinoradio",
-  "description": "Jquery plugin for listening to web radio.",
+  "description": "Jquery plugin for listening to web radio with playlist support.",
   "main": "example/index.html",
   "authors": [
     "MCX-Systems <casardavorin@gmail.com>"
