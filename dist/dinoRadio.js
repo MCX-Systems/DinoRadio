@@ -941,7 +941,7 @@
 				const objAudio = this.dinoAudio;
 				objAudio.muted = !objAudio.muted;
 
-				alert('Volume Control');
+				//alert('Volume Control');
 			},
 
 			/***************************************************************************/
