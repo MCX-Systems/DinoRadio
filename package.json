@@ -1,7 +1,7 @@
 {
   "name": "dinoradio",
-  "version": "1.0.0",
-  "description": "Jquery plugin for listening to web radio.",
+  "version": "1.3.2021",
+  "description": "Jquery plugin for listening to web radio with playlist support.",
   "main": "example/index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
