@@ -53,13 +53,6 @@
 	z-index: 10;
 }
 
-
-
-
-
-
-
-
 /*----------------------------
 	Radio Main
 -----------------------------*/
@@ -93,21 +86,6 @@
 	z-index: 50;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*----------------------------
 	DinoRadio Poster Image
 -----------------------------*/
@@ -134,26 +112,6 @@
 	height: 180px;
 	width: 180px;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /*----------------------------
 	DinoRadio Info overlay
@@ -325,29 +283,6 @@
 	}
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*----------------------------
 	DinoRadio Station Data
 -----------------------------*/
@@ -356,7 +291,7 @@
 {
 	border-radius: 18px;
 	bottom: 0;
-	box-shadow: inset 0 0 30px 16px rgba(0, 0, 0, 0.60), 0 0 30px 8px rgba(0, 0, 0, 0.60);
+	box-shadow: inset 0 0 30px 16px rgba(0, 0, 0, 0.90), 0 0 30px 8px rgba(0, 0, 0, 0.90);
 	color: rgb(255, 255, 255);
 	height: 50px;
 	left: -190px;
@@ -390,30 +325,6 @@
 {
 	color: rgb(3, 162, 162);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /*----------------------------
 	DinoRadio Playlist
@@ -460,6 +371,7 @@
 .dinoRadio .dinoRadioPlaylistList li
 {
 	border-bottom: 1px solid rgba(255, 255, 255, .2);
+	cursor: pointer;
 	height: 30px;
 	margin: 0;
 	overflow: hidden;
@@ -467,7 +379,6 @@
 	text-align: right;
 	vertical-align: middle;
 	width: 100%;
-	cursor: pointer;
 }
 
 .dinoRadio .dinoRadioPlaylistList li .dinoRadioActive
@@ -560,38 +471,6 @@
 	width: 120px;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*----------------------------
 	DinoRadio Navigation
 -----------------------------*/
@@ -606,29 +485,6 @@
 	padding: 35px 0 0 0;
 	width: 100%;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /*----------------------------
 	DinoRadio Control Buttons
