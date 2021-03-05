@@ -1478,11 +1478,6 @@
 			// detection at runtime from browser
 			language: null,
 			// Enable plugin debug
-			debug: false,
-			/*---------------------------------------------*/
-			// Event on timer and button click
-			onStatus: null,
-			// Event on plugin error's
-			onError: null
+			debug: false
 		};
 	}));
