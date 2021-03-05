@@ -59,6 +59,7 @@
 			this.dinoAudio.id = this._uId;
 			this.dinoAudio.loop = false;
 			// Playlist Variables
+			this._art = '';
 			this._dinoCurrentUrl = '';
 			this._dinoCurrentRow = 0;
 			this._dinoCurrentIndex = 0;
@@ -996,12 +997,12 @@
 												stationUrl,
 											success: function(data)
 											{
-												widget.changeCurrentSongTitle(data.songTitle, data.songArtist);
-
 												if (widget.options.grabLastFmPhoto)
 												{
 													widget.getLastFmRadioInfo(data.songArtist);
 												}
+												
+												widget.changeCurrentSongTitle(data.songTitle, data.songArtist);
 											},
 											error: function()
 											{
@@ -1026,26 +1027,32 @@
 				{
 					const widget = this;
 					let photoPath;
-					$.ajax({
-						url: `https://www.theaudiodb.com/api/v1/json/1/search.php?s=${encodeURI($.trim(artist))}`,
-						success: function(result)
-						{
-							if (result.artists[0].strArtistThumb)
+
+					if(widget._art !== artist)
+					{
+						$.ajax({
+							url: `https://www.theaudiodb.com/api/v1/json/1/search.php?s=${encodeURI($.trim(artist))}`,
+							success: function (result)
 							{
-								photoPath = result.artists[0].strArtistThumb;
-								widget.$element.find(`#dinoRadioPoster-${widget._uId}`).attr('src', photoPath);
+								if (result.artists[0].strArtistThumb)
+								{
+									photoPath = result.artists[0].strArtistThumb;
+									widget.$element.find(`#dinoRadioPoster-${widget._uId}`).attr('src', photoPath);
 
-								return;
+									return;
+								}
+
+								widget.$element.find(`#dinoRadioPoster-${widget._uId}`)
+									.attr('src', `data:image/png;base64,${widget.getImage(1)}`);
+
+								widget._art = artist;
+							},
+							error: function ()
+							{
+								window.console.log('Error: Something went wrong with loading the LastFM Data!');
 							}
-
-							widget.$element.find(`#dinoRadioPoster-${widget._uId}`)
-								.attr('src', `data:image/png;base64,${widget.getImage(1)}`);
-						},
-						error: function()
-						{
-							window.console.log('Error: Something went wrong with loading the LastFM Data!');
-						}
-					});
+						});
+					}
 				},
 
 				changePlaylistAppearance: function(newRowIndex, oldRowIndex)
