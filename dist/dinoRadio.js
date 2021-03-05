@@ -1042,6 +1042,14 @@
 									return;
 								}
 
+								if (result.artists[0].strArtistFanart !== null)
+								{
+									photoPath = result.artists[0].strArtistThumb;
+									widget.$element.find(`#dinoRadioPoster-${widget._uId}`).attr('src', photoPath);
+
+									return;
+								}
+
 								widget.$element.find(`#dinoRadioPoster-${widget._uId}`)
 									.attr('src', `data:image/png;base64,${widget.getImage(1)}`);
 
