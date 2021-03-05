@@ -1026,49 +1026,16 @@
 				{
 					const widget = this;
 					let photoPath;
-
 					$.ajax({
-						url: `https://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=${
-							encodeURI($.trim(artist))}&api_key=${widget.options.lastFMApiKey}&format=json`,
+						url: `https://www.theaudiodb.com/api/v1/json/1/search.php?s=${encodeURI($.trim(artist))}`,
 						success: function(result)
 						{
-							if (result.artist.image.length)
+							if (result.artists[0].strArtistThumb)
 							{
-								if (result.artist.image[3]['#text'].trim() !== '')
-								{
-									photoPath = result.artist.image[3]['#text'];
-									const index = photoPath.lastIndexOf('.') < 0
-										? photoPath.length
-										: photoPath.lastIndexOf('.');
-									widget.$element.find(`#dinoRadioPoster-${widget._uId}`).attr('src',
-										`${photoPath.substring(0, index) + '.png'}`);
+								photoPath = result.artists[0].strArtistThumb;
+								widget.$element.find(`#dinoRadioPoster-${widget._uId}`).attr('src', photoPath);
 
-									return;
-								}
-
-								if (result.artist.image[2]['#text'].trim() !== '')
-								{
-									photoPath = result.artist.image[2]['#text'];
-									const index = photoPath.lastIndexOf('.') < 0
-										? photoPath.length
-										: photoPath.lastIndexOf('.');
-									widget.$element.find(`#dinoRadioPoster-${widget._uId}`).attr('src',
-										`${photoPath.substring(0, index) + '.png'}`);
-
-									return;
-								}
-
-								if (result.artist.image[1]['#text'].trim() !== '')
-								{
-									photoPath = result.artist.image[1]['#text'];
-									const index = photoPath.lastIndexOf('.') < 0
-										? photoPath.length
-										: photoPath.lastIndexOf('.');
-									widget.$element.find(`#dinoRadioPoster-${widget._uId}`).attr('src',
-										`${photoPath.substring(0, index) + '.png'}`);
-
-									return;
-								}
+								return;
 							}
 
 							widget.$element.find(`#dinoRadioPoster-${widget._uId}`)
@@ -1470,8 +1437,6 @@
 			grabStationRds: true,
 			grabLastFmPhoto: true,
 			/*---------------------------------------------*/
-			lastFMApiKey: '97887400daac2e1b21c964263d201ff5',
-			lastFMSecret: '2f26deaeb415635d4b6d4ec542330e40',
 			pathToAjaxFiles: 'https://mcx-systems.net/',
 			/*---------------------------------------------*/
 			// Plugin language automatic
