@@ -523,6 +523,8 @@
 									'visibility': 'visible',
 									'opacity': 1
 								});
+
+								widget.$element.find(`#dinoRadioShowHidePlaylist-${widget._uId} i`).toggleClass('dino-icon-indent-left-1 dino-icon-indent-right-1');
 							}
 
 							widget.dinoAudio.src = stationUrlCurrent;
