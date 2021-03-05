@@ -190,156 +190,55 @@
 					widget.initRadio();
 				},
 
-				createRadioWidget: function ()
+				createRadioWidget: function()
 				{
-					return '<article id="dinoRadio-' + this._uId + '" class="dinoRadio">' +
-
-						'<div id="dinoRadioHolder-' + this._uId + '" class="dinoRadioHolder">' +
-
-						'<section id="dinoRadioPosterHolder-' + this._uId + '" class="dinoRadioPosterHolder">' +
-
-						'<img id="dinoRadioPoster-' + this._uId + '" class="dinoRadioPoster" alt="Radio Station" />' +
-
-						'<div id="dinoRadioInfo-' + this._uId + '" class="dinoRadioInfo"></div>' +
-
-						'<div id="dinoRadioPlayPause-' + this._uId + '" class="dinoRadioPlayPause">' +
-
-						'<i class="dinoIcon dino-icon-play-circled-1"></i>' +
-
-						'</div>' +
-
-						'<div id="dinoRadioError-' + this._uId + '" class="dinoBlinking"></div>' +
-
-						'</section>' +
-
-						'<img id="dinoRadioLogo-' + this._uId + '" src="data:image/png;base64,' + this.getImage(0) + '" class="dinoRadioLogo" alt="Radio Logo" />' +
-
-						'<section id="dinoRadioPlaylist-' + this._uId + '" class="dinoRadioPlaylist">' +
-
-						'<div id="dinoRadioLoader-' + this._uId + '" class="dinoLoaderOverlay">' +
-
-						'<div class="dinoCubeGrid">' +
-
-						'<div class="dinoCube dinoCube1"></div>' +
-
-						'<div class="dinoCube dinoCube2"></div>' +
-
-						'<div class="dinoCube dinoCube3"></div>' +
-
-						'<div class="dinoCube dinoCube4"></div>' +
-
-						'<div class="dinoCube dinoCube5"></div>' +
-
-						'<div class="dinoCube dinoCube6"></div>' +
-
-						'<div class="dinoCube dinoCube7"></div>' +
-
-						'<div class="dinoCube dinoCube8"></div>' +
-
-						'<div class="dinoCube dinoCube9"></div>' +
-
-						'</div>' +
-
-						'</div>' +
-
-						'<ul id="dinoRadioPlaylistList-' + this._uId + '" class="dinoRadioPlaylistList"></ul>' +
-
-						'<div class="dinoRadioPlaylistBottom">' +
-
-						'<label for="dinoRadioSearchTerm-' + this._uId + '"></label>' +
-
-						'<input id="dinoRadioSearchTerm-' + this._uId + '" class="dinoRadioSearchTerm" type="text" onfocus="this.value=\'\'" onblur="this.value=\'Input Search Term ...\'" value="Input Search Term ..." />' +
-
-						'<i id="dinoRadioGithub-' + this._uId + '" class="dinoIcon dino-icon-github-squared"></i>' +
-
-						'<i id="dinoRadioLinkedin-' + this._uId + '" class="dinoIcon dino-icon-linkedin-squared"></i>' +
-
-						'<i id="dinoRadioFacebook-' + this._uId + '" class="dinoIcon dino-icon-facebook-squared"></i>' +
-
-						'</div>' +
-
-						'</ul>' +
-
-						"</section>" +
-
-						'<section id="dinoRadioData-' + this._uId + '" class="dinoRadioData">' +
-
-						'<div id="dinoRadioStation-' + this._uId + '" class="dinoRadioStation"></div>' +
-
-						'<div class="dinoMarquee">' +
-
-						'<div class="dinoMarqueeInner">' +
-
-						'<span>Title:&nbsp;</span>' +
-
-						'<span id="dinoRadioSongTitle-' + this._uId + '" class="dinoRadioSongTitle"></span>' +
-
-						'<span>&nbsp;&nbsp;****&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;****&nbsp;&nbsp;</span>' +
-
-						'<span>Artist:&nbsp;</span>' +
-
-						'<span id="dinoRadioSongArtist-' + this._uId + '" class="dinoRadioSongArtist"></span>' +
-
-						'</div>' +
-
-						'</div>' +
-
-						'<div id="dinoRadioEqualiser-' + this._uId + '" class="dinoRadioEqualiser">' +
-
-						'<ul class="dinoRadioEqualiserColumn"><li class="dinoRadioEqualiserColourBar"></li></ul>' +
-
-						'<ul class="dinoRadioEqualiserColumn"><li class="dinoRadioEqualiserColourBar"></li></ul>' +
-
-						'<ul class="dinoRadioEqualiserColumn"><li class="dinoRadioEqualiserColourBar"></li></ul>' +
-
-						'<ul class="dinoRadioEqualiserColumn"><li class="dinoRadioEqualiserColourBar"></li></ul>' +
-
-						'<ul class="dinoRadioEqualiserColumn"><li class="dinoRadioEqualiserColourBar"></li></ul>' +
-
-						'</div>' +
-
-						"</section>" +
-
-						'<nav id="dinoRadioControls-' + this._uId + '" class="dinoRadioControls">' +
-
-						'<a href="#" id="dinoRadioPlay-' + this._uId + '" class="dinoRadioPlay" title="Play/Pause"><i class="dinoIcon dino-icon-play-3"></i></a>' +
-
-						'<a href="#" id="dinoRadioPrev-' + this._uId + '" class="dinoRadioPrev" title="Previous"><i class="dinoIcon dino-icon-step-backward"></i></a>' +
-
-						'<a href="#" id="dinoRadioNext-' + this._uId + '" class="dinoRadioNext" title="Next"><i class="dinoIcon dino-icon-step-forward"></i></a>' +
-
-						'<a href="#" id="dinoRadioVolumeButton-' + this._uId + '" class="dinoRadioVolumeButton" title="Mute/Unmute"><i class="dinoIcon dino-icon-volume"></i></a>' +
-
-						'<a href="#" id="dinoRadioShowHidePlaylist-' + this._uId + '" class="dinoRadioShowHidePlaylist" title="Show/Hide Playlist"><i class="dinoIcon dino-icon-indent-left-1"></i></a>' +
-
-						'</nav>' +
-
-						'<svg id="dinoBlurFilterSvg-' + this._uId + '" xmlns="http://www.w3.org/2000/svg" style="display: none;">' +
-
-						'<defs>' +
-
-						'<filter id="dinoBlurFilter-' + this._uId + '">' +
-
-						'<feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="10" />' +
-
-						'<feColorMatrix in="blur" values="1 1 0 0 0  1 1 0 0 0  1 1 0 0 0  1 1 0 20 -6" result="flt" />' +
-
-						'<feBlend in2="flt" in="SourceGraphic" result="mix" />' +
-
-						'</filter>' +
-
-						'</defs>' +
-
-						'</svg>' +
-
-						'</div>' +
-
-						'</article>';
+					return `<article id="dinoRadio-${this._uId}" class="dinoRadio"><div id="dinoRadioHolder-${this._uId
+						}" class="dinoRadioHolder"><section id="dinoRadioPosterHolder-${this._uId
+						}" class="dinoRadioPosterHolder"><img id="dinoRadioPoster-${this._uId
+						}" class="dinoRadioPoster" alt="Radio Station" /><div id="dinoRadioInfo-${this._uId
+						}" class="dinoRadioInfo"></div><div id="dinoRadioPlayPause-${this._uId
+						}" class="dinoRadioPlayPause"><i class="dinoIcon dino-icon-play-circled-1"></i></div><div id="dinoRadioError-${
+						this._uId
+						}" class="dinoBlinking"></div></section><img id="dinoRadioLogo-${this._uId
+						}" src="data:image/png;base64,${this.getImage(0)
+						}" class="dinoRadioLogo" alt="Radio Logo" /><section id="dinoRadioPlaylist-${this._uId
+						}" class="dinoRadioPlaylist"><div id="dinoRadioLoader-${this._uId
+						}" class="dinoLoaderOverlay"><div class="dinoCubeGrid"><div class="dinoCube dinoCube1"></div><div class="dinoCube dinoCube2"></div><div class="dinoCube dinoCube3"></div><div class="dinoCube dinoCube4"></div><div class="dinoCube dinoCube5"></div><div class="dinoCube dinoCube6"></div><div class="dinoCube dinoCube7"></div><div class="dinoCube dinoCube8"></div><div class="dinoCube dinoCube9"></div></div></div><ul id="dinoRadioPlaylistList-${
+						this._uId
+						}" class="dinoRadioPlaylistList"></ul><div class="dinoRadioPlaylistBottom"><label for="dinoRadioSearchTerm-${
+						this._uId
+						}"></label><input id="dinoRadioSearchTerm-${this._uId
+						}" class="dinoRadioSearchTerm" type="text" onfocus="this.value=''" onblur="this.value='Input Search Term ...'" value="Input Search Term ..." /><i id="dinoRadioGithub-${
+						this._uId}" class="dinoIcon dino-icon-github-squared"></i><i id="dinoRadioLinkedin-${this._uId
+						}" class="dinoIcon dino-icon-linkedin-squared"></i><i id="dinoRadioFacebook-${this._uId
+						}" class="dinoIcon dino-icon-facebook-squared"></i></div></ul></section><section id="dinoRadioData-${
+						this._uId
+						}" class="dinoRadioData"><div id="dinoRadioStation-${this._uId
+						}" class="dinoRadioStation"></div><div class="dinoMarquee"><div class="dinoMarqueeInner"><span>Title:&nbsp;</span><span id="dinoRadioSongTitle-${
+						this._uId
+						}" class="dinoRadioSongTitle"></span><span>&nbsp;&nbsp;****&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;****&nbsp;&nbsp;</span><span>Artist:&nbsp;</span><span id="dinoRadioSongArtist-${
+						this._uId}" class="dinoRadioSongArtist"></span></div></div><div id="dinoRadioEqualiser-${this
+						._uId
+						}" class="dinoRadioEqualiser"><ul class="dinoRadioEqualiserColumn"><li class="dinoRadioEqualiserColourBar"></li></ul><ul class="dinoRadioEqualiserColumn"><li class="dinoRadioEqualiserColourBar"></li></ul><ul class="dinoRadioEqualiserColumn"><li class="dinoRadioEqualiserColourBar"></li></ul><ul class="dinoRadioEqualiserColumn"><li class="dinoRadioEqualiserColourBar"></li></ul><ul class="dinoRadioEqualiserColumn"><li class="dinoRadioEqualiserColourBar"></li></ul></div></section><nav id="dinoRadioControls-${
+						this._uId}" class="dinoRadioControls"><a href="#" id="dinoRadioPlay-${this._uId
+						}" class="dinoRadioPlay" title="Play/Pause"><i class="dinoIcon dino-icon-play-3"></i></a><a href="#" id="dinoRadioPrev-${
+						this._uId
+						}" class="dinoRadioPrev" title="Previous"><i class="dinoIcon dino-icon-step-backward"></i></a><a href="#" id="dinoRadioNext-${
+						this._uId
+						}" class="dinoRadioNext" title="Next"><i class="dinoIcon dino-icon-step-forward"></i></a><a href="#" id="dinoRadioVolumeButton-${
+						this._uId
+						}" class="dinoRadioVolumeButton" title="Mute/Unmute"><i class="dinoIcon dino-icon-volume"></i></a><a href="#" id="dinoRadioShowHidePlaylist-${
+						this._uId
+						}" class="dinoRadioShowHidePlaylist" title="Show/Hide Playlist"><i class="dinoIcon dino-icon-indent-left-1"></i></a></nav><svg id="dinoBlurFilterSvg-${
+						this._uId
+						}" xmlns="http://www.w3.org/2000/svg" style="display: none;"><defs><filter id="dinoBlurFilter-${
+						this._uId
+						}"><feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="10" /><feColorMatrix in="blur" values="1 1 0 0 0  1 1 0 0 0  1 1 0 0 0  1 1 0 20 -6" result="flt" /><feBlend in2="flt" in="SourceGraphic" result="mix" /></filter></defs></svg></div></article>`;
 				},
 
 				initRadio: function()
 				{
-					let widget = this;
+					const widget = this;
 
 					// Set default widget colors
 					widget.$element.find(`#dinoRadioPosterHolder-${widget._uId}`).css({
@@ -384,11 +283,11 @@
 					widget.$element.find(`#dinoRadioPoster-${widget._uId}`)
 						.attr('src', `data:image/png;base64,${widget.getImage(1)}`);
 					widget.$element.find(`#dinoRadioStation-${widget._uId}`)
-						.text(widget.checkStrLength(widget.escapeRegExp(widget.options.station), 20));
+						.text(widget.checkStrLength(widget.options.station, 20));
 					widget.$element.find(`#dinoRadioSongTitle-${widget._uId}`)
-						.text(widget.checkStrLength(widget.escapeRegExp(widget.options.title), 30));
+						.text(widget.options.title);
 					widget.$element.find(`#dinoRadioSongArtist-${widget._uId}`)
-						.text(widget.checkStrLength(widget.escapeRegExp(widget.options.artist), 30));
+						.text(widget.options.artist);
 
 					/*---------------------------------------------------------------*/
 
@@ -454,7 +353,7 @@
 											stationUrlCurrent = value.url;
 											active = '<span class="dinoRadioActive"></span>';
 											widget.$element.find(`#dinoRadioStation-${widget._uId}`)
-												.text(widget.checkStrLength(widget.escapeRegExp(stationNameCurrent),
+												.text(widget.checkStrLength(stationNameCurrent,
 													20));
 										}
 
@@ -470,7 +369,7 @@
 														`<li id="dinoRadioItem-${i}-${widget._uId}" data-position="${i
 														}"${
 														hoverA}>${num}${active}<span class="dinoRadioStation">${widget
-														.checkStrLength(widget.escapeRegExp(data.streamTitle), 14)
+														.checkStrLength(data.streamTitle, 14)
 														}</span><i class="dinoIcon dino-icon-signal"></i></li>`;
 													widget.$element.find(`#dinoRadioPlaylistList-${widget._uId}`)
 														.append(template);
@@ -479,7 +378,7 @@
 													{
 														widget.$element.find(`#dinoRadioStation-${widget._uId}`)
 															.text(widget.checkStrLength(
-																widget.escapeRegExp(data.streamTitle),
+																data.streamTitle,
 																20));
 													}
 												},
@@ -491,7 +390,7 @@
 														`<li id="dinoRadioItem-${i}-${widget._uId}" data-position="${i
 														}"${
 														hoverA}>${num}${active}<span class="dinoRadioStation">${widget
-														.checkStrLength(widget.escapeRegExp(value.station), 14)
+														.checkStrLength(value.station, 14)
 														}</span><i class="dinoIcon dino-icon-signal"></i></li>`;
 													widget.$element.find(`#dinoRadioPlaylistList-${widget._uId}`)
 														.append(template);
@@ -504,7 +403,7 @@
 												`<li id="dinoRadioItem-${i}-${widget._uId}" data-position="${i}"${hoverA
 												}>${
 												num}${active}<span class="dinoRadioStation">${widget.checkStrLength(
-													widget.escapeRegExp(value.station),
+													value.station,
 													14)
 												}</span><i class="dinoIcon dino-icon-signal"></i></li>`;
 											widget.$element.find(`#dinoRadioPlaylistList-${widget._uId}`)
@@ -524,7 +423,8 @@
 									'opacity': 1
 								});
 
-								widget.$element.find(`#dinoRadioShowHidePlaylist-${widget._uId} i`).toggleClass('dino-icon-indent-left-1 dino-icon-indent-right-1');
+								widget.$element.find(`#dinoRadioShowHidePlaylist-${widget._uId} i`)
+									.toggleClass('dino-icon-indent-left-1 dino-icon-indent-right-1');
 							}
 
 							widget.dinoAudio.src = stationUrlCurrent;
@@ -561,7 +461,7 @@
 									}
 								}
 
-								widget.dinoAudio.play().then(r =>
+								widget.dinoAudio.play().then(() =>
 								{
 								});
 							}
@@ -786,7 +686,7 @@
 							const index = radioItemId.split('-');
 
 							plugin.$element.find(`#dinoRadioStation-${plugin._uId}`).text(
-								plugin.checkStrLength(plugin.escapeRegExp($(this).find('.dinoRadioStation').text()),
+								plugin.checkStrLength($(this).find('.dinoRadioStation').text(),
 									20));
 							plugin.playRadioPlaylist(index[1]);
 						});
@@ -913,7 +813,7 @@
 				unbindEvents: function()
 				{
 					/*
-						Unbind all events in our plugin's namespace that are attached
+						Unbind all events in our plugin namespace that are attached
 						to "this.$element".
 					*/
 					this.$element.off(`.${this._name}`);
@@ -1003,7 +903,7 @@
 					const row = this.$element.find(
 						`#dinoRadioItem-${this._dinoCurrentRow}-${this._uId} .dinoRadioStation`);
 					this.$element.find(`#dinoRadioStation-${this._uId}`)
-						.text(this.checkStrLength(this.escapeRegExp(row.text()), 20));
+						.text(this.checkStrLength(row.text(), 20));
 				},
 
 				/***************************************************************************/
@@ -1044,7 +944,7 @@
 					const row = this.$element.find(
 						`#dinoRadioItem-${this._dinoCurrentRow}-${this._uId} .dinoRadioStation`);
 					this.$element.find(`#dinoRadioStation-${this._uId}`)
-						.text(this.checkStrLength(this.escapeRegExp(row.text()), 20));
+						.text(this.checkStrLength(row.text(), 20));
 				},
 
 				/***************************************************************************/
@@ -1118,8 +1018,8 @@
 
 				changeCurrentSongTitle: function(title, artist)
 				{
-					$(`#dinoRadioSongTitle-${this._uId}`).text(this.checkStrLength(this.escapeRegExp(title), 30));
-					$(`#dinoRadioSongArtist-${this._uId}`).text(this.checkStrLength(this.escapeRegExp(artist), 30));
+					$(`#dinoRadioSongTitle-${this._uId}`).text(title);
+					$(`#dinoRadioSongArtist-${this._uId}`).text(artist);
 				},
 
 				getLastFmRadioInfo: function(artist)
@@ -1350,11 +1250,6 @@
 					return (!str || /^\s*$/.test(str));
 				},
 
-				escapeRegExp: function(str)
-				{
-					return str.replace(/[\-\[\]\/{}()*+?.\\^$|]/g, '\\$&');
-				},
-
 				checkStrLength: function(str, length)
 				{
 					const val = str.length;
@@ -1536,7 +1431,7 @@
 		};
 
 		/* Return current version */
-		$.fn.dinoRadio.version = '1.3.2021';
+		$.fn.dinoRadio.version = '1.4.2021';
 
 		/*
 			Attach the default plugin options directly to the plugin object. This
