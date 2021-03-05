@@ -350,10 +350,6 @@
 						'background-color': widget.options.bgColor
 					});
 
-					widget.$element.find(`#dinoRadioData-${widget._uId}`).css({
-						'background-color': widget.options.bgColor
-					});
-
 					widget.$element.find(`#dinoRadioControls-${widget._uId}`).css({
 						'background-color': widget.options.bgColor
 					});
