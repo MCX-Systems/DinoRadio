@@ -1034,7 +1034,7 @@
 							url: `https://www.theaudiodb.com/api/v1/json/1/search.php?s=${encodeURI($.trim(artist))}`,
 							success: function (result)
 							{
-								if (result.artists[0].strArtistThumb)
+								if (result.artists[0].strArtistThumb !== null)
 								{
 									photoPath = result.artists[0].strArtistThumb;
 									widget.$element.find(`#dinoRadioPoster-${widget._uId}`).attr('src', photoPath);
