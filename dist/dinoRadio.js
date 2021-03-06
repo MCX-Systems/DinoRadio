@@ -1026,7 +1026,7 @@
 				getArtistInfo: function(artist)
 				{
 					const widget = this;
-					let photoPath;
+					let picPaths;
 
 					if(widget._dinoArt === artist)
 					{
@@ -1039,25 +1039,56 @@
 							encodeURI($.trim(artist)),
 						success: function (result)
 						{
+							picPaths = [];
 							if (result.artists)
 							{
-								if (result.artists[0].strArtistThumb !== null)
-								{
-									photoPath = result.artists[0].strArtistThumb;
-									widget.$element.find(`#dinoRadioPoster-${widget._uId}`).attr('src', photoPath);
-									widget._dinoArt = artist;
 
-									return;
+								if (result.artists[0].strArtistThumb !== null && result.artists[0].strArtistThumb !== '')
+								{
+									picPaths.push(result.artists[0].strArtistThumb);
 								}
 
-								if (result.artists[0].strArtistFanart !== null)
+								if (result.artists[0].strArtistFanart !== null && result.artists[0].strArtistFanart !== '')
 								{
-									photoPath = result.artists[0].strArtistThumb;
-									widget.$element.find(`#dinoRadioPoster-${widget._uId}`).attr('src', photoPath);
-									widget._dinoArt = artist;
-
-									return;
+									picPaths.push(result.artists[0].strArtistFanart);
 								}
+
+								if (result.artists[0].strArtistFanart2 !== null && result.artists[0].strArtistFanart2 !== '')
+								{
+									picPaths.push(result.artists[0].strArtistFanart2);
+								}
+
+								if (result.artists[0].strArtistFanart3 !== null && result.artists[0].strArtistFanart3 !== '')
+								{
+									picPaths.push(result.artists[0].strArtistFanart3);
+								}
+
+								if (result.artists[0].strArtistFanart4 !== null && result.artists[0].strArtistFanart4 !== '')
+								{
+									picPaths.push(result.artists[0].strArtistFanart4);
+								}
+
+								let curPic = -1;
+
+								// Preload the images for smooth animation
+								let artImage = [];
+								for (let i = 0; i < picPaths.length; i++)
+								{
+									artImage[i] = new Image();
+									artImage[i].src = picPaths[i];
+								}
+
+								function swapImage()
+								{
+									curPic = (++curPic > picPaths.length - 1) ? 0 : curPic;
+									widget.$element.find(`#dinoRadioPoster-${widget._uId}`).attr('src', artImage[curPic].src);
+									window.setTimeout(swapImage, 30000);
+								}
+
+								swapImage();
+								widget._dinoArt = artist;
+
+								return;
 							}
 
 							widget._dinoArt = artist;
