@@ -55,9 +55,9 @@
 			this._language = this.getUserLanguage();
 			/***************************************************************************/
 			this.dinoAudio = [];
-			this.dinoAudio = new Audio();
-			this.dinoAudio.id = this._uId;
-			this.dinoAudio.loop = false;
+			this.dinoAudio[this._uId] = new Audio();
+			this.dinoAudio[this._uId].id = this._uId;
+			this.dinoAudio[this._uId].loop = false;
 			// Playlist Variables
 			this._art = '';
 			this._dinoCurrentUrl = '';
@@ -512,7 +512,7 @@
 						the plugin. Cached variables can then be used in other methods.
 					*/
 					this.$element = $(this.element);
-					this.$dinoAudio = $(this.dinoAudio);
+					this.$dinoAudio = $(this.dinoAudio[this._uId]);
 				},
 
 				// Bind events that trigger methods
@@ -827,7 +827,7 @@
 
 				playRadio: function()
 				{
-					const objAudio = this.dinoAudio;
+					const objAudio = this.dinoAudio[this._uId];
 
 					if (objAudio.paused)
 					{
@@ -845,7 +845,7 @@
 
 				playRadioPlaylist(indexValue)
 				{
-					const objAudio = this.dinoAudio;
+					const objAudio = this.dinoAudio[this._uId];
 
 					const stationArray = this.options.stationPlaylist[indexValue];
 					const currentUrl = stationArray.url;
@@ -870,7 +870,7 @@
 
 				playPreviousStation: function()
 				{
-					const objAudio = this.dinoAudio;
+					const objAudio = this.dinoAudio[this._uId];
 					const playlistArray = this.options.stationPlaylist;
 
 					let currentUrl;
@@ -911,7 +911,7 @@
 
 				playNextStation: function()
 				{
-					const objAudio = this.dinoAudio;
+					const objAudio = this.dinoAudio[this._uId];
 					const playlistArray = this.options.stationPlaylist;
 
 					let currentUrl;
@@ -952,7 +952,7 @@
 
 				muteSound: function()
 				{
-					const objAudio = this.dinoAudio;
+					const objAudio = this.dinoAudio[this._uId];
 					objAudio.muted = !objAudio.muted;
 				},
 
@@ -1037,22 +1037,25 @@
 						url: `https://www.theaudiodb.com/api/v1/json/1/search.php?s=${encodeURI($.trim(artist))}`,
 						success: function (result)
 						{
-							if (result.artists[0].strArtistThumb !== null)
+							if (result.artists)
 							{
-								photoPath = result.artists[0].strArtistThumb;
-								widget.$element.find(`#dinoRadioPoster-${widget._uId}`).attr('src', photoPath);
-								widget._art = artist;
+								if (result.artists[0].strArtistThumb !== null)
+								{
+									photoPath = result.artists[0].strArtistThumb;
+									widget.$element.find(`#dinoRadioPoster-${widget._uId}`).attr('src', photoPath);
+									widget._art = artist;
 
-								return;
-							}
+									return;
+								}
 
-							if (result.artists[0].strArtistFanart !== null)
-							{
-								photoPath = result.artists[0].strArtistThumb;
-								widget.$element.find(`#dinoRadioPoster-${widget._uId}`).attr('src', photoPath);
-								widget._art = artist;
+								if (result.artists[0].strArtistFanart !== null)
+								{
+									photoPath = result.artists[0].strArtistThumb;
+									widget.$element.find(`#dinoRadioPoster-${widget._uId}`).attr('src', photoPath);
+									widget._art = artist;
 
-								return;
+									return;
+								}
 							}
 
 							widget._art = artist;
