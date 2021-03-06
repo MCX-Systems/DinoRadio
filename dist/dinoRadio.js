@@ -54,10 +54,9 @@
 			this._uId = this.createUniqId(8);
 			this._language = this.getUserLanguage();
 			/***************************************************************************/
-			this.dinoAudio = [];
-			this.dinoAudio[this._uId] = new Audio();
-			this.dinoAudio[this._uId].id = this._uId;
-			this.dinoAudio[this._uId].loop = false;
+			this.dinoAudio = new window.Audio();
+			this.dinoAudio.id = this._uId;
+			this.dinoAudio.loop = false;
 			// Playlist Variables
 			this._dinoArt = '';
 			this._dinoCurrentUrl = '';
@@ -196,41 +195,56 @@
 					return `<article id="dinoRadio-${this._uId}" class="dinoRadio"><div id="dinoRadioHolder-${this._uId
 						}" class="dinoRadioHolder"><section id="dinoRadioPosterHolder-${this._uId
 						}" class="dinoRadioPosterHolder"><img id="dinoRadioPoster-${this._uId
-						}" class="dinoRadioPoster" alt="Radio Station" /><div id="dinoRadioInfo-${this._uId
+						}" class="dinoRadioPoster" alt="${this.getI18n('plugin_ra_station', this.options.language)
+						}" /><div id="dinoRadioInfo-${this._uId
 						}" class="dinoRadioInfo"></div><div id="dinoRadioPlayPause-${this._uId
 						}" class="dinoRadioPlayPause"><i class="dinoIcon dino-icon-play-circled-1"></i></div><div id="dinoRadioError-${
 						this._uId
 						}" class="dinoBlinking"></div></section><img id="dinoRadioLogo-${this._uId
 						}" src="data:image/png;base64,${this.getImage(0)
-						}" class="dinoRadioLogo" alt="Radio Logo" /><section id="dinoRadioPlaylist-${this._uId
+						}" class="dinoRadioLogo" alt="${this.getI18n('plugin_ra_logo', this.options.language)
+						}" /><section id="dinoRadioPlaylist-${this._uId
 						}" class="dinoRadioPlaylist"><div id="dinoRadioLoader-${this._uId
 						}" class="dinoLoaderOverlay"><div class="dinoCubeGrid"><div class="dinoCube dinoCube1"></div><div class="dinoCube dinoCube2"></div><div class="dinoCube dinoCube3"></div><div class="dinoCube dinoCube4"></div><div class="dinoCube dinoCube5"></div><div class="dinoCube dinoCube6"></div><div class="dinoCube dinoCube7"></div><div class="dinoCube dinoCube8"></div><div class="dinoCube dinoCube9"></div></div></div><ul id="dinoRadioPlaylistList-${
 						this._uId
 						}" class="dinoRadioPlaylistList"></ul><div class="dinoRadioPlaylistBottom"><label for="dinoRadioSearchTerm-${
 						this._uId
 						}"></label><input id="dinoRadioSearchTerm-${this._uId
-						}" class="dinoRadioSearchTerm" type="text" onfocus="this.value=''" onblur="this.value='Input Search Term ...'" value="Input Search Term ..." /><i id="dinoRadioGithub-${
+						}" class="dinoRadioSearchTerm" type="text" onfocus="this.value=''" onblur="this.value='${
+						this.getI18n('plugin_ra_search', this.options.language)}'" value="${this.getI18n(
+							'plugin_ra_search',
+							this.options.language)}" /><i id="dinoRadioGithub-${
 						this._uId}" class="dinoIcon dino-icon-github-squared"></i><i id="dinoRadioLinkedin-${this._uId
 						}" class="dinoIcon dino-icon-linkedin-squared"></i><i id="dinoRadioFacebook-${this._uId
 						}" class="dinoIcon dino-icon-facebook-squared"></i></div></ul></section><section id="dinoRadioData-${
 						this._uId
 						}" class="dinoRadioData"><div id="dinoRadioStation-${this._uId
-						}" class="dinoRadioStation"></div><div class="dinoMarquee"><div class="dinoMarqueeInner"><span>Title:&nbsp;</span><span id="dinoRadioSongTitle-${
+						}" class="dinoRadioStation"></div><div class="dinoMarquee"><div class="dinoMarqueeInner"><span>${
+						this.getI18n('plugin_ra_title', this.options.language)
+						}&nbsp;</span><span id="dinoRadioSongTitle-${
 						this._uId
-						}" class="dinoRadioSongTitle"></span><span>&nbsp;&nbsp;****&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;****&nbsp;&nbsp;</span><span>Artist:&nbsp;</span><span id="dinoRadioSongArtist-${
+						}" class="dinoRadioSongTitle"></span><span>&nbsp;&nbsp;****&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;****&nbsp;&nbsp;</span><span>${
+						this.getI18n('plugin_ra_artist', this.options.language)
+						}&nbsp;</span><span id="dinoRadioSongArtist-${
 						this._uId}" class="dinoRadioSongArtist"></span></div></div><div id="dinoRadioEqualiser-${this
 						._uId
 						}" class="dinoRadioEqualiser"><ul class="dinoRadioEqualiserColumn"><li class="dinoRadioEqualiserColourBar"></li></ul><ul class="dinoRadioEqualiserColumn"><li class="dinoRadioEqualiserColourBar"></li></ul><ul class="dinoRadioEqualiserColumn"><li class="dinoRadioEqualiserColourBar"></li></ul><ul class="dinoRadioEqualiserColumn"><li class="dinoRadioEqualiserColourBar"></li></ul><ul class="dinoRadioEqualiserColumn"><li class="dinoRadioEqualiserColourBar"></li></ul></div></section><nav id="dinoRadioControls-${
 						this._uId}" class="dinoRadioControls"><a href="#" id="dinoRadioPlay-${this._uId
-						}" class="dinoRadioPlay" title="Play/Pause"><i class="dinoIcon dino-icon-play-3"></i></a><a href="#" id="dinoRadioPrev-${
+						}" class="dinoRadioPlay" title="${this.getI18n('plugin_ra_play', this.options.language)
+						}"><i class="dinoIcon dino-icon-play-3"></i></a><a href="#" id="dinoRadioPrev-${
 						this._uId
-						}" class="dinoRadioPrev" title="Previous"><i class="dinoIcon dino-icon-step-backward"></i></a><a href="#" id="dinoRadioNext-${
+						}" class="dinoRadioPrev" title="${this.getI18n('plugin_ra_prev', this.options.language)
+						}"><i class="dinoIcon dino-icon-step-backward"></i></a><a href="#" id="dinoRadioNext-${
 						this._uId
-						}" class="dinoRadioNext" title="Next"><i class="dinoIcon dino-icon-step-forward"></i></a><a href="#" id="dinoRadioVolumeButton-${
+						}" class="dinoRadioNext" title="${this.getI18n('plugin_ra_next', this.options.language)
+						}"><i class="dinoIcon dino-icon-step-forward"></i></a><a href="#" id="dinoRadioVolumeButton-${
 						this._uId
-						}" class="dinoRadioVolumeButton" title="Mute/Unmute"><i class="dinoIcon dino-icon-volume"></i></a><a href="#" id="dinoRadioShowHidePlaylist-${
+						}" class="dinoRadioVolumeButton" title="${this.getI18n('plugin_ra_mute', this.options.language)
+						}"><i class="dinoIcon dino-icon-volume"></i></a><a href="#" id="dinoRadioShowHidePlaylist-${
 						this._uId
-						}" class="dinoRadioShowHidePlaylist" title="Show/Hide Playlist"><i class="dinoIcon dino-icon-indent-left-1"></i></a></nav><svg id="dinoBlurFilterSvg-${
+						}" class="dinoRadioShowHidePlaylist" title="${this.getI18n('plugin_ra_playlist',
+							this.options.language)
+						}"><i class="dinoIcon dino-icon-indent-left-1"></i></a></nav><svg id="dinoBlurFilterSvg-${
 						this._uId
 						}" xmlns="http://www.w3.org/2000/svg" style="display: none;"><defs><filter id="dinoBlurFilter-${
 						this._uId
@@ -282,13 +296,13 @@
 					}
 
 					widget.$element.find(`#dinoRadioPoster-${widget._uId}`)
-						.attr('src', `data:image/png;base64,${widget.getImage(1)}`);
+						.attr('src', `data:image/png;base64,${widget.getImage(0)}`);
 					widget.$element.find(`#dinoRadioStation-${widget._uId}`)
-						.text(widget.checkStrLength(widget.options.station, 20));
+						.text(widget.checkStrLength(widget.getI18n('plugin_no_station', widget.options.language), 20));
 					widget.$element.find(`#dinoRadioSongTitle-${widget._uId}`)
-						.text(widget.options.title);
+						.text(widget.getI18n('plugin_no_title', widget.options.language));
 					widget.$element.find(`#dinoRadioSongArtist-${widget._uId}`)
-						.text(widget.options.artist);
+						.text(widget.getI18n('plugin_no_artist', widget.options.language));
 
 					/*---------------------------------------------------------------*/
 
@@ -321,7 +335,8 @@
 								});
 
 								const template =
-									'<li><span class="dinoRadioStationError">No Playlist Found!!!</span></li>';
+									`<li><span class="dinoRadioStationError">${this.getI18n('plugin_no_playlist',
+										this.options.language)}</span></li>`;
 								widget.$element.find(`#dinoRadioPlaylistList-${widget._uId}`).append(template);
 								window.console.error('No Playlist Found!!! Please set a playlist first!');
 							}
@@ -429,7 +444,7 @@
 							}
 
 							widget.dinoAudio.src = stationUrlCurrent;
-							widget.$element.attr('data-trackId', widget._uId);
+							widget.$element.attr('data-radioId', widget._uId);
 
 							if (widget.options.autoPlay)
 							{
@@ -462,9 +477,7 @@
 									}
 								}
 
-								widget.dinoAudio.play().then(() =>
-								{
-								});
+								widget.playRadioPlaylist(0);
 							}
 
 							window.setTimeout(function()
@@ -512,7 +525,7 @@
 						the plugin. Cached variables can then be used in other methods.
 					*/
 					this.$element = $(this.element);
-					this.$dinoAudio = $(this.dinoAudio[this._uId]);
+					this.$dinoAudio = $(this.dinoAudio);
 				},
 
 				// Bind events that trigger methods
@@ -599,7 +612,8 @@
 						{
 							e.preventDefault();
 
-							plugin.playRadio();
+							const radioItemId = plugin.$element.find(`#dinoRadioPlaylistList-${plugin._uId} li.active`).data('position');
+							plugin.playRadioPlaylist(radioItemId);
 						});
 
 					/*-----------------------------------------------------------------*/
@@ -610,7 +624,8 @@
 						{
 							e.preventDefault();
 
-							plugin.playRadio();
+							const radioItemId = plugin.$element.find(`#dinoRadioPlaylistList-${plugin._uId} li.active`).data('position');
+							plugin.playRadioPlaylist(radioItemId);
 						});
 
 					/*-----------------------------------------------------------------*/
@@ -806,6 +821,12 @@
 						function()
 						{
 						});
+
+					plugin.$dinoAudio.on(`loadedmetadata.${plugin._name}`,
+						function()
+						{
+							//alert(plugin.$dinoAudio[0].duration);
+						});
 				},
 
 				/***************************************************************************/
@@ -825,15 +846,31 @@
 				/*  Audio Player with Playlist                                             */
 				/***************************************************************************/
 
-				playRadio: function()
+				/***************************************************************************/
+
+				playRadioPlaylist(indexValue)
 				{
-					const objAudio = this.dinoAudio[this._uId];
+					const objAudio = this.dinoAudio;
 
 					if (objAudio.paused)
 					{
+						const stationArray = this.options.stationPlaylist[indexValue];
+						const currentUrl = stationArray.url;
+						const currentIndex = indexValue;
+						const oldRowIndex = this._dinoCurrentRow;
+
+						this._dinoCurrentStation = currentUrl;
+						this._dinoCurrentIndex = currentIndex;
+						this._dinoCurrentRow = currentIndex;
+
+						objAudio.pause();
+						objAudio.src = this._dinoCurrentStation;
 						objAudio.play().then(() =>
 						{
 						});
+
+						this.changePlaylistAppearance(this._dinoCurrentRow, oldRowIndex);
+						this.changeRadioSong(this._dinoCurrentStation);
 					}
 					else
 					{
@@ -843,34 +880,9 @@
 
 				/***************************************************************************/
 
-				playRadioPlaylist(indexValue)
-				{
-					const objAudio = this.dinoAudio[this._uId];
-
-					const stationArray = this.options.stationPlaylist[indexValue];
-					const currentUrl = stationArray.url;
-					const currentIndex = indexValue;
-					const oldRowIndex = this._dinoCurrentRow;
-
-					this._dinoCurrentStation = currentUrl;
-					this._dinoCurrentIndex = currentIndex;
-					this._dinoCurrentRow = currentIndex;
-
-					objAudio.pause();
-					objAudio.src = this._dinoCurrentStation;
-					objAudio.play().then(() =>
-					{
-					});
-
-					this.changePlaylistAppearance(this._dinoCurrentRow, oldRowIndex);
-					this.changeRadioSong(this._dinoCurrentStation);
-				},
-
-				/***************************************************************************/
-
 				playPreviousStation: function()
 				{
-					const objAudio = this.dinoAudio[this._uId];
+					const objAudio = this.dinoAudio;
 					const playlistArray = this.options.stationPlaylist;
 
 					let currentUrl;
@@ -911,7 +923,7 @@
 
 				playNextStation: function()
 				{
-					const objAudio = this.dinoAudio[this._uId];
+					const objAudio = this.dinoAudio;
 					const playlistArray = this.options.stationPlaylist;
 
 					let currentUrl;
@@ -952,7 +964,7 @@
 
 				muteSound: function()
 				{
-					const objAudio = this.dinoAudio[this._uId];
+					const objAudio = this.dinoAudio;
 					objAudio.muted = !objAudio.muted;
 				},
 
@@ -1001,7 +1013,7 @@
 												{
 													widget.getArtistInfo(data.songArtist);
 												}
-												
+
 												widget.changeCurrentSongTitle(data.songTitle, data.songArtist);
 											},
 											error: function()
@@ -1028,60 +1040,65 @@
 					const widget = this;
 					let picPaths;
 
-					if(widget._dinoArt === artist)
+					if (widget._dinoArt === artist)
 					{
-                        return;
+						return;
 					}
 
 					$.ajax({
 						url: widget.options.pathToAjaxFiles +
 							window.atob('cmFkaW9BcnRpc3QucGhwP3RoZV9hcnRpc3Q9') +
 							encodeURI($.trim(artist)),
-						success: function (result)
+						success: function(result)
 						{
 							picPaths = [];
 							if (result.artists)
 							{
-
-								if (result.artists[0].strArtistThumb !== null && result.artists[0].strArtistThumb !== '')
+								if (result.artists[0].strArtistThumb !== null &&
+									result.artists[0].strArtistThumb !== '')
 								{
 									picPaths.push(result.artists[0].strArtistThumb);
 								}
 
-								if (result.artists[0].strArtistFanart !== null && result.artists[0].strArtistFanart !== '')
+								if (result.artists[0].strArtistFanart !== null &&
+									result.artists[0].strArtistFanart !== '')
 								{
 									picPaths.push(result.artists[0].strArtistFanart);
 								}
 
-								if (result.artists[0].strArtistFanart2 !== null && result.artists[0].strArtistFanart2 !== '')
+								if (result.artists[0].strArtistFanart2 !== null &&
+									result.artists[0].strArtistFanart2 !== '')
 								{
 									picPaths.push(result.artists[0].strArtistFanart2);
 								}
 
-								if (result.artists[0].strArtistFanart3 !== null && result.artists[0].strArtistFanart3 !== '')
+								if (result.artists[0].strArtistFanart3 !== null &&
+									result.artists[0].strArtistFanart3 !== '')
 								{
 									picPaths.push(result.artists[0].strArtistFanart3);
 								}
 
-								if (result.artists[0].strArtistFanart4 !== null && result.artists[0].strArtistFanart4 !== '')
+								if (result.artists[0].strArtistFanart4 !== null &&
+									result.artists[0].strArtistFanart4 !== '')
 								{
 									picPaths.push(result.artists[0].strArtistFanart4);
 								}
 
 								let curPic = -1;
 
-								// Preload the images for smooth animation
-								let artImage = [];
+								// Pre load the images for smooth animation
+								const artImage = [];
 								for (let i = 0; i < picPaths.length; i++)
 								{
-									artImage[i] = new Image();
+									artImage[i] = new window.Image();
 									artImage[i].src = picPaths[i];
 								}
 
 								function swapImage()
 								{
 									curPic = (++curPic > picPaths.length - 1) ? 0 : curPic;
-									widget.$element.find(`#dinoRadioPoster-${widget._uId}`).attr('src', artImage[curPic].src);
+									widget.$element.find(`#dinoRadioPoster-${widget._uId}`)
+										.attr('src', artImage[curPic].src);
 									window.setTimeout(swapImage, 30000);
 								}
 
@@ -1092,9 +1109,10 @@
 							}
 
 							widget._dinoArt = artist;
-							widget.$element.find(`#dinoRadioPoster-${widget._uId}`).attr('src', `data:image/png;base64,${widget.getImage(1)}`);
+							widget.$element.find(`#dinoRadioPoster-${widget._uId}`)
+								.attr('src', `data:image/png;base64,${widget.getImage(0)}`);
 						},
-						error: function ()
+						error: function()
 						{
 							window.console.log('Error: Something went wrong with loading the LastFM Data!');
 						}
@@ -1104,10 +1122,9 @@
 				changePlaylistAppearance: function(newRowIndex, oldRowIndex)
 				{
 					const active = '<span class="dinoRadioActive"></span>';
-					this.$element.find(`#dinoRadioItem-${newRowIndex}-${this._uId}`).addClass('active').append(active);
 					this.$element.find(`#dinoRadioItem-${oldRowIndex}-${this._uId}`).removeClass('active');
-					this.$element.find(`#dinoRadioItem-${oldRowIndex}-${this._uId} .dinoRadioActive`).remove()
-						.removeClass('active');
+					this.$element.find(`#dinoRadioItem-${oldRowIndex}-${this._uId} .dinoRadioActive`).remove().removeClass('active');
+					this.$element.find(`#dinoRadioItem-${newRowIndex}-${this._uId}`).addClass('active').append(active);
 				},
 
 				sortPlaylist: function(a, b)
@@ -1365,17 +1382,65 @@
 						'en':
 						{
 							'plugin_title': 'DinoRadio',
-							'plugin_desc': 'Jquery plugin for listening to web radio.'
+							'plugin_desc': 'Jquery plugin for listening to web radio.',
+							'plugin_no_station': 'Unknown Station',
+							'plugin_no_artist': 'Unknown Artist',
+							'plugin_no_title': 'Unknown Title',
+							'plugin_no_playlist': 'No Playlist Found!!!',
+
+							'plugin_ra_station': 'Radio Station',
+							'plugin_ra_logo': 'Radio Logo',
+							'plugin_ra_search': 'Input Search Term ...',
+							'plugin_ra_title': 'Title:',
+							'plugin_ra_artist': 'Artist:',
+							'plugin_ra_play': 'Play/Pause',
+
+							'plugin_ra_prev': 'Previous',
+							'plugin_ra_next': 'Next',
+							'plugin_ra_mute': 'Mute/UnMute',
+							'plugin_ra_playlist': 'Open/Close Playlist'
 						},
 						'sl':
 						{
 							'plugin_title': 'DinoRadio',
-							'plugin_desc': 'Jquery plugin for listening to web radio.'
+							'plugin_desc': 'Vtičnik Jquery za poslušanje spletnega radia.',
+							'plugin_no_station': 'Neznana Postaja',
+							'plugin_no_artist': 'Neznani Izvajalec',
+							'plugin_no_title': 'Neznan Naslov',
+							'plugin_no_playlist': 'Seznam predvajanja ni najden!!!',
+
+							'plugin_ra_station': 'Radijska Postaja',
+							'plugin_ra_logo': 'Radio Logo',
+							'plugin_ra_search': 'Vnesite iskalni izraz ...',
+							'plugin_ra_title': 'Naslov:',
+							'plugin_ra_artist': 'Izvajalec:',
+							'plugin_ra_play': 'Predvajanje/Premor',
+
+							'plugin_ra_prev': 'Prejšnji',
+							'plugin_ra_next': 'Naslednji',
+							'plugin_ra_mute': 'Vklop/Izklop Zvoka',
+							'plugin_ra_playlist': 'Odpri/Zapri Seznam Predvajanja'
 						},
 						'de':
 						{
 							'plugin_title': 'DinoRadio',
-							'plugin_desc': 'Jquery plugin for listening to web radio.'
+							'plugin_desc': 'JQuery-Plugin zum Hören von Webradio. ',
+							'plugin_no_station': 'Unbekannte Station',
+							'plugin_no_artist': 'Unbekannter Künstler',
+							'plugin_no_title': 'Unbekannter Titel',
+							'plugin_no_playlist': 'Keine Wiedergabeliste gefunden!!!',
+
+							'plugin_ra_station': 'Radiosender',
+							'plugin_ra_logo': 'Radio Logo',
+							'plugin_ra_search': 'Suchbegriff eingeben ...',
+							'plugin_ra_title': 'Titel:',
+							'plugin_ra_artist': 'Künstler:',
+							'plugin_ra_play': 'Spiel/Pause',
+
+							'plugin_ra_prev': 'Bisherige',
+							'plugin_ra_next': 'Nächster',
+							'plugin_ra_mute': 'Stumm/Stummschaltung Aufheben',
+							'plugin_ra_playlist': 'Wiedergabeliste öffnen/schließen'
 						}
 					};
 
@@ -1395,15 +1460,11 @@
 				*/
 				getImage: function(key = 0)
 				{
-					const dinoRadioImages = [
-						'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',
-						''
+					const noImageAvailable = [
+						'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'
 					];
 
-					const noImageAvailable = [];
-
-					return dinoRadioImages[key];
+					return noImageAvailable[key];
 				},
 
 				/***************************************************************************/
@@ -1474,24 +1535,35 @@
 			// Radio Playlist Array - contains station end point urls.
 			stationPlaylist: [],
 			/*---------------------------------------------*/
+			// Autoplay radio station after page load
 			autoPlay: false,
 			/*---------------------------------------------*/
+			// Show playlist after widget has been loaded
 			showPlaylistOnInit: false,
 			/*---------------------------------------------*/
+			// Show Equalizer on Play Radio Stream
 			showEqOnPlay: false,
 			/*---------------------------------------------*/
+			// Show station id numbers in playlist
 			showPlaylistNumber: true,
 			/*---------------------------------------------*/
-			station: 'Unknown Station!',
-			title: 'Unknown Title!',
-			artist: 'Unknown Artist!',
-			/*---------------------------------------------*/
+			// Radio interval for updating current playing song
 			nowPlayingInterval: 15,
 			/*---------------------------------------------*/
+			// Enable info on current playing song
 			grabSongRds: true,
+			// Get current Station name
+			// and category from the stream
 			grabStationRds: true,
+			// Get current playing Artist  info
 			grabArtistInfo: true,
 			/*---------------------------------------------*/
+			// Path to radio API data files:
+			//
+			// radioStationPlaylist.php -> Default playlist if none specified
+			// radioStationInfo.php     -> Radio Station Info
+			// radioNowPlaying.php      -> Radio current playing song
+			// radioArtist.php          -> Radio current playing Artist Info
 			pathToAjaxFiles: 'https://mcx-systems.net/',
 			/*---------------------------------------------*/
 			// Plugin language automatic
