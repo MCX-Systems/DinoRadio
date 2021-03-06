@@ -59,7 +59,7 @@
 			this.dinoAudio[this._uId].id = this._uId;
 			this.dinoAudio[this._uId].loop = false;
 			// Playlist Variables
-			this._art = '';
+			this._dinoArt = '';
 			this._dinoCurrentUrl = '';
 			this._dinoCurrentRow = 0;
 			this._dinoCurrentIndex = 0;
@@ -976,9 +976,9 @@
 							{
 								widget.changeCurrentSongTitle(data.songTitle, data.songArtist);
 
-								if (widget.options.grabLastFmPhoto)
+								if (widget.options.grabArtistInfo)
 								{
-									widget.getLastFmRadioInfo(data.songArtist);
+									widget.getArtistInfo(data.songArtist);
 								}
 							},
 							error: function()
@@ -997,9 +997,9 @@
 												stationUrl,
 											success: function(data)
 											{
-												if (widget.options.grabLastFmPhoto)
+												if (widget.options.grabArtistInfo)
 												{
-													widget.getLastFmRadioInfo(data.songArtist);
+													widget.getArtistInfo(data.songArtist);
 												}
 												
 												widget.changeCurrentSongTitle(data.songTitle, data.songArtist);
@@ -1023,18 +1023,20 @@
 					$(`#dinoRadioSongArtist-${this._uId}`).text(artist);
 				},
 
-				getLastFmRadioInfo: function(artist)
+				getArtistInfo: function(artist)
 				{
 					const widget = this;
 					let photoPath;
 
-					if(widget._art === artist)
+					if(widget._dinoArt === artist)
 					{
                         return;
 					}
 
 					$.ajax({
-						url: `https://www.theaudiodb.com/api/v1/json/1/search.php?s=${encodeURI($.trim(artist))}`,
+						url: widget.options.pathToAjaxFiles +
+							window.atob('cmFkaW9BcnRpc3QucGhwP3RoZV9hcnRpc3Q9') +
+							encodeURI($.trim(artist)),
 						success: function (result)
 						{
 							if (result.artists)
@@ -1043,7 +1045,7 @@
 								{
 									photoPath = result.artists[0].strArtistThumb;
 									widget.$element.find(`#dinoRadioPoster-${widget._uId}`).attr('src', photoPath);
-									widget._art = artist;
+									widget._dinoArt = artist;
 
 									return;
 								}
@@ -1052,13 +1054,13 @@
 								{
 									photoPath = result.artists[0].strArtistThumb;
 									widget.$element.find(`#dinoRadioPoster-${widget._uId}`).attr('src', photoPath);
-									widget._art = artist;
+									widget._dinoArt = artist;
 
 									return;
 								}
 							}
 
-							widget._art = artist;
+							widget._dinoArt = artist;
 							widget.$element.find(`#dinoRadioPoster-${widget._uId}`).attr('src', `data:image/png;base64,${widget.getImage(1)}`);
 						},
 						error: function ()
@@ -1368,6 +1370,8 @@
 						''
 					];
 
+					const noImageAvailable = [];
+
 					return dinoRadioImages[key];
 				},
 
@@ -1455,7 +1459,7 @@
 			/*---------------------------------------------*/
 			grabSongRds: true,
 			grabStationRds: true,
-			grabLastFmPhoto: true,
+			grabArtistInfo: true,
 			/*---------------------------------------------*/
 			pathToAjaxFiles: 'https://mcx-systems.net/',
 			/*---------------------------------------------*/
