@@ -144,7 +144,7 @@
 				window.fbAsyncInit = function ()
 				{
 					window.FB.init({
-						appId: '513778246690715',
+						appId: widget.options.facebookAppID,
 						version: 'v10.0',
 						status: true,
 						cookie: true,
