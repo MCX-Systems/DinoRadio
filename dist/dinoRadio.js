@@ -1055,7 +1055,7 @@
 							if (result[0].artistThumb)
 							{
 								let ex1 = widget.getFilename(result[0].artistThumb);
-								if(ex1 !== '')
+								if(ex1.ext !== '')
 								{
 									widget.$element.find(`#dinoRadioPoster-${widget._uId}`)
 										.attr('src', result[0].artistThumb);
@@ -1067,7 +1067,7 @@
 								}
 
 								let ex2 = widget.getFilename(result[0].artistBanner);
-								if(ex2 !== '')
+								if(ex2.ext !== '')
 								{
 									widget.$element.find(`#dinoArtistBanner-${widget._uId}`)
 										.attr('src', result[0].artistBanner);
