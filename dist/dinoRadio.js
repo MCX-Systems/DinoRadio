@@ -522,7 +522,7 @@
 										.sort(widget.sortPlaylist)
 										.appendTo(`#dinoRadioPlaylistList-${widget._uId}`);
 								},
-								2000);
+								3000);
 						},
 						3000);
 				},
