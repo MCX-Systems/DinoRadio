@@ -1054,11 +1054,29 @@
 						{
 							if (result[0].artistThumb)
 							{
-								widget.$element.find(`#dinoRadioPoster-${widget._uId}`)
-									.attr('src', result[0].artistThumb);
+								let ex1 = widget.getFilename(result[0].artistThumb);
+								if(ex1 !== '')
+								{
+									widget.$element.find(`#dinoRadioPoster-${widget._uId}`)
+										.attr('src', result[0].artistThumb);
+								}
+								else
+								{
+									widget.$element.find(`#dinoRadioPoster-${widget._uId}`)
+										.attr('src', `data:image/png;base64,${widget.getImage(0)}`);
+								}
 
-								widget.$element.find(`#dinoArtistBanner-${widget._uId}`)
-									.attr('src', result[0].artistBanner);
+								let ex2 = widget.getFilename(result[0].artistBanner);
+								if(ex2 !== '')
+								{
+									widget.$element.find(`#dinoArtistBanner-${widget._uId}`)
+										.attr('src', result[0].artistBanner);
+								}
+								else
+								{
+									widget.$element.find(`#dinoArtistBanner-${widget._uId}`)
+										.attr('src', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==');
+								}
 
 								widget._dinoArt = artist;
 
@@ -1068,6 +1086,9 @@
 							widget._dinoArt = artist;
 							widget.$element.find(`#dinoRadioPoster-${widget._uId}`)
 								.attr('src', `data:image/png;base64,${widget.getImage(0)}`);
+
+							widget.$element.find(`#dinoArtistBanner-${widget._uId}`)
+								.attr('src', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==');
 						},
 						error: function()
 						{
@@ -1255,6 +1276,15 @@
 					{
 						return str;
 					}
+				},
+
+				getFilename: function (url)
+				{
+					// get the part after last /, then replace any query and hash part
+					url = url.split('/').pop().replace(/\#(.*?)$/, '').replace(/\?(.*?)$/, '');
+					url = url.split('.');  // separates filename and extension
+
+					return {filename: (url[0] || ''), ext: (url[1] || '')}
 				},
 
 				/***************************************************************************/
