@@ -15,7 +15,7 @@
     <inspection_tool class="DuplicatedCode" enabled="true" level="WEAK WARNING" enabled_by_default="true">
       <Languages>
         <language minSize="23" name="Style Sheets" />
-        <language minSize="157" name="JavaScript" />
+        <language minSize="159" name="JavaScript" />
       </Languages>
     </inspection_tool>
   </profile>

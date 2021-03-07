@@ -54,11 +54,15 @@
 			this._uId = this.createUniqId(8);
 			this._language = this.getUserLanguage();
 			/***************************************************************************/
+			$(this.element).attr('data-radioId', this._uId);
 			this.dinoAudio = new window.Audio();
 			this.dinoAudio.id = this._uId;
 			this.dinoAudio.loop = false;
 			// Playlist Variables
+			this._curPic = -1;
 			this._dinoArt = '';
+			this._picPaths = [];
+			this._artImage = [];
 			this._dinoCurrentUrl = '';
 			this._dinoCurrentRow = 0;
 			this._dinoCurrentIndex = 0;
@@ -203,7 +207,7 @@
 						}" class="dinoBlinking"></div></section><img id="dinoRadioLogo-${this._uId
 						}" src="data:image/png;base64,${this.getImage(0)
 						}" class="dinoRadioLogo" alt="${this.getI18n('plugin_ra_logo', this.options.language)
-						}" /><section id="dinoRadioPlaylist-${this._uId
+						}" /><div id="dinoRadioBanner-${this._uId}" class="dinoRadioBanner"><img id="dinoArtistBanner-${this._uId}" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" alt="Banner" /></div><section id="dinoRadioPlaylist-${this._uId
 						}" class="dinoRadioPlaylist"><div id="dinoRadioLoader-${this._uId
 						}" class="dinoLoaderOverlay"><div class="dinoCubeGrid"><div class="dinoCube dinoCube1"></div><div class="dinoCube dinoCube2"></div><div class="dinoCube dinoCube3"></div><div class="dinoCube dinoCube4"></div><div class="dinoCube dinoCube5"></div><div class="dinoCube dinoCube6"></div><div class="dinoCube dinoCube7"></div><div class="dinoCube dinoCube8"></div><div class="dinoCube dinoCube9"></div></div></div><ul id="dinoRadioPlaylistList-${
 						this._uId
@@ -272,6 +276,10 @@
 						'background-color': widget.options.bgColor
 					});
 
+					widget.$element.find(`#dinoRadioBanner-${widget._uId} img`).css({
+						'background-color': widget.options.bgColor
+					});
+
 					if (window.navigator.userAgent.indexOf('Firefox') === -1)
 					{
 						widget.$element.find(`#dinoRadio-${widget._uId}`).css({
@@ -316,7 +324,7 @@
 							success: function(data)
 							{
 								widget.options.stationPlaylist = data;
-								window.console.log(widget.options.stationPlaylist);
+								//window.console.log(widget.options.stationPlaylist);
 							},
 							error: function()
 							{
@@ -343,14 +351,10 @@
 
 							/*---------------------------------------------------------------*/
 
-							// Set Current Radio Station
-							let stationNameCurrent;
-							let stationUrlCurrent;
-
 							if (widget.options.stationPlaylist.length)
 							{
 								// Create initial Playlist and populate with data
-								$.each(widget.options.stationPlaylist,
+								$(widget.options.stationPlaylist).each(
 									function(i, value)
 									{
 										let num = '';
@@ -365,12 +369,12 @@
 										if (i === 0)
 										{
 											hoverA = ' class="active"';
-											stationNameCurrent = value.station;
-											stationUrlCurrent = value.url;
 											active = '<span class="dinoRadioActive"></span>';
 											widget.$element.find(`#dinoRadioStation-${widget._uId}`)
-												.text(widget.checkStrLength(stationNameCurrent,
+												.text(widget.checkStrLength(value.station,
 													20));
+											widget.dinoAudio.src = value.url;
+											widget.changeRadioSong(value.url);
 										}
 
 										if (widget.options.grabStationRds)
@@ -426,8 +430,6 @@
 												.append(template);
 										}
 									});
-
-								widget.changeRadioSong(stationUrlCurrent);
 							}
 
 							/*---------------------------------------------------------------*/
@@ -439,12 +441,13 @@
 									'opacity': 1
 								});
 
+								widget.$element.find(`#dinoRadioBanner-${widget._uId}`).css({
+									'right': '-280px'
+								});
+
 								widget.$element.find(`#dinoRadioShowHidePlaylist-${widget._uId} i`)
 									.toggleClass('dino-icon-indent-left-1 dino-icon-indent-right-1');
 							}
-
-							widget.dinoAudio.src = stationUrlCurrent;
-							widget.$element.attr('data-radioId', widget._uId);
 
 							if (widget.options.autoPlay)
 							{
@@ -637,11 +640,15 @@
 							e.preventDefault();
 
 							if (plugin.$element.find(`#dinoRadioShowHidePlaylist-${plugin._uId} i`)
-								.hasClass('dino-icon-indent-left-1'))
+								.hasClass('dino-icon-indent-left-1')) // is Closed
 							{
 								plugin.$element.find(`#dinoRadioPlaylist-${plugin._uId}`).css({
 									'visibility': 'visible',
 									'opacity': 1
+								});
+
+								plugin.$element.find(`#dinoRadioBanner-${plugin._uId}`).css({
+									'right': '-280px'
 								});
 							}
 							else
@@ -649,6 +656,10 @@
 								plugin.$element.find(`#dinoRadioPlaylist-${plugin._uId}`).css({
 									'visibility': 'collapse',
 									'opacity': 0
+								});
+
+								plugin.$element.find(`#dinoRadioBanner-${plugin._uId}`).css({
+									'right': '-90px'
 								});
 							}
 
@@ -698,13 +709,13 @@
 						{
 							e.preventDefault();
 
-							const radioItemId = $(this).prop('id');
-							const index = radioItemId.split('-');
+							const radioItemId = $(this).data('position');
 
 							plugin.$element.find(`#dinoRadioStation-${plugin._uId}`).text(
 								plugin.checkStrLength($(this).find('.dinoRadioStation').text(),
 									20));
-							plugin.playRadioPlaylist(index[1]);
+
+							plugin.playRadioPlaylist(radioItemId);
 						});
 
 					/*-----------------------------------------------------------------*/
@@ -729,9 +740,6 @@
 						function(e)
 						{
 							e.preventDefault();
-
-							// TODO Implement Git link
-							//alert('Git Click');
 						});
 
 					plugin.$element.on(`click touchstart.${plugin._name}`,
@@ -739,9 +747,6 @@
 						function(e)
 						{
 							e.preventDefault();
-
-							// TODO Implement Linkedin link
-							//alert('Linkedin Click');
 						});
 
 					plugin.$element.on(`click touchstart.${plugin._name}`,
@@ -749,9 +754,6 @@
 						function(e)
 						{
 							e.preventDefault();
-
-							// TODO Implement Facebook link
-							//alert('Facebook Click');
 						});
 				},
 
@@ -825,7 +827,6 @@
 					plugin.$dinoAudio.on(`loadedmetadata.${plugin._name}`,
 						function()
 						{
-							//alert(plugin.$dinoAudio[0].duration);
 						});
 				},
 
@@ -863,7 +864,6 @@
 						this._dinoCurrentIndex = currentIndex;
 						this._dinoCurrentRow = currentIndex;
 
-						objAudio.pause();
 						objAudio.src = this._dinoCurrentStation;
 						objAudio.play().then(() =>
 						{
@@ -905,6 +905,7 @@
 					this._dinoCurrentUrl = currentUrl;
 					this._dinoCurrentIndex = currentIndex;
 
+					objAudio.pause();
 					objAudio.src = this._dinoCurrentUrl;
 					objAudio.play().then(() =>
 					{
@@ -946,6 +947,7 @@
 					this._dinoCurrentUrl = currentUrl;
 					this._dinoCurrentIndex = currentIndex;
 
+					objAudio.pause();
 					objAudio.src = this._dinoCurrentUrl;
 					objAudio.play().then(() =>
 					{
@@ -1009,12 +1011,12 @@
 												stationUrl,
 											success: function(data)
 											{
+												widget.changeCurrentSongTitle(data.songTitle, data.songArtist);
+
 												if (widget.options.grabArtistInfo)
 												{
 													widget.getArtistInfo(data.songArtist);
 												}
-
-												widget.changeCurrentSongTitle(data.songTitle, data.songArtist);
 											},
 											error: function()
 											{
@@ -1038,7 +1040,6 @@
 				getArtistInfo: function(artist)
 				{
 					const widget = this;
-					let picPaths;
 
 					if (widget._dinoArt === artist)
 					{
@@ -1051,58 +1052,14 @@
 							encodeURI($.trim(artist)),
 						success: function(result)
 						{
-							picPaths = [];
-							if (result.artists)
+							if (result[0].artistThumb)
 							{
-								if (result.artists[0].strArtistThumb !== null &&
-									result.artists[0].strArtistThumb !== '')
-								{
-									picPaths.push(result.artists[0].strArtistThumb);
-								}
+								widget.$element.find(`#dinoRadioPoster-${widget._uId}`)
+									.attr('src', result[0].artistThumb);
 
-								if (result.artists[0].strArtistFanart !== null &&
-									result.artists[0].strArtistFanart !== '')
-								{
-									picPaths.push(result.artists[0].strArtistFanart);
-								}
+								widget.$element.find(`#dinoArtistBanner-${widget._uId}`)
+									.attr('src', result[0].artistBanner);
 
-								if (result.artists[0].strArtistFanart2 !== null &&
-									result.artists[0].strArtistFanart2 !== '')
-								{
-									picPaths.push(result.artists[0].strArtistFanart2);
-								}
-
-								if (result.artists[0].strArtistFanart3 !== null &&
-									result.artists[0].strArtistFanart3 !== '')
-								{
-									picPaths.push(result.artists[0].strArtistFanart3);
-								}
-
-								if (result.artists[0].strArtistFanart4 !== null &&
-									result.artists[0].strArtistFanart4 !== '')
-								{
-									picPaths.push(result.artists[0].strArtistFanart4);
-								}
-
-								let curPic = -1;
-
-								// Pre load the images for smooth animation
-								const artImage = [];
-								for (let i = 0; i < picPaths.length; i++)
-								{
-									artImage[i] = new window.Image();
-									artImage[i].src = picPaths[i];
-								}
-
-								function swapImage()
-								{
-									curPic = (++curPic > picPaths.length - 1) ? 0 : curPic;
-									widget.$element.find(`#dinoRadioPoster-${widget._uId}`)
-										.attr('src', artImage[curPic].src);
-									window.setTimeout(swapImage, 30000);
-								}
-
-								swapImage();
 								widget._dinoArt = artist;
 
 								return;
@@ -1548,7 +1505,7 @@
 			showPlaylistNumber: true,
 			/*---------------------------------------------*/
 			// Radio interval for updating current playing song
-			nowPlayingInterval: 15,
+			nowPlayingInterval: 30,
 			/*---------------------------------------------*/
 			// Enable info on current playing song
 			grabSongRds: true,

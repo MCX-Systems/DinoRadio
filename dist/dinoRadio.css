@@ -85,6 +85,35 @@
 	z-index: 50;
 }
 
+.dinoRadio .dinoRadioBanner
+{
+	height: 270px;
+	right: -90px;
+	position: absolute;
+	top: -5px;
+	width: 60px;
+	z-index: 50;
+	border-radius: 10px;
+	box-shadow: inset 0 0 35px 20px rgb(0, 0, 0), 0 0 10px 4px rgb(0, 0, 0);
+	box-shadow: inset 0 0 35px 20px rgba(0, 0, 0, 1), 0 0 10px 4px rgba(0, 0, 0, 1);
+	transition: all .3s ease-in-out;
+}
+
+.dinoRadio .dinoRadioBanner img
+{
+	box-shadow: inset 0 0 30px 16px rgb(0, 0, 0), 0 0 30px 8px rgb(0, 0, 0);
+	box-shadow: inset 0 0 30px 16px rgba(0, 0, 0, 0.60), 0 0 30px 8px rgba(0, 0, 0, 0.60);
+	position: absolute;
+	top: 105px;
+	right: -106px;
+	height: 60px;
+	width: 270px;
+	transform: rotate(90deg);
+	z-index: 50;
+	border-radius: 10px;
+	opacity: .8;
+}
+
 /*----------------------------
 	DinoRadio Poster Image
 -----------------------------*/
