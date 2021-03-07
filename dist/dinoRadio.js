@@ -139,6 +139,33 @@
 				widget.options.language = widget._language;
 			}
 
+			if(widget.options.enableFacebookShare)
+			{
+				window.fbAsyncInit = function ()
+				{
+					window.FB.init({
+						appId: '513778246690715',
+						version: 'v10.0',
+						status: true,
+						cookie: true,
+						xfbml: true
+					});
+				};
+
+				(function (d, s, id)
+				{
+					let js, fjs = d.getElementsByTagName(s)[0];
+					if (d.getElementById(id))
+					{
+						return;
+					}
+					js = d.createElement(s);
+					js.id = id;
+					js.src = "https://connect.facebook.com/en_US/sdk.js";
+					fjs.parentNode.insertBefore(js, fjs);
+				}(document, 'script', 'facebook-jssdk'));
+			}
+
 			if (!widget._flag)
 			{
 				widget.init();
@@ -207,7 +234,7 @@
 						}" class="dinoBlinking"></div></section><img id="dinoRadioLogo-${this._uId
 						}" src="data:image/png;base64,${this.getImage(0)
 						}" class="dinoRadioLogo" alt="${this.getI18n('plugin_ra_logo', this.options.language)
-						}" /><div id="dinoRadioBanner-${this._uId}" class="dinoRadioBanner"><img id="dinoArtistBanner-${this._uId}" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" alt="Banner" /></div><section id="dinoRadioPlaylist-${this._uId
+						}" /><div id="dinoRadioBanner-${this._uId}" class="dinoRadioBanner"><img id="dinoArtistBanner-${this._uId}" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" alt="Banner" /></div><div id="dinoArtistBio-${this._uId}" class="dinoRadioArtistBio"></div><section id="dinoRadioPlaylist-${this._uId
 						}" class="dinoRadioPlaylist"><div id="dinoRadioLoader-${this._uId
 						}" class="dinoLoaderOverlay"><div class="dinoCubeGrid"><div class="dinoCube dinoCube1"></div><div class="dinoCube dinoCube2"></div><div class="dinoCube dinoCube3"></div><div class="dinoCube dinoCube4"></div><div class="dinoCube dinoCube5"></div><div class="dinoCube dinoCube6"></div><div class="dinoCube dinoCube7"></div><div class="dinoCube dinoCube8"></div><div class="dinoCube dinoCube9"></div></div></div><ul id="dinoRadioPlaylistList-${
 						this._uId
@@ -277,6 +304,10 @@
 					});
 
 					widget.$element.find(`#dinoRadioBanner-${widget._uId} img`).css({
+						'background-color': widget.options.bgColor
+					});
+
+					widget.$element.find(`#dinoArtistBio-${widget._uId}`).css({
 						'background-color': widget.options.bgColor
 					});
 
@@ -610,6 +641,48 @@
 					/*-----------------------------------------------------------------*/
 
 					plugin.$element.on(`click touchstart.${plugin._name}`,
+						`#dinoArtistBio-${plugin._uId}`,
+						function(e)
+						{
+							e.preventDefault();
+
+							plugin.$element.find(`#dinoArtistBio-${plugin._uId}`).css({
+								'visibility': 'collapse',
+								'opacity': 0
+							});
+						});
+
+					plugin.$element.on(`click touchstart.${plugin._name}`,
+						`#dinoArtistBanner-${plugin._uId}`,
+						function(e)
+						{
+							e.preventDefault();
+
+							plugin.$element.find(`#dinoArtistBio-${plugin._uId}`).css({
+								'visibility': 'visible',
+								'opacity': 1
+							});
+
+							if (plugin.$element.find(`#dinoRadioShowHidePlaylist-${plugin._uId} i`)
+								.hasClass('dino-icon-indent-left-1')) // is Closed
+							{
+								plugin.$element.find(`#dinoRadioPlaylist-${plugin._uId}`).css({
+									'visibility': 'visible',
+									'opacity': 1
+								});
+
+								plugin.$element.find(`#dinoRadioBanner-${plugin._uId}`).css({
+									'right': '-280px'
+								});
+
+								plugin.$element.find(`#dinoRadioShowHidePlaylist-${plugin._uId} i`)
+									.toggleClass('dino-icon-indent-left-1 dino-icon-indent-right-1');
+							}
+						});
+
+					/*-----------------------------------------------------------------*/
+
+					plugin.$element.on(`click touchstart.${plugin._name}`,
 						`#dinoRadioPlayPause-${plugin._uId}`,
 						function(e)
 						{
@@ -660,6 +733,11 @@
 
 								plugin.$element.find(`#dinoRadioBanner-${plugin._uId}`).css({
 									'right': '-90px'
+								});
+
+								plugin.$element.find(`#dinoArtistBio-${plugin._uId}`).css({
+									'visibility': 'collapse',
+									'opacity': 0
 								});
 							}
 
@@ -754,6 +832,15 @@
 						function(e)
 						{
 							e.preventDefault();
+
+							if(plugin.options.enableFacebookShare)
+							{
+								FB.ui({
+									method: 'share',
+									link: window.location.href,
+									href: window.location.href
+								}, function (response) {});
+							}
 						});
 				},
 
@@ -1078,6 +1165,8 @@
 										.attr('src', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==');
 								}
 
+								let temp = '<span>'+result[0].biographyEN+'</span>';
+								widget.$element.find(`#dinoArtistBio-${widget._uId}`).empty().append(temp);
 								widget._dinoArt = artist;
 
 								return;
@@ -1544,6 +1633,9 @@
 			grabStationRds: true,
 			// Get current playing Artist  info
 			grabArtistInfo: true,
+			/*---------------------------------------------*/
+			enableFacebookShare: true,
+			facebookAppID: '513778246690715',
 			/*---------------------------------------------*/
 			// Path to radio API data files:
 			//
