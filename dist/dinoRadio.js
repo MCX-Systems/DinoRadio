@@ -59,10 +59,7 @@
 			this.dinoAudio.id = this._uId;
 			this.dinoAudio.loop = false;
 			// Playlist Variables
-			this._curPic = -1;
 			this._dinoArt = '';
-			this._picPaths = [];
-			this._artImage = [];
 			this._dinoCurrentUrl = '';
 			this._dinoCurrentRow = 0;
 			this._dinoCurrentIndex = 0;
@@ -139,9 +136,9 @@
 				widget.options.language = widget._language;
 			}
 
-			if(widget.options.enableFacebookShare)
+			if (widget.options.enableFacebookShare)
 			{
-				window.fbAsyncInit = function ()
+				window.fbAsyncInit = function()
 				{
 					window.FB.init({
 						appId: widget.options.facebookAppID,
@@ -152,34 +149,36 @@
 					});
 				};
 
-				(function (d, s, id)
+				(function(d, s, id)
 				{
-					let js, fjs = d.getElementsByTagName(s)[0];
+					let js;
+					const fjs = d.getElementsByTagName(s)[0];
 					if (d.getElementById(id))
 					{
 						return;
 					}
 					js = d.createElement(s);
 					js.id = id;
-					js.src = "https://connect.facebook.com/en_US/sdk.js";
+					js.src = 'https://connect.facebook.com/en_US/sdk.js';
 					fjs.parentNode.insertBefore(js, fjs);
-				}(document, 'script', 'facebook-jssdk'));
+				}(window.document, 'script', 'facebook-jssdk'));
 			}
 
-			if(widget.options.enableTwitterShare)
+			if (widget.options.enableTwitterShare)
 			{
-				(function (d, s, id)
+				(function(d, s, id)
 				{
-					let js, fjs = d.getElementsByTagName(s)[0];
+					let js;
+					const fjs = d.getElementsByTagName(s)[0];
 					if (d.getElementById(id))
 					{
 						return;
 					}
 					js = d.createElement(s);
 					js.id = id;
-					js.src = "https://platform.twitter.com/widgets.js";
+					js.src = 'https://platform.twitter.com/widgets.js';
 					fjs.parentNode.insertBefore(js, fjs);
-				}(document, 'script', 'twitter-wjs'));
+				}(window.document, 'script', 'twitter-wjs'));
 			}
 
 			if (!widget._flag)
@@ -250,7 +249,10 @@
 						}" class="dinoBlinking"></div></section><img id="dinoRadioLogo-${this._uId
 						}" src="data:image/png;base64,${this.getImage(0)
 						}" class="dinoRadioLogo" alt="${this.getI18n('plugin_ra_logo', this.options.language)
-						}" /><div id="dinoRadioBanner-${this._uId}" class="dinoRadioBanner"><img id="dinoArtistBanner-${this._uId}" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" alt="Banner" /></div><div id="dinoArtistBio-${this._uId}" class="dinoRadioArtistBio"></div><section id="dinoRadioPlaylist-${this._uId
+						}" /><div id="dinoRadioBanner-${this._uId}" class="dinoRadioBanner"><img id="dinoArtistBanner-${
+						this._uId
+						}" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" alt="Banner" /></div><div id="dinoArtistBio-${
+						this._uId}" class="dinoRadioArtistBio"></div><section id="dinoRadioPlaylist-${this._uId
 						}" class="dinoRadioPlaylist"><div id="dinoRadioLoader-${this._uId
 						}" class="dinoLoaderOverlay"><div class="dinoCubeGrid"><div class="dinoCube dinoCube1"></div><div class="dinoCube dinoCube2"></div><div class="dinoCube dinoCube3"></div><div class="dinoCube dinoCube4"></div><div class="dinoCube dinoCube5"></div><div class="dinoCube dinoCube6"></div><div class="dinoCube dinoCube7"></div><div class="dinoCube dinoCube8"></div><div class="dinoCube dinoCube9"></div></div></div><ul id="dinoRadioPlaylistList-${
 						this._uId
@@ -704,7 +706,8 @@
 						{
 							e.preventDefault();
 
-							const radioItemId = plugin.$element.find(`#dinoRadioPlaylistList-${plugin._uId} li.active`).data('position');
+							const radioItemId = plugin.$element.find(`#dinoRadioPlaylistList-${plugin._uId} li.active`)
+								.data('position');
 							plugin.playRadioPlaylist(radioItemId);
 						});
 
@@ -716,7 +719,8 @@
 						{
 							e.preventDefault();
 
-							const radioItemId = plugin.$element.find(`#dinoRadioPlaylistList-${plugin._uId} li.active`).data('position');
+							const radioItemId = plugin.$element.find(`#dinoRadioPlaylistList-${plugin._uId} li.active`)
+								.data('position');
 							plugin.playRadioPlaylist(radioItemId);
 						});
 
@@ -855,14 +859,18 @@
 
 							const w = 440;
 							const h = 550;
-							const y = window.top.outerHeight / 2 + window.top.screenY - ( h / 2);
-							const x = window.top.outerWidth / 2 + window.top.screenX - ( w / 2);
+							const y = window.top.outerHeight / 2 + window.top.screenY - (h / 2);
+							const x = window.top.outerWidth / 2 + window.top.screenX - (w / 2);
 
 							const twit = plugin.getI18n('plugin_ra_twitter', plugin.options.language);
-							const url = 'https://twitter.com/intent/tweet?url=' + window.location.href + '&text=' + twit;
+							const url = `https://twitter.com/intent/tweet?url=${window.location.href}&text=${twit}`;
 							const text = 'Twitter';
 
-							window.open(url, text, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=' + w + ', height=' + h + ', top=' + y + ', left=' + x);
+							window.open(url,
+								text,
+								`toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=${
+								w
+								}, height=${h}, top=${y}, left=${x}`);
 						});
 
 					plugin.$element.on(`click touchstart.${plugin._name}`,
@@ -871,13 +879,17 @@
 						{
 							e.preventDefault();
 
-							if(plugin.options.enableFacebookShare)
+							if (plugin.options.enableFacebookShare)
 							{
-								FB.ui({
-									method: 'share',
-									link: window.location.href,
-									href: window.location.href
-								}, function (response) {});
+								window.FB.ui({
+										method: 'share',
+										link: window.location.href,
+										href: window.location.href
+									},
+									function(response)
+									{
+										window.console.log(response);
+									});
 							}
 						});
 				},
@@ -1177,37 +1189,47 @@
 							encodeURI($.trim(artist)),
 						success: function(result)
 						{
-							if (result[0].artistThumb)
+							if(result[0] !== undefined && result[0] !== null)
 							{
-								let ex1 = widget.getFilename(result[0].artistThumb);
-								if(ex1.ext !== '')
+								if (result[0].artistThumb !== '')
 								{
-									widget.$element.find(`#dinoRadioPoster-${widget._uId}`)
-										.attr('src', result[0].artistThumb);
-								}
-								else
-								{
-									widget.$element.find(`#dinoRadioPoster-${widget._uId}`)
-										.attr('src', `data:image/png;base64,${widget.getImage(0)}`);
-								}
+									const ex1 = widget.getFilename(result[0].artistThumb);
+									if (ex1.ext !== '')
+									{
+										widget.$element.find(`#dinoRadioPoster-${widget._uId}`)
+											.attr('src', result[0].artistThumb);
+									}
+									else
+									{
+										widget.$element.find(`#dinoRadioPoster-${widget._uId}`)
+											.attr('src', `data:image/png;base64,${widget.getImage(0)}`);
+									}
 
-								let ex2 = widget.getFilename(result[0].artistBanner);
-								if(ex2.ext !== '')
-								{
-									widget.$element.find(`#dinoArtistBanner-${widget._uId}`)
-										.attr('src', result[0].artistBanner);
-								}
-								else
-								{
-									widget.$element.find(`#dinoArtistBanner-${widget._uId}`)
-										.attr('src', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==');
-								}
+									const ex2 = widget.getFilename(result[0].artistBanner);
+									if (ex2.ext !== '')
+									{
+										widget.$element.find(`#dinoArtistBanner-${widget._uId}`)
+											.attr('src', result[0].artistBanner);
+									}
+									else
+									{
+										widget.$element.find(`#dinoArtistBanner-${widget._uId}`)
+											.attr('src',
+												'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==');
+									}
 
-								let temp = '<span>'+result[0].biographyEN+'</span>';
-								widget.$element.find(`#dinoArtistBio-${widget._uId}`).empty().append(temp);
-								widget._dinoArt = artist;
+									let bio = result[0].biographyEN;
+									if (widget.options.language === 'de' && result[0].biographyDE !== '')
+									{
+										bio = result[0].biographyDE;
+									}
 
-								return;
+									const temp = `<span>${bio}</span>`;
+									widget.$element.find(`#dinoArtistBio-${widget._uId}`).empty().append(temp);
+									widget._dinoArt = artist;
+
+									return;
+								}
 							}
 
 							widget._dinoArt = artist;
@@ -1215,7 +1237,8 @@
 								.attr('src', `data:image/png;base64,${widget.getImage(0)}`);
 
 							widget.$element.find(`#dinoArtistBanner-${widget._uId}`)
-								.attr('src', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==');
+								.attr('src',
+									'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==');
 						},
 						error: function()
 						{
@@ -1228,7 +1251,8 @@
 				{
 					const active = '<span class="dinoRadioActive"></span>';
 					this.$element.find(`#dinoRadioItem-${oldRowIndex}-${this._uId}`).removeClass('active');
-					this.$element.find(`#dinoRadioItem-${oldRowIndex}-${this._uId} .dinoRadioActive`).remove().removeClass('active');
+					this.$element.find(`#dinoRadioItem-${oldRowIndex}-${this._uId} .dinoRadioActive`).remove()
+						.removeClass('active');
 					this.$element.find(`#dinoRadioItem-${newRowIndex}-${this._uId}`).addClass('active').append(active);
 				},
 
@@ -1405,13 +1429,13 @@
 					}
 				},
 
-				getFilename: function (url)
+				getFilename: function(url)
 				{
 					// get the part after last /, then replace any query and hash part
-					url = url.split('/').pop().replace(/\#(.*?)$/, '').replace(/\?(.*?)$/, '');
-					url = url.split('.');  // separates filename and extension
+					url = url.split('/').pop().replace(/#(.*?)$/, '').replace(/\?(.*?)$/, '');
+					url = url.split('.'); // separates filename and extension
 
-					return {filename: (url[0] || ''), ext: (url[1] || '')}
+					return { filename: (url[0] || ''), ext: (url[1] || '') };
 				},
 
 				/***************************************************************************/
