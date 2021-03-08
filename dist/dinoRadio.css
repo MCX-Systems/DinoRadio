@@ -216,6 +216,7 @@
 	visibility: collapse;
 	width: 200px;
 	z-index: 20;
+	cursor: pointer;
 }
 
 .dinoRadio .dinoRadioInfo address
