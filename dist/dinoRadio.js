@@ -1643,7 +1643,7 @@
 		};
 
 		/* Return current version */
-		$.fn.dinoRadio.version = '1.4.2021';
+		$.fn.dinoRadio.version = '1.5.2021';
 
 		/*
 			Attach the default plugin options directly to the plugin object. This
