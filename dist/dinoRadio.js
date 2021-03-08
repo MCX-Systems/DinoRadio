@@ -166,6 +166,22 @@
 				}(document, 'script', 'facebook-jssdk'));
 			}
 
+			if(widget.options.enableTwitterShare)
+			{
+				(function (d, s, id)
+				{
+					let js, fjs = d.getElementsByTagName(s)[0];
+					if (d.getElementById(id))
+					{
+						return;
+					}
+					js = d.createElement(s);
+					js.id = id;
+					js.src = "https://platform.twitter.com/widgets.js";
+					fjs.parentNode.insertBefore(js, fjs);
+				}(document, 'script', 'twitter-wjs'));
+			}
+
 			if (!widget._flag)
 			{
 				widget.init();
@@ -244,9 +260,9 @@
 						}" class="dinoRadioSearchTerm" type="text" onfocus="this.value=''" onblur="this.value='${
 						this.getI18n('plugin_ra_search', this.options.language)}'" value="${this.getI18n(
 							'plugin_ra_search',
-							this.options.language)}" /><i id="dinoRadioGithub-${
-						this._uId}" class="dinoIcon dino-icon-github-squared"></i><i id="dinoRadioLinkedin-${this._uId
-						}" class="dinoIcon dino-icon-linkedin-squared"></i><i id="dinoRadioFacebook-${this._uId
+							this.options.language)}" /><i id="dinoRadioMail-${
+						this._uId}" class="dinoIcon dino-icon-mail-squared"></i><i id="dinoRadioTwitter-${this._uId
+						}" class="dinoIcon dino-icon-twitter-squared"></i><i id="dinoRadioFacebook-${this._uId
 						}" class="dinoIcon dino-icon-facebook-squared"></i></div></ul></section><section id="dinoRadioData-${
 						this._uId
 						}" class="dinoRadioData"><div id="dinoRadioStation-${this._uId
@@ -814,17 +830,39 @@
 					/*-----------------------------------------------------------------*/
 
 					plugin.$element.on(`click touchstart.${plugin._name}`,
-						`#dinoRadioGithub-${plugin._uId}`,
+						`#dinoRadioMail-${plugin._uId}`,
 						function(e)
 						{
 							e.preventDefault();
+
+							const uri = window.location.href;
+							const p = window.atob('TUNYLVN5c3RlbXM=');
+							const i = plugin.capitalizeFirstLetter(plugin._name);
+							const t = plugin.getI18n('plugin_ra_mail', plugin.options.language);
+							const o = plugin.getI18n('plugin_ra_mail_on', plugin.options.language);
+							const f = plugin.getI18n('plugin_ra_mail_from', plugin.options.language);
+							const s = i + f + p;
+							const n = `${t}${i}${f}${p}${o}${uri}`;
+
+							window.location = `mailto:?subject=${s}&body=${n}`;
 						});
 
 					plugin.$element.on(`click touchstart.${plugin._name}`,
-						`#dinoRadioLinkedin-${plugin._uId}`,
+						`#dinoRadioTwitter-${plugin._uId}`,
 						function(e)
 						{
 							e.preventDefault();
+
+							const w = 440;
+							const h = 550;
+							const y = window.top.outerHeight / 2 + window.top.screenY - ( h / 2);
+							const x = window.top.outerWidth / 2 + window.top.screenX - ( w / 2);
+
+							const twit = plugin.getI18n('plugin_ra_twitter', plugin.options.language);
+							const url = 'https://twitter.com/intent/tweet?url=' + window.location.href + '&text=' + twit;
+							const text = 'Twitter';
+
+							window.open(url, text, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=' + w + ', height=' + h + ', top=' + y + ', left=' + x);
 						});
 
 					plugin.$element.on(`click touchstart.${plugin._name}`,
@@ -1474,7 +1512,12 @@
 							'plugin_ra_prev': 'Previous',
 							'plugin_ra_next': 'Next',
 							'plugin_ra_mute': 'Mute/UnMute',
-							'plugin_ra_playlist': 'Open/Close Playlist'
+							'plugin_ra_playlist': 'Open/Close Playlist',
+
+							'plugin_ra_mail_on': ' on ',
+							'plugin_ra_mail_from': ' from ',
+							'plugin_ra_mail': 'Check out this online radio listener ',
+							'plugin_ra_twitter': 'I\'m listening to this radio station:'
 						},
 						'sl':
 						{
@@ -1495,7 +1538,12 @@
 							'plugin_ra_prev': 'Prejšnji',
 							'plugin_ra_next': 'Naslednji',
 							'plugin_ra_mute': 'Vklop/Izklop Zvoka',
-							'plugin_ra_playlist': 'Odpri/Zapri Seznam Predvajanja'
+							'plugin_ra_playlist': 'Odpri/Zapri Seznam Predvajanja',
+
+							'plugin_ra_mail_on': ' na ',
+							'plugin_ra_mail_from': ' iz ',
+							'plugin_ra_mail': 'Oglejte si to spletno radijsko poslušalko ',
+							'plugin_ra_twitter': 'Poslušam to radijsko postajo:'
 						},
 						'de':
 						{
@@ -1516,7 +1564,12 @@
 							'plugin_ra_prev': 'Bisherige',
 							'plugin_ra_next': 'Nächster',
 							'plugin_ra_mute': 'Stumm/Stummschaltung Aufheben',
-							'plugin_ra_playlist': 'Wiedergabeliste öffnen/schließen'
+							'plugin_ra_playlist': 'Wiedergabeliste öffnen/schließen',
+
+							'plugin_ra_mail_on': ' auf ',
+							'plugin_ra_mail_from': ' von ',
+							'plugin_ra_mail': 'Schauen Sie sich diesen Online-Radiohörer an ',
+							'plugin_ra_twitter': 'Ich höre diesen Radiosender:'
 						}
 					};
 
@@ -1634,6 +1687,7 @@
 			// Get current playing Artist  info
 			grabArtistInfo: true,
 			/*---------------------------------------------*/
+			enableTwitterShare: true,
 			enableFacebookShare: true,
 			facebookAppID: '513778246690715',
 			/*---------------------------------------------*/
