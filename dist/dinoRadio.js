@@ -417,7 +417,7 @@
 
 										if (i === 0)
 										{
-											hoverA = ' class="active"';
+											hoverA = 'class="active"';
 											active = '<span class="dinoRadioActive"></span>';
 											widget.$element.find(`#dinoRadioStation-${widget._uId}`)
 												.text(widget.checkStrLength(value.station,
@@ -436,7 +436,7 @@
 												{
 													template =
 														`<li id="dinoRadioItem-${i}-${widget._uId}" data-position="${i
-														}"${
+														}" ${
 														hoverA}>${num}${active}<span class="dinoRadioStation">${widget
 														.checkStrLength(data.streamTitle, 14)
 														}</span><i class="dinoIcon dino-icon-signal"></i></li>`;
@@ -457,7 +457,7 @@
 														'Error: Something went wrong with loading the Current Radio song!');
 													template =
 														`<li id="dinoRadioItem-${i}-${widget._uId}" data-position="${i
-														}"${
+														}" ${
 														hoverA}>${num}${active}<span class="dinoRadioStation">${widget
 														.checkStrLength(value.station, 14)
 														}</span><i class="dinoIcon dino-icon-signal"></i></li>`;
@@ -469,7 +469,7 @@
 										else
 										{
 											template =
-												`<li id="dinoRadioItem-${i}-${widget._uId}" data-position="${i}"${hoverA
+												`<li id="dinoRadioItem-${i}-${widget._uId}" data-position="${i}" ${hoverA
 												}>${
 												num}${active}<span class="dinoRadioStation">${widget.checkStrLength(
 													value.station,
@@ -1264,10 +1264,18 @@
 								if (result[0].artistThumb !== '')
 								{
 									const ex1 = widget.getFilename(result[0].artistThumb);
-									if (ex1.ext !== '')
+									if(ex1 !== undefined)
 									{
-										widget.$element.find(`#dinoRadioPoster-${widget._uId}`)
-											.attr('src', result[0].artistThumb);
+										if (ex1.ext !== '')
+										{
+											widget.$element.find(`#dinoRadioPoster-${widget._uId}`)
+												.attr('src', result[0].artistThumb);
+										}
+										else
+										{
+											widget.$element.find(`#dinoRadioPoster-${widget._uId}`)
+												.attr('src', `data:image/png;base64,${widget.getImage(0)}`);
+										}
 									}
 									else
 									{
@@ -1276,10 +1284,19 @@
 									}
 
 									const ex2 = widget.getFilename(result[0].artistBanner);
-									if (ex2.ext !== '')
+									if(ex2 !== undefined)
 									{
-										widget.$element.find(`#dinoArtistBanner-${widget._uId}`)
-											.attr('src', result[0].artistBanner);
+										if (ex2.ext !== '')
+										{
+											widget.$element.find(`#dinoArtistBanner-${widget._uId}`)
+												.attr('src', result[0].artistBanner);
+										}
+										else
+										{
+											widget.$element.find(`#dinoArtistBanner-${widget._uId}`)
+												.attr('src',
+													'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==');
+										}
 									}
 									else
 									{
