@@ -529,7 +529,7 @@
 									}
 								}
 
-								widget.playRadioPlaylist(0);
+								widget.playPauseRadioPlaylist(0);
 							}
 
 							window.setTimeout(function()
@@ -708,7 +708,7 @@
 
 							const radioItemId = plugin.$element.find(`#dinoRadioPlaylistList-${plugin._uId} li.active`)
 								.data('position');
-							plugin.playRadioPlaylist(radioItemId);
+							plugin.playPauseRadioPlaylist(radioItemId);
 						});
 
 					/*-----------------------------------------------------------------*/
@@ -721,7 +721,7 @@
 
 							const radioItemId = plugin.$element.find(`#dinoRadioPlaylistList-${plugin._uId} li.active`)
 								.data('position');
-							plugin.playRadioPlaylist(radioItemId);
+							plugin.playPauseRadioPlaylist(radioItemId);
 						});
 
 					/*-----------------------------------------------------------------*/
@@ -984,30 +984,76 @@
 				/*  Audio Player with Playlist                                             */
 				/***************************************************************************/
 
+				playRadioPlaylist: function (indexValue)
+				{
+					const widget = this;
+					const objAudio = widget.dinoAudio;
+					const stationArray = widget.options.stationPlaylist[indexValue];
+					const currentUrl = stationArray.url;
+					const currentIndex = indexValue;
+					const oldRowIndex = widget._dinoCurrentRow;
+
+					widget._dinoCurrentStation = currentUrl;
+					widget._dinoCurrentIndex = currentIndex;
+					widget._dinoCurrentRow = currentIndex;
+
+					objAudio.pause();
+					objAudio.src = widget._dinoCurrentStation;
+					objAudio.play().then(function()
+					{
+						if(widget.options.debug)
+						{
+							window.console.log('The play() Promise fulfilled!');
+						}
+					}).catch(function(error)
+					{
+						if(widget.options.debug)
+						{
+							window.console.log('The play() Promise rejected!');
+							window.console.log(error);
+						}
+					});
+
+					widget.changePlaylistAppearance(widget._dinoCurrentRow, oldRowIndex);
+					widget.changeRadioSong(widget._dinoCurrentStation);
+				},
+
 				/***************************************************************************/
 
-				playRadioPlaylist(indexValue)
+				playPauseRadioPlaylist: function(indexValue)
 				{
-					const objAudio = this.dinoAudio;
+					const widget = this;
+					const objAudio = widget.dinoAudio;
 
 					if (objAudio.paused)
 					{
-						const stationArray = this.options.stationPlaylist[indexValue];
+						const stationArray = widget.options.stationPlaylist[indexValue];
 						const currentUrl = stationArray.url;
 						const currentIndex = indexValue;
-						const oldRowIndex = this._dinoCurrentRow;
+						const oldRowIndex = widget._dinoCurrentRow;
 
-						this._dinoCurrentStation = currentUrl;
-						this._dinoCurrentIndex = currentIndex;
-						this._dinoCurrentRow = currentIndex;
+						widget._dinoCurrentStation = currentUrl;
+						widget._dinoCurrentIndex = currentIndex;
+						widget._dinoCurrentRow = currentIndex;
 
-						objAudio.src = this._dinoCurrentStation;
-						objAudio.play().then(() =>
+						objAudio.src = widget._dinoCurrentStation;
+						objAudio.play().then(function()
 						{
+							if(widget.options.debug)
+							{
+								window.console.log('The play() Promise fulfilled!');
+							}
+						}).catch(function(error)
+						{
+							if(widget.options.debug)
+							{
+								window.console.log('The play() Promise rejected!');
+								window.console.log(error);
+							}
 						});
 
-						this.changePlaylistAppearance(this._dinoCurrentRow, oldRowIndex);
-						this.changeRadioSong(this._dinoCurrentStation);
+						widget.changePlaylistAppearance(widget._dinoCurrentRow, oldRowIndex);
+						widget.changeRadioSong(widget._dinoCurrentStation);
 					}
 					else
 					{
@@ -1019,84 +1065,108 @@
 
 				playPreviousStation: function()
 				{
-					const objAudio = this.dinoAudio;
-					const playlistArray = this.options.stationPlaylist;
+					const widget = this;
+					const objAudio = widget.dinoAudio;
+					const playlistArray = widget.options.stationPlaylist;
 
 					let currentUrl;
-					let currentIndex = this._dinoCurrentIndex;
-					const oldRowIndex = this._dinoCurrentRow;
+					let currentIndex = widget._dinoCurrentIndex;
+					const oldRowIndex = widget._dinoCurrentRow;
 
 					if (currentIndex <= 0)
 					{
 						currentUrl = playlistArray[playlistArray.length - 1].url;
 						currentIndex = playlistArray.length - 1;
-						this._dinoCurrentRow = currentIndex;
+						widget._dinoCurrentRow = currentIndex;
 					}
 					else
 					{
 						currentUrl = playlistArray[currentIndex - 1].url;
 						currentIndex = currentIndex - 1;
-						this._dinoCurrentRow = currentIndex;
+						widget._dinoCurrentRow = currentIndex;
 					}
 
-					this._dinoCurrentUrl = currentUrl;
-					this._dinoCurrentIndex = currentIndex;
+					widget._dinoCurrentUrl = currentUrl;
+					widget._dinoCurrentIndex = currentIndex;
 
 					objAudio.pause();
-					objAudio.src = this._dinoCurrentUrl;
-					objAudio.play().then(() =>
+					objAudio.src = widget._dinoCurrentUrl;
+					objAudio.play().then(function()
 					{
+						if(widget.options.debug)
+						{
+							window.console.log('The play() Promise fulfilled!');
+						}
+					}).catch(function(error)
+					{
+						if(widget.options.debug)
+						{
+							window.console.log('The play() Promise rejected!');
+							window.console.log(error);
+						}
 					});
 
-					this.changePlaylistAppearance(this._dinoCurrentRow, oldRowIndex);
-					this.changeRadioSong(this._dinoCurrentUrl);
+					widget.changePlaylistAppearance(widget._dinoCurrentRow, oldRowIndex);
+					widget.changeRadioSong(widget._dinoCurrentUrl);
 
-					const row = this.$element.find(
-						`#dinoRadioItem-${this._dinoCurrentRow}-${this._uId} .dinoRadioStation`);
-					this.$element.find(`#dinoRadioStation-${this._uId}`)
-						.text(this.checkStrLength(row.text(), 20));
+					const row = widget.$element.find(
+						`#dinoRadioItem-${widget._dinoCurrentRow}-${widget._uId} .dinoRadioStation`);
+					widget.$element.find(`#dinoRadioStation-${widget._uId}`)
+						.text(widget.checkStrLength(row.text(), 20));
 				},
 
 				/***************************************************************************/
 
 				playNextStation: function()
 				{
-					const objAudio = this.dinoAudio;
-					const playlistArray = this.options.stationPlaylist;
+					const widget = this;
+					const objAudio = widget.dinoAudio;
+					const playlistArray = widget.options.stationPlaylist;
 
 					let currentUrl;
-					let currentIndex = this._dinoCurrentIndex;
-					const oldRowIndex = this._dinoCurrentRow;
+					let currentIndex = widget._dinoCurrentIndex;
+					const oldRowIndex = widget._dinoCurrentRow;
 
 					if (playlistArray.length <= currentIndex + 1)
 					{
 						currentUrl = playlistArray[0].url;
 						currentIndex = 0;
-						this._dinoCurrentRow = currentIndex;
+						widget._dinoCurrentRow = currentIndex;
 					}
 					else
 					{
 						currentUrl = playlistArray[currentIndex + 1].url;
 						currentIndex = currentIndex + 1;
-						this._dinoCurrentRow = currentIndex;
+						widget._dinoCurrentRow = currentIndex;
 					}
 
-					this._dinoCurrentUrl = currentUrl;
-					this._dinoCurrentIndex = currentIndex;
+					widget._dinoCurrentUrl = currentUrl;
+					widget._dinoCurrentIndex = currentIndex;
 
 					objAudio.pause();
-					objAudio.src = this._dinoCurrentUrl;
-					objAudio.play().then(() =>
+					objAudio.src = widget._dinoCurrentUrl;
+					objAudio.play().then(function()
 					{
+						if(widget.options.debug)
+						{
+							window.console.log('The play() Promise fulfilled!');
+						}
+					}).catch(function(error)
+					{
+						if(widget.options.debug)
+						{
+							window.console.log('The play() Promise rejected!');
+							window.console.log(error);
+						}
 					});
 
-					this.changePlaylistAppearance(this._dinoCurrentRow, oldRowIndex);
-					this.changeRadioSong(this._dinoCurrentUrl);
+					widget.changePlaylistAppearance(widget._dinoCurrentRow, oldRowIndex);
+					widget.changeRadioSong(widget._dinoCurrentUrl);
 
-					const row = this.$element.find(
-						`#dinoRadioItem-${this._dinoCurrentRow}-${this._uId} .dinoRadioStation`);
-					this.$element.find(`#dinoRadioStation-${this._uId}`)
-						.text(this.checkStrLength(row.text(), 20));
+					const row = widget.$element.find(
+						`#dinoRadioItem-${widget._dinoCurrentRow}-${widget._uId} .dinoRadioStation`);
+					widget.$element.find(`#dinoRadioStation-${widget._uId}`)
+						.text(widget.checkStrLength(row.text(), 20));
 				},
 
 				/***************************************************************************/
@@ -1431,8 +1501,13 @@
 
 				getFilename: function(url)
 				{
+					if(url === undefined)
+					{
+						return;
+					}
+
 					// get the part after last /, then replace any query and hash part
-					url = url.split('/').pop().replace(/#(.*?)$/, '').replace(/\?(.*?)$/, '');
+					url = url.split('/').pop().replace(/#\/(.*?)$/, '').replace(/\?(.*?)$/, '');
 					url = url.split('.'); // separates filename and extension
 
 					return { filename: (url[0] || ''), ext: (url[1] || '') };
