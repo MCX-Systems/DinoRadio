@@ -373,11 +373,14 @@
 							success: function(data)
 							{
 								widget.options.stationPlaylist = data;
-								//window.console.log(widget.options.stationPlaylist);
+								if(widget.options.debug)
+								{
+									window.console.log(widget.options.stationPlaylist);
+								}
 							},
 							error: function()
 							{
-								window.console.log('Error getting default playlist!');
+								window.console.error('Error getting default playlist!');
 							}
 						});
 					}
@@ -453,8 +456,11 @@
 												},
 												error: function()
 												{
-													window.console.log(
-														'Error: Something went wrong with loading the Current Radio song!');
+													if(widget.options.debug)
+													{
+														window.console.log('Error: Something went wrong with loading the Current Radio song!');
+													}
+
 													template =
 														`<li id="dinoRadioItem-${i}-${widget._uId}" data-position="${i
 														}" ${
@@ -888,7 +894,10 @@
 									},
 									function(response)
 									{
-										window.console.log(response);
+										if(plugin.options.debug)
+										{
+											window.console.log(response);
+										}
 									});
 							}
 						});
@@ -1204,7 +1213,10 @@
 							},
 							error: function()
 							{
-								window.console.log('Error: Something went wrong with loading the Current Radio song!');
+								if(widget.options.debug)
+								{
+									window.console.log('Error: Something went wrong with loading the Current Radio song!');
+								}
 							}
 						});
 
@@ -1227,8 +1239,10 @@
 											},
 											error: function()
 											{
-												window.console.log(
-													'Error: Something went wrong with loading the Current Radio song!');
+												if(widget.options.debug)
+												{
+													window.console.log('Error: Something went wrong with loading the Current Radio song!');
+												}
 											}
 										});
 									},
@@ -1240,8 +1254,8 @@
 
 				changeCurrentSongTitle: function(title, artist)
 				{
-					$(`#dinoRadioSongTitle-${this._uId}`).text(title);
-					$(`#dinoRadioSongArtist-${this._uId}`).text(artist);
+					$(`#dinoRadioSongTitle-${this._uId}`).html(title);
+					$(`#dinoRadioSongArtist-${this._uId}`).html(artist);
 				},
 
 				getArtistInfo: function(artist)
@@ -1329,7 +1343,10 @@
 						},
 						error: function()
 						{
-							window.console.log('Error: Something went wrong with loading the LastFM Data!');
+							if(widget.options.debug)
+							{
+								window.console.log('Error: Something went wrong with loading the LastFM Data!');
+							}
 						}
 					});
 				},
