@@ -58,6 +58,7 @@
 			this.dinoAudio = new window.Audio();
 			this.dinoAudio.id = this._uId;
 			this.dinoAudio.loop = false;
+			this.dinoAudio.autoplay = false;
 			// Playlist Variables
 			this._dinoArt = '';
 			this._dinoCurrentUrl = '';
@@ -1288,7 +1289,7 @@
 								if (result[0].artistThumb !== '')
 								{
 									const ex1 = widget.getFilename(result[0].artistThumb);
-									if (ex1 !== null && ex1 !== undefined)
+									if (ex1)
 									{
 										if (ex1.ext !== '')
 										{
@@ -1308,7 +1309,7 @@
 									}
 
 									const ex2 = widget.getFilename(result[0].artistBanner);
-									if (ex2 !== null && ex2 !== undefined)
+									if (ex2)
 									{
 										if (ex2.ext !== '')
 										{
@@ -1547,7 +1548,7 @@
 				{
 					if (url === undefined || url === null)
 					{
-						return{ filename: (url[0] || ''), ext: (url[1] || '') };
+						return;
 					}
 
 					// get the part after last /, then replace any query and hash part
@@ -1830,7 +1831,11 @@
 			// Get current playing Artist  info
 			grabArtistInfo: true,
 			/*---------------------------------------------*/
+			// Share Station to twitter
 			enableTwitterShare: true,
+			/*---------------------------------------------*/
+			// Share web radio page with facebook
+			// You need a facebook appID
 			enableFacebookShare: true,
 			facebookAppID: '513778246690715',
 			/*---------------------------------------------*/
