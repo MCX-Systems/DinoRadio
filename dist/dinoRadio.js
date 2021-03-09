@@ -58,7 +58,9 @@
 			dinoRadioPlayers.push(this.dinoAudio);
 			/***************************************************************************/
 			// Playlist Variables
+			this._dinoStationsArr = [];
 			this._dinoArt = '';
+			this._filterText = '';
 			this._dinoCurrentUrl = '';
 			this._dinoCurrentRow = 0;
 			this._dinoCurrentIndex = 0;
@@ -260,10 +262,9 @@
 						}" class="dinoRadioPlaylistList"></ul><div class="dinoRadioPlaylistBottom"><label for="dinoRadioSearchTerm-${
 						this._uId
 						}"></label><input id="dinoRadioSearchTerm-${this._uId
-						}" class="dinoRadioSearchTerm" type="text" onfocus="this.value=''" onblur="this.value='${
-						this.getI18n('plugin_ra_search', this.options.language)}'" value="${this.getI18n(
-							'plugin_ra_search',
-							this.options.language)}" /><i id="dinoRadioMail-${
+						}" class="dinoRadioSearchTerm" type="text" placeholder="${this.getI18n(
+						'plugin_ra_search',
+						this.options.language)}" value="" /><i id="dinoRadioMail-${
 						this._uId}" class="dinoIcon dino-icon-mail-squared"></i><i id="dinoRadioTwitter-${this._uId
 						}" class="dinoIcon dino-icon-twitter-squared"></i><i id="dinoRadioFacebook-${this._uId
 						}" class="dinoIcon dino-icon-facebook-squared"></i></div></ul></section><section id="dinoRadioData-${
@@ -447,6 +448,8 @@
 													widget.$element.find(`#dinoRadioPlaylistList-${widget._uId}`)
 														.append(template);
 
+													widget._dinoStationsArr[i] = widget.checkStrLength(data.streamTitle, 20);
+
 													if (i === 0)
 													{
 														widget.$element.find(`#dinoRadioStation-${widget._uId}`)
@@ -471,6 +474,8 @@
 														}</span><i class="dinoIcon dino-icon-signal"></i></li>`;
 													widget.$element.find(`#dinoRadioPlaylistList-${widget._uId}`)
 														.append(template);
+
+													widget._dinoStationsArr[i] = widget.checkStrLength(value.station, 20);
 												}
 											});
 										}
@@ -486,6 +491,8 @@
 												}</span><i class="dinoIcon dino-icon-signal"></i></li>`;
 											widget.$element.find(`#dinoRadioPlaylistList-${widget._uId}`)
 												.append(template);
+
+											widget._dinoStationsArr[i] = widget.checkStrLength(value.station, 20);
 										}
 									});
 							}
@@ -828,16 +835,29 @@
 					/*-----------------------------------------------------------------*/
 					/*-----------------------------------------------------------------*/
 
-					plugin.$element.on(`input.${plugin._name}`,
+					plugin.$element.on(`keyup.${plugin._name}`,
 						`#dinoRadioSearchTerm-${plugin._uId}`,
 						function(e)
 						{
 							e.preventDefault();
 
-							// TODO Generate search
-							//generatePlaylistByTerm();
-							//alert('input Search Change!!');
+							plugin.generatePlaylistByTerm($(this).val());
+							plugin._filterText = $(this).val();
 						});
+
+					plugin.$element.on(`focus.${plugin._name}`,
+						`#dinoRadioSearchTerm-${plugin._uId}`,
+						function(e)
+					    {
+					    	$(this).val(plugin._filterText);
+					    });
+
+					plugin.$element.on(`blur.${plugin._name}`,
+						`#dinoRadioSearchTerm-${plugin._uId}`,
+						function(e)
+						{
+							$(this).val(plugin._filterText);
+					    });
 
 					/*-----------------------------------------------------------------*/
 					/*-----------------------------------------------------------------*/
@@ -1438,6 +1458,40 @@
 					});
 				},
 
+				generatePlaylistByTerm: function(searchStr)
+		        {
+		        	let widget = this;
+
+			        if(widget._dinoStationsArr.length === 0)
+			        {
+			        	return false;
+			        }
+
+			        let title;
+			        let filter = widget._dinoStationsArr.filter(RegExp.prototype.test.bind(new RegExp(searchStr, 'i')));
+
+			        for(let i = 0; i < widget._dinoStationsArr.length; i++)
+			        {
+				        title = widget._dinoStationsArr[i];
+					    if($.inArray(title, filter) > -1)
+				        {
+					        if (widget.options.debug)
+					        {
+						        window.console.log('Match!!!');
+					        }
+					        widget.$element.find(`#dinoRadioItem-${i}-${widget._uId}`).show();
+				        }
+				        else
+				        {
+					        if (widget.options.debug)
+					        {
+						        window.console.log('NO Match!!!');
+					        }
+					        widget.$element.find(`#dinoRadioItem-${i}-${widget._uId}`).hide();
+				        }
+			        }
+	            },
+
 				changePlaylistAppearance: function(newRowIndex, oldRowIndex)
 				{
 					const active = '<span class="dinoRadioActive"></span>';
@@ -1863,7 +1917,7 @@
 		};
 
 		/* Return current version */
-		$.fn.dinoRadio.version = '1.5.2021';
+		$.fn.dinoRadio.version = '2.0.2021';
 
 		/*
 			Attach the default plugin options directly to the plugin object. This

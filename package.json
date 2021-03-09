@@ -1,6 +1,6 @@
 {
   "name": "dinoradio",
-  "version": "1.5.2021",
+  "version": "2.0.2021",
   "description": "Jquery plugin for listening to web radio with playlist support.",
   "main": "example/index.html",
   "scripts": {
