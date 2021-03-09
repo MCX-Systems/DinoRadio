@@ -32,14 +32,7 @@
 			More: http://api.jquery.com/jquery.data/
 		*/
 		const pluginName = 'dinoRadio';
-
-		/*
-			The "Plugin" constructor, builds a new instance of the plugin for the
-			DOM node(s) that the plugin is called on. For example,
-			"$('h1').pluginName();" creates a new instance of pluginName for
-			all h1's.
-		*/
-
+        // Holds all instances of created audio objects
 		let dinoRadioPlayers = [];
 
 		// Create the plugin constructor
@@ -61,6 +54,7 @@
 			this.dinoAudio.id = this._uId;
 			this.dinoAudio.loop = false;
 			this.dinoAudio.autoplay = false;
+			this.dinoAudio.preload = 'metadata';
 			dinoRadioPlayers.push(this.dinoAudio);
 			/***************************************************************************/
 			// Playlist Variables
@@ -981,11 +975,63 @@
 					plugin.$dinoAudio.on(`ended.${plugin._name}`,
 						function()
 						{
+							if (plugin.options.debug)
+							{
+								console.log('Media playback ended.');
+							}
 						});
 
 					plugin.$dinoAudio.on(`loadedmetadata.${plugin._name}`,
 						function()
 						{
+							if (plugin.options.debug)
+							{
+								console.log('Playtime: ' + plugin.dinoAudio.duration);
+							}
+						});
+
+					plugin.$dinoAudio.on(`error.${plugin._name}`,
+						function failed(e)
+						{
+                            // audio playback failed - show a message saying why
+							// to get the source of the audio element use $(this).src
+							switch (e.target.error.code)
+							{
+								case e.target.error.MEDIA_ERR_ABORTED:
+									if (plugin.options.debug)
+									{
+										console.error('You aborted the video playback.');
+									}
+									break;
+
+								case e.target.error.MEDIA_ERR_NETWORK:
+									if (plugin.options.debug)
+									{
+										console.error('A network error caused the audio download to fail.');
+									}
+									break;
+
+								case e.target.error.MEDIA_ERR_DECODE:
+									if (plugin.options.debug)
+									{
+										console.error('The audio playback was aborted due to a corruption problem or because the video used features your browser did not support.');
+									}
+									break;
+
+								case e.target.error.MEDIA_ERR_SRC_NOT_SUPPORTED:
+									if (plugin.options.debug)
+									{
+										console.error('The video audio not be loaded, either because the server or network failed or because the format is not supported.');
+									}
+									break;
+
+								default:
+									if (plugin.options.debug)
+									{
+										console.error('An unknown error occurred.');
+									}
+									break;
+							}
 						});
 				},
 
