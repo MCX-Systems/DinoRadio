@@ -32,8 +32,8 @@
 			More: http://api.jquery.com/jquery.data/
 		*/
 		const pluginName = 'dinoRadio';
-        // Holds all instances of created audio objects
-		let dinoRadioPlayers = [];
+		// Holds all instances of created audio objects
+		const dinoRadioPlayers = [];
 
 		// Create the plugin constructor
 		function Plugin(element, options)
@@ -263,13 +263,15 @@
 						this._uId
 						}"></label><input id="dinoRadioSearchTerm-${this._uId
 						}" class="dinoRadioSearchTerm" type="text" placeholder="${this.getI18n(
-						'plugin_ra_search',
-						this.options.language)}" value="" /><i id="dinoRadioMail-${
+							'plugin_ra_search',
+							this.options.language)}" value="" /><i id="dinoRadioMail-${
 						this._uId}" class="dinoIcon dino-icon-mail-squared"></i><i id="dinoRadioTwitter-${this._uId
 						}" class="dinoIcon dino-icon-twitter-squared"></i><i id="dinoRadioFacebook-${this._uId
-						}" class="dinoIcon dino-icon-facebook-squared"></i></div></ul></section><section id="dinoRadioData-${
+						}" class="dinoIcon dino-icon-facebook-squared"></i><i id="dinoRadioSort-${this._uId
+						}" class="dinoIcon dino-icon-sort-number-up dinoRadioSort"></i></div></ul></section><section id="dinoRadioData-${
 						this._uId
-						}" class="dinoRadioData"><div id="dinoRadioStation-${this._uId
+						}" class="dinoRadioData"><i id="dinoRadioLyrics-${this._uId
+						}" class="dinoIcon dino-icon-feather dinoRadioLyrics"></i><div id="dinoRadioStation-${this._uId
 						}" class="dinoRadioStation"></div><div class="dinoMarquee"><div class="dinoMarqueeInner"><span>${
 						this.getI18n('plugin_ra_title', this.options.language)
 						}&nbsp;</span><span id="dinoRadioSongTitle-${this._uId
@@ -448,7 +450,8 @@
 													widget.$element.find(`#dinoRadioPlaylistList-${widget._uId}`)
 														.append(template);
 
-													widget._dinoStationsArr[i] = widget.checkStrLength(data.streamTitle, 20);
+													widget._dinoStationsArr[i] =
+														widget.checkStrLength(data.streamTitle, 20);
 
 													if (i === 0)
 													{
@@ -475,7 +478,8 @@
 													widget.$element.find(`#dinoRadioPlaylistList-${widget._uId}`)
 														.append(template);
 
-													widget._dinoStationsArr[i] = widget.checkStrLength(value.station, 20);
+													widget._dinoStationsArr[i] =
+														widget.checkStrLength(value.station, 20);
 												}
 											});
 										}
@@ -553,7 +557,7 @@
 									// Hide Loader
 									widget.hideLoader();
 									widget.$element.find(`#dinoRadioPlaylistList-${widget._uId} > li`)
-										.sort(widget.sortPlaylist)
+										.sort(widget.sortPlaylistUp)
 										.appendTo(`#dinoRadioPlaylistList-${widget._uId}`);
 								},
 								3000);
@@ -847,17 +851,41 @@
 
 					plugin.$element.on(`focus.${plugin._name}`,
 						`#dinoRadioSearchTerm-${plugin._uId}`,
-						function(e)
-					    {
-					    	$(this).val(plugin._filterText);
-					    });
+						function()
+						{
+							$(this).val(plugin._filterText);
+						});
 
 					plugin.$element.on(`blur.${plugin._name}`,
 						`#dinoRadioSearchTerm-${plugin._uId}`,
-						function(e)
+						function()
 						{
 							$(this).val(plugin._filterText);
-					    });
+						});
+
+					plugin.$element.on(`click touchstart.${plugin._name}`,
+						`#dinoRadioSort-${plugin._uId}`,
+						function()
+						{
+							if (plugin.$element.find(`#dinoRadioSort-${plugin._uId}`)
+								.hasClass('dino-icon-sort-number-up'))
+							{
+								// Default 10...1
+								plugin.$element.find(`#dinoRadioPlaylistList-${plugin._uId} > li`)
+									.sort(plugin.sortPlaylistDown)
+									.appendTo(`#dinoRadioPlaylistList-${plugin._uId}`);
+							}
+							else
+							{
+								// Default 1...10
+								plugin.$element.find(`#dinoRadioPlaylistList-${plugin._uId} > li`)
+									.sort(plugin.sortPlaylistUp)
+									.appendTo(`#dinoRadioPlaylistList-${plugin._uId}`);
+							}
+
+							plugin.$element.find(`#dinoRadioSort-${plugin._uId}`)
+								.toggleClass('dino-icon-sort-number-up dino-icon-sort-number-down');
+						});
 
 					/*-----------------------------------------------------------------*/
 					/*-----------------------------------------------------------------*/
@@ -924,10 +952,12 @@
 											{
 												window.console.log(response);
 											}
-										});
+										}
+									);
 								}
 							}
-						});
+						}
+					);
 				},
 
 				/***************************************************************************/
@@ -997,7 +1027,7 @@
 						{
 							if (plugin.options.debug)
 							{
-								console.log('Media playback ended.');
+								window.console.log('Media playback ended.');
 							}
 						});
 
@@ -1006,49 +1036,51 @@
 						{
 							if (plugin.options.debug)
 							{
-								console.log('Playtime: ' + plugin.dinoAudio.duration);
+								window.console.log(`Playtime: ${plugin.dinoAudio.duration}`);
 							}
 						});
 
 					plugin.$dinoAudio.on(`error.${plugin._name}`,
 						function failed(e)
 						{
-                            // audio playback failed - show a message saying why
+							// audio playback failed - show a message saying why
 							// to get the source of the audio element use $(this).src
 							switch (e.target.error.code)
 							{
 								case e.target.error.MEDIA_ERR_ABORTED:
 									if (plugin.options.debug)
 									{
-										console.error('You aborted the video playback.');
+										window.console.error('You aborted the video playback.');
 									}
 									break;
 
 								case e.target.error.MEDIA_ERR_NETWORK:
 									if (plugin.options.debug)
 									{
-										console.error('A network error caused the audio download to fail.');
+										window.console.error('A network error caused the audio download to fail.');
 									}
 									break;
 
 								case e.target.error.MEDIA_ERR_DECODE:
 									if (plugin.options.debug)
 									{
-										console.error('The audio playback was aborted due to a corruption problem or because the video used features your browser did not support.');
+										window.console.error(
+											'The audio playback was aborted due to a corruption problem or because the video used features your browser did not support.');
 									}
 									break;
 
 								case e.target.error.MEDIA_ERR_SRC_NOT_SUPPORTED:
 									if (plugin.options.debug)
 									{
-										console.error('The video audio not be loaded, either because the server or network failed or because the format is not supported.');
+										window.console.error(
+											'The video audio not be loaded, either because the server or network failed or because the format is not supported.');
 									}
 									break;
 
 								default:
 									if (plugin.options.debug)
 									{
-										console.error('An unknown error occurred.');
+										window.console.error('An unknown error occurred.');
 									}
 									break;
 							}
@@ -1075,18 +1107,19 @@
 				stopOtherPlayers: function()
 				{
 					// Determine which player the event is coming from
-					if(dinoRadioPlayers.length > 0)
+					if (dinoRadioPlayers.length > 0)
 					{
 						// Loop through the array of players
-						$.each(dinoRadioPlayers, function (key, value)
-						{
-							// Get the player(s) that did not trigger the play event
-							if (value.id !== this._uId)
+						$.each(dinoRadioPlayers,
+							function(key, value)
 							{
-								// Pause the other player(s)
-								dinoRadioPlayers[key].pause();
-							}
-						});
+								// Get the player(s) that did not trigger the play event
+								if (value.id !== this._uId)
+								{
+									// Pause the other player(s)
+									dinoRadioPlayers[key].pause();
+								}
+							});
 					}
 				},
 
@@ -1459,38 +1492,41 @@
 				},
 
 				generatePlaylistByTerm: function(searchStr)
-		        {
-		        	let widget = this;
+				{
+					const widget = this;
 
-			        if(widget._dinoStationsArr.length === 0)
-			        {
-			        	return false;
-			        }
+					if (widget._dinoStationsArr.length === 0)
+					{
+						return false;
+					}
 
-			        let title;
-			        let filter = widget._dinoStationsArr.filter(RegExp.prototype.test.bind(new RegExp(searchStr, 'i')));
+					let title;
+					const filter =
+						widget._dinoStationsArr.filter(RegExp.prototype.test.bind(new RegExp(searchStr, 'i')));
 
-			        for(let i = 0; i < widget._dinoStationsArr.length; i++)
-			        {
-				        title = widget._dinoStationsArr[i];
-					    if($.inArray(title, filter) > -1)
-				        {
-					        if (widget.options.debug)
-					        {
-						        window.console.log('Match!!!');
-					        }
-					        widget.$element.find(`#dinoRadioItem-${i}-${widget._uId}`).show();
-				        }
-				        else
-				        {
-					        if (widget.options.debug)
-					        {
-						        window.console.log('NO Match!!!');
-					        }
-					        widget.$element.find(`#dinoRadioItem-${i}-${widget._uId}`).hide();
-				        }
-			        }
-	            },
+					for (let i = 0; i < widget._dinoStationsArr.length; i++)
+					{
+						title = widget._dinoStationsArr[i];
+						if ($.inArray(title, filter) > -1)
+						{
+							if (widget.options.debug)
+							{
+								window.console.log('Match!!!');
+							}
+							widget.$element.find(`#dinoRadioItem-${i}-${widget._uId}`).show();
+						}
+						else
+						{
+							if (widget.options.debug)
+							{
+								window.console.log('NO Match!!!');
+							}
+							widget.$element.find(`#dinoRadioItem-${i}-${widget._uId}`).hide();
+						}
+					}
+
+					return false;
+				},
 
 				changePlaylistAppearance: function(newRowIndex, oldRowIndex)
 				{
@@ -1501,9 +1537,14 @@
 					this.$element.find(`#dinoRadioItem-${newRowIndex}-${this._uId}`).addClass('active').append(active);
 				},
 
-				sortPlaylist: function(a, b)
+				sortPlaylistUp: function(a, b)
 				{
 					return ($(b).data('position')) < ($(a).data('position')) ? 1 : -1;
+				},
+
+				sortPlaylistDown: function(a, b)
+				{
+					return ($(b).data('position')) > ($(a).data('position')) ? 1 : -1;
 				},
 
 				/***************************************************************************/
@@ -1678,7 +1719,7 @@
 				{
 					if (url === undefined || url === null)
 					{
-						return;
+						return{ filename: null, ext: null };
 					}
 
 					// get the part after last /, then replace any query and hash part
