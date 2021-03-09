@@ -40,6 +40,8 @@
 			all h1's.
 		*/
 
+		let dinoRadioPlayers = [];
+
 		// Create the plugin constructor
 		function Plugin(element, options)
 		{
@@ -59,6 +61,8 @@
 			this.dinoAudio.id = this._uId;
 			this.dinoAudio.loop = false;
 			this.dinoAudio.autoplay = false;
+			dinoRadioPlayers.push(this.dinoAudio);
+			/***************************************************************************/
 			// Playlist Variables
 			this._dinoArt = '';
 			this._dinoCurrentUrl = '';
@@ -1002,6 +1006,24 @@
 				/*  Audio Player with Playlist                                             */
 				/***************************************************************************/
 
+				stopOtherPlayers: function()
+				{
+					// Determine which player the event is coming from
+					if(dinoRadioPlayers.length > 0)
+					{
+						// Loop through the array of players
+						$.each(dinoRadioPlayers, function (key, value)
+						{
+							// Get the player(s) that did not trigger the play event
+							if (value.id !== this._uId)
+							{
+								// Pause the other player(s)
+								dinoRadioPlayers[key].pause();
+							}
+						});
+					}
+				},
+
 				playRadioPlaylist: function(indexValue)
 				{
 					const widget = this;
@@ -1010,6 +1032,8 @@
 					const currentUrl = stationArray.url;
 					const currentIndex = indexValue;
 					const oldRowIndex = widget._dinoCurrentRow;
+
+					widget.stopOtherPlayers();
 
 					widget._dinoCurrentStation = currentUrl;
 					widget._dinoCurrentIndex = currentIndex;
@@ -1042,6 +1066,8 @@
 				{
 					const widget = this;
 					const objAudio = widget.dinoAudio;
+
+					widget.stopOtherPlayers();
 
 					if (objAudio.paused)
 					{
@@ -1090,6 +1116,8 @@
 					let currentUrl;
 					let currentIndex = widget._dinoCurrentIndex;
 					const oldRowIndex = widget._dinoCurrentRow;
+
+					widget.stopOtherPlayers();
 
 					if (currentIndex <= 0)
 					{
@@ -1144,6 +1172,8 @@
 					let currentUrl;
 					let currentIndex = widget._dinoCurrentIndex;
 					const oldRowIndex = widget._dinoCurrentRow;
+
+					widget.stopOtherPlayers();
 
 					if (playlistArray.length <= currentIndex + 1)
 					{
