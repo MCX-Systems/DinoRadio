@@ -1067,8 +1067,6 @@
 					const widget = this;
 					const objAudio = widget.dinoAudio;
 
-					widget.stopOtherPlayers();
-
 					if (objAudio.paused)
 					{
 						const stationArray = widget.options.stationPlaylist[indexValue];
@@ -1079,6 +1077,8 @@
 						widget._dinoCurrentStation = currentUrl;
 						widget._dinoCurrentIndex = currentIndex;
 						widget._dinoCurrentRow = currentIndex;
+
+						widget.stopOtherPlayers();
 
 						objAudio.src = widget._dinoCurrentStation;
 						objAudio.play().then(function()
