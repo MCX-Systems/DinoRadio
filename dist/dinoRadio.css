@@ -90,10 +90,10 @@
 	border-radius: 10px;
 	box-shadow: inset 0 0 35px 20px rgb(0, 0, 0), 0 0 10px 4px rgb(0, 0, 0);
 	box-shadow: inset 0 0 35px 20px rgba(0, 0, 0, 1), 0 0 10px 4px rgba(0, 0, 0, 1);
-	height: 270px;
+	height: 262px;
 	position: absolute;
 	right: -90px;
-	top: -5px;
+	top: -1px;
 	transition: all .3s ease-in-out;
 	width: 60px;
 	z-index: 50;
@@ -110,10 +110,10 @@
 	height: 60px;
 	opacity: .8;
 	position: absolute;
-	right: -106px;
-	top: 105px;
+	right: -98px;
+	top: 101px;
 	transform: rotate(90deg);
-	width: 270px;
+	width: 262px;
 	z-index: 50;
 }
 
