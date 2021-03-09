@@ -128,6 +128,7 @@
 				function's prototype.
 			*/
 			let widget = this;
+			const prefix = ('https:' === window.location.protocol ? 'https:' : 'http:');
 
 			/***************************************************************************/
 
@@ -138,45 +139,46 @@
 
 			if (widget.options.enableFacebookShare)
 			{
-				window.fbAsyncInit = function()
-				{
-					window.FB.init({
-						appId: widget.options.facebookAppID,
-						version: 'v10.0',
-						status: true,
-						cookie: true,
-						xfbml: true
-					});
-				};
-
 				(function(d, s, id)
 				{
-					let js;
 					const fjs = d.getElementsByTagName(s)[0];
 					if (d.getElementById(id))
 					{
 						return;
 					}
-					js = d.createElement(s);
+					const js = d.createElement(s);
 					js.id = id;
-					js.src = 'https://connect.facebook.com/en_US/sdk.js';
+					js.src = prefix + '//connect.facebook.com/en_US/sdk.js';
 					fjs.parentNode.insertBefore(js, fjs);
 				}(window.document, 'script', 'facebook-jssdk'));
+
+				window.fbAsyncInit = function()
+				{
+					if (window.FB)
+					{
+						window.FB.init({
+							appId: widget.options.facebookAppID,
+							version: 'v10.0',
+							status: true,
+							cookie: true,
+							xfbml: true
+						});
+					}
+				};
 			}
 
 			if (widget.options.enableTwitterShare)
 			{
 				(function(d, s, id)
 				{
-					let js;
 					const fjs = d.getElementsByTagName(s)[0];
 					if (d.getElementById(id))
 					{
 						return;
 					}
-					js = d.createElement(s);
+					const js = d.createElement(s);
 					js.id = id;
-					js.src = 'https://platform.twitter.com/widgets.js';
+					js.src = prefix + '//platform.twitter.com/widgets.js';
 					fjs.parentNode.insertBefore(js, fjs);
 				}(window.document, 'script', 'twitter-wjs'));
 			}
@@ -270,8 +272,7 @@
 						}" class="dinoRadioData"><div id="dinoRadioStation-${this._uId
 						}" class="dinoRadioStation"></div><div class="dinoMarquee"><div class="dinoMarqueeInner"><span>${
 						this.getI18n('plugin_ra_title', this.options.language)
-						}&nbsp;</span><span id="dinoRadioSongTitle-${
-						this._uId
+						}&nbsp;</span><span id="dinoRadioSongTitle-${this._uId
 						}" class="dinoRadioSongTitle"></span><span>&nbsp;&nbsp;****&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;****&nbsp;&nbsp;</span><span>${
 						this.getI18n('plugin_ra_artist', this.options.language)
 						}&nbsp;</span><span id="dinoRadioSongArtist-${
@@ -373,7 +374,7 @@
 							success: function(data)
 							{
 								widget.options.stationPlaylist = data;
-								if(widget.options.debug)
+								if (widget.options.debug)
 								{
 									window.console.log(widget.options.stationPlaylist);
 								}
@@ -413,6 +414,7 @@
 										let active = '';
 										let hoverA = '';
 										let template = '';
+
 										if (widget.options.showPlaylistNumber)
 										{
 											num = `<span class="dinoRadioStationNumbers">${i + 1}</span>`;
@@ -456,9 +458,10 @@
 												},
 												error: function()
 												{
-													if(widget.options.debug)
+													if (widget.options.debug)
 													{
-														window.console.log('Error: Something went wrong with loading the Current Radio song!');
+														window.console.log(
+															'Error: Something went wrong with loading the Current Radio song!');
 													}
 
 													template =
@@ -475,7 +478,8 @@
 										else
 										{
 											template =
-												`<li id="dinoRadioItem-${i}-${widget._uId}" data-position="${i}" ${hoverA
+												`<li id="dinoRadioItem-${i}-${widget._uId}" data-position="${i}" ${
+												hoverA
 												}>${
 												num}${active}<span class="dinoRadioStation">${widget.checkStrLength(
 													value.station,
@@ -863,13 +867,14 @@
 						{
 							e.preventDefault();
 
+							const prefix = ('https:' === window.location.protocol ? 'https:' : 'http:');
 							const w = 440;
 							const h = 550;
 							const y = window.top.outerHeight / 2 + window.top.screenY - (h / 2);
 							const x = window.top.outerWidth / 2 + window.top.screenX - (w / 2);
 
 							const twit = plugin.getI18n('plugin_ra_twitter', plugin.options.language);
-							const url = `https://twitter.com/intent/tweet?url=${window.location.href}&text=${twit}`;
+							const url = `${prefix}//twitter.com/intent/tweet?url=${window.location.href}&text=${twit}`;
 							const text = 'Twitter';
 
 							window.open(url,
@@ -887,18 +892,21 @@
 
 							if (plugin.options.enableFacebookShare)
 							{
-								window.FB.ui({
-										method: 'share',
-										link: window.location.href,
-										href: window.location.href
-									},
-									function(response)
-									{
-										if(plugin.options.debug)
+								if (window.FB)
+								{
+									window.FB.ui({
+											method: 'share',
+											link: window.location.href,
+											href: window.location.href
+										},
+										function(response)
 										{
-											window.console.log(response);
-										}
-									});
+											if (plugin.options.debug)
+											{
+												window.console.log(response);
+											}
+										});
+								}
 							}
 						});
 				},
@@ -993,7 +1001,7 @@
 				/*  Audio Player with Playlist                                             */
 				/***************************************************************************/
 
-				playRadioPlaylist: function (indexValue)
+				playRadioPlaylist: function(indexValue)
 				{
 					const widget = this;
 					const objAudio = widget.dinoAudio;
@@ -1010,13 +1018,13 @@
 					objAudio.src = widget._dinoCurrentStation;
 					objAudio.play().then(function()
 					{
-						if(widget.options.debug)
+						if (widget.options.debug)
 						{
 							window.console.log('The play() Promise fulfilled!');
 						}
 					}).catch(function(error)
 					{
-						if(widget.options.debug)
+						if (widget.options.debug)
 						{
 							window.console.log('The play() Promise rejected!');
 							window.console.log(error);
@@ -1048,13 +1056,13 @@
 						objAudio.src = widget._dinoCurrentStation;
 						objAudio.play().then(function()
 						{
-							if(widget.options.debug)
+							if (widget.options.debug)
 							{
 								window.console.log('The play() Promise fulfilled!');
 							}
 						}).catch(function(error)
 						{
-							if(widget.options.debug)
+							if (widget.options.debug)
 							{
 								window.console.log('The play() Promise rejected!');
 								window.console.log(error);
@@ -1102,13 +1110,13 @@
 					objAudio.src = widget._dinoCurrentUrl;
 					objAudio.play().then(function()
 					{
-						if(widget.options.debug)
+						if (widget.options.debug)
 						{
 							window.console.log('The play() Promise fulfilled!');
 						}
 					}).catch(function(error)
 					{
-						if(widget.options.debug)
+						if (widget.options.debug)
 						{
 							window.console.log('The play() Promise rejected!');
 							window.console.log(error);
@@ -1156,13 +1164,13 @@
 					objAudio.src = widget._dinoCurrentUrl;
 					objAudio.play().then(function()
 					{
-						if(widget.options.debug)
+						if (widget.options.debug)
 						{
 							window.console.log('The play() Promise fulfilled!');
 						}
 					}).catch(function(error)
 					{
-						if(widget.options.debug)
+						if (widget.options.debug)
 						{
 							window.console.log('The play() Promise rejected!');
 							window.console.log(error);
@@ -1213,9 +1221,10 @@
 							},
 							error: function()
 							{
-								if(widget.options.debug)
+								if (widget.options.debug)
 								{
-									window.console.log('Error: Something went wrong with loading the Current Radio song!');
+									window.console.log(
+										'Error: Something went wrong with loading the Current Radio song!');
 								}
 							}
 						});
@@ -1239,9 +1248,10 @@
 											},
 											error: function()
 											{
-												if(widget.options.debug)
+												if (widget.options.debug)
 												{
-													window.console.log('Error: Something went wrong with loading the Current Radio song!');
+													window.console.log(
+														'Error: Something went wrong with loading the Current Radio song!');
 												}
 											}
 										});
@@ -1273,12 +1283,12 @@
 							encodeURI($.trim(artist)),
 						success: function(result)
 						{
-							if(result[0] !== undefined && result[0] !== null)
+							if (result[0] !== undefined && result[0] !== null)
 							{
 								if (result[0].artistThumb !== '')
 								{
 									const ex1 = widget.getFilename(result[0].artistThumb);
-									if(ex1 !== undefined)
+									if (ex1 !== null && ex1 !== undefined)
 									{
 										if (ex1.ext !== '')
 										{
@@ -1298,7 +1308,7 @@
 									}
 
 									const ex2 = widget.getFilename(result[0].artistBanner);
-									if(ex2 !== undefined)
+									if (ex2 !== null && ex2 !== undefined)
 									{
 										if (ex2.ext !== '')
 										{
@@ -1343,7 +1353,7 @@
 						},
 						error: function()
 						{
-							if(widget.options.debug)
+							if (widget.options.debug)
 							{
 								window.console.log('Error: Something went wrong with loading the LastFM Data!');
 							}
@@ -1535,9 +1545,9 @@
 
 				getFilename: function(url)
 				{
-					if(url === undefined)
+					if (url === undefined || url === null)
 					{
-						return;
+						return{ filename: (url[0] || ''), ext: (url[1] || '') };
 					}
 
 					// get the part after last /, then replace any query and hash part
