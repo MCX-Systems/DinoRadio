@@ -1574,6 +1574,7 @@
 									let post = document.createElement('span');
 									post.textContent = bio;
 									post.innerHTML = post.innerHTML.replace(/\n/g, '<br />');
+									post.innerHTML = '<strong>' + result[0].artist + '</strong><hr />' + post.innerHTML;
 
 									widget.$element.find(`#dinoArtistBio-${widget._uId}`).empty().append(post);
 									widget._dinoArt = artist;
@@ -1619,7 +1620,7 @@
 								{
 									let post = document.createElement('p');
 									post.textContent = data[0].lyric;
-									post.innerHTML = post.innerHTML.replace(/\n/g, '<br />');
+									post.innerHTML = post.innerHTML.replace(/\n\n/g, '<br />');
 									post.innerHTML = '<strong>' + data[0].artist + '<br /><span>' + data[0].song + '</span></strong><hr />' + post.innerHTML;
 
 									widget.$element.find(`#dinoRadioLyricsOverlay-${widget._uId}`).empty().append(post);
