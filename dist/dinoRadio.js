@@ -265,11 +265,11 @@
 						}"></label><input id="dinoRadioSearchTerm-${this._uId
 						}" class="dinoRadioSearchTerm" type="text" placeholder="${this.getI18n(
 							'plugin_ra_search',
-							this.options.language)}" value="" /><i id="dinoRadioMail-${
+							this.options.language)}" value="" /><i id="dinoRadioSort-${this._uId
+					    }" class="dinoIcon dino-icon-sort-number-up dinoRadioSort"></i><i id="dinoRadioMail-${
 						this._uId}" class="dinoIcon dino-icon-mail-squared"></i><i id="dinoRadioTwitter-${this._uId
 						}" class="dinoIcon dino-icon-twitter-squared"></i><i id="dinoRadioFacebook-${this._uId
-						}" class="dinoIcon dino-icon-facebook-squared"></i><i id="dinoRadioSort-${this._uId
-						}" class="dinoIcon dino-icon-sort-number-up dinoRadioSort"></i></div></ul></section><section id="dinoRadioData-${
+						}" class="dinoIcon dino-icon-facebook-squared"></i></div></ul></section><section id="dinoRadioData-${
 						this._uId
 						}" class="dinoRadioData"><i id="dinoRadioLyrics-${this._uId
 						}" class="dinoIcon dino-icon-feather dinoRadioLyrics"></i><div id="dinoRadioStation-${this._uId
@@ -1500,6 +1500,9 @@
 							encodeURI($.trim(artist)),
 						success: function(result)
 						{
+							let imageArtist = widget.$element.find(`#dinoRadioPoster-${widget._uId}`);
+							let imageBanner = widget.$element.find(`#dinoArtistBanner-${widget._uId}`);
+
 							if (result[0] !== undefined && result[0] !== null)
 							{
 								if (result[0].artistThumb !== '')
@@ -1509,19 +1512,28 @@
 									{
 										if (ex1.ext !== '')
 										{
-											widget.$element.find(`#dinoRadioPoster-${widget._uId}`)
-												.attr('src', result[0].artistThumb);
+											imageArtist.fadeOut(2000, function ()
+											{
+												imageArtist.attr('src', result[0].artistThumb);
+												imageArtist.fadeIn(2000);
+											});
 										}
 										else
 										{
-											widget.$element.find(`#dinoRadioPoster-${widget._uId}`)
-												.attr('src', `data:image/png;base64,${widget.getImage(0)}`);
+											imageArtist.fadeOut(2000, function ()
+											{
+												imageArtist.attr('src', `data:image/png;base64,${widget.getImage(0)}`);
+												imageArtist.fadeIn(2000);
+											});
 										}
 									}
 									else
 									{
-										widget.$element.find(`#dinoRadioPoster-${widget._uId}`)
-											.attr('src', `data:image/png;base64,${widget.getImage(0)}`);
+										imageArtist.fadeOut(2000, function ()
+										{
+											imageArtist.attr('src', `data:image/png;base64,${widget.getImage(0)}`);
+											imageArtist.fadeIn(2000);
+										});
 									}
 
 									const ex2 = widget.getFilename(result[0].artistBanner);
@@ -1529,21 +1541,28 @@
 									{
 										if (ex2.ext !== '')
 										{
-											widget.$element.find(`#dinoArtistBanner-${widget._uId}`)
-												.attr('src', result[0].artistBanner);
+											imageBanner.fadeOut(2000, function ()
+											{
+												imageBanner.attr('src', result[0].artistBanner);
+												imageBanner.fadeIn(2000);
+											});
 										}
 										else
 										{
-											widget.$element.find(`#dinoArtistBanner-${widget._uId}`)
-												.attr('src',
-													'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==');
+											imageBanner.fadeOut(2000, function ()
+											{
+												imageBanner.attr('src', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==');
+												imageBanner.fadeIn(2000);
+											});
 										}
 									}
 									else
 									{
-										widget.$element.find(`#dinoArtistBanner-${widget._uId}`)
-											.attr('src',
-												'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==');
+										imageBanner.fadeOut(2000, function ()
+										{
+											imageBanner.attr('src', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==');
+											imageBanner.fadeIn(2000);
+										});
 									}
 
 									let bio = result[0].biographyEN;
@@ -1561,12 +1580,18 @@
 							}
 
 							widget._dinoArt = artist;
-							widget.$element.find(`#dinoRadioPoster-${widget._uId}`)
-								.attr('src', `data:image/png;base64,${widget.getImage(0)}`);
 
-							widget.$element.find(`#dinoArtistBanner-${widget._uId}`)
-								.attr('src',
-									'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==');
+							imageArtist.fadeOut(2000, function ()
+							{
+								imageArtist.attr('src', `data:image/png;base64,${widget.getImage(0)}`);
+								imageArtist.fadeIn(2000);
+							});
+
+							imageBanner.fadeOut(2000, function ()
+							{
+								imageBanner.attr('src', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==');
+								imageBanner.fadeIn(2000);
+							});
 						},
 						error: function()
 						{
