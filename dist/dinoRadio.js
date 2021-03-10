@@ -1655,7 +1655,7 @@
 
 					if (widget._dinoStationsArr.length === 0)
 					{
-						return false;
+						return;
 					}
 
 					let title;
@@ -1682,8 +1682,6 @@
 							widget.$element.find(`#dinoRadioItem-${i}-${widget._uId}`).hide();
 						}
 					}
-
-					return false;
 				},
 
 				changePlaylistAppearance: function(newRowIndex, oldRowIndex)
