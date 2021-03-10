@@ -878,11 +878,39 @@
 					/*-----------------------------------------------------------------*/
 
 					plugin.$element.on(`click touchstart.${plugin._name}`,
+						`#dinoRadioLyricsOverlay-${plugin._uId}`,
+						function(e)
+						{
+							e.preventDefault();
+
+							if(plugin.options.grabSongLyrics)
+							{
+								if(plugin.$element.find(`#dinoRadioLyricsOverlay-${plugin._uId}`).attr('visibility', 'visible'))
+								{
+									plugin.$element.find(`#dinoRadioLyricsOverlay-${plugin._uId}`).css({
+										'visibility': 'collapse',
+										'opacity': 0
+									});
+								}
+							}
+						});
+
+					plugin.$element.on(`click touchstart.${plugin._name}`,
 						`#dinoRadioLyrics-${plugin._uId}`,
 						function(e)
 						{
 							e.preventDefault();
 
+							if(plugin.options.grabSongLyrics)
+							{
+                                if(plugin.$element.find(`#dinoRadioLyricsOverlay-${plugin._uId}`).attr('visibility', 'collapse'))
+                                {
+	                                plugin.$element.find(`#dinoRadioLyricsOverlay-${plugin._uId}`).css({
+		                                'visibility': 'visible',
+		                                'opacity': 1
+	                                });
+                                }
+							}
 						});
 
 					/*-----------------------------------------------------------------*/
@@ -1393,6 +1421,11 @@
 							{
 								widget.changeCurrentSongTitle(data.songTitle, data.songArtist);
 
+								if(widget.options.grabSongLyrics)
+								{
+									widget.getSongLyricsInfo(data.songArtist, data.songTitle);
+								}
+
 								if (widget.options.grabArtistInfo)
 								{
 									widget.getArtistInfo(data.songArtist);
@@ -1419,6 +1452,11 @@
 											success: function(data)
 											{
 												widget.changeCurrentSongTitle(data.songTitle, data.songArtist);
+
+												if(widget.options.grabSongLyrics)
+												{
+													widget.getSongLyricsInfo(data.songArtist, data.songTitle);
+												}
 
 												if (widget.options.grabArtistInfo)
 												{
@@ -1538,6 +1576,52 @@
 							}
 						}
 					});
+				},
+
+				getSongLyricsInfo: function(artist, song)
+				{
+					const widget = this;
+
+					$.getJSON(
+						{
+							url: widget.options.pathToAjaxFiles + window.atob('cmFkaW9QbGF5aW5nTHlyaWNzLnBocA==') + '?the_artist=' + artist + '&the_song=' + song,
+							success: function (data)
+							{
+								if(data[0].lyric)
+								{
+									let post = document.createElement('p');
+									post.textContent = data[0].lyric;
+									post.innerHTML = post.innerHTML.replace(/\n/g, '<br />');
+									post.innerHTML = '<strong>' + data[0].artist + '<br /><span>' + data[0].song + '</span></strong><hr />' + post.innerHTML;
+
+									widget.$element.find(`#dinoRadioLyricsOverlay-${widget._uId}`).empty().append(post);
+									widget.$element.find(`#dinoRadioLyrics-${widget._uId}`).css({
+										'visibility': 'visible',
+										'opacity': 1
+									});
+								}
+                                else
+								{
+									widget.$element.find(`#dinoRadioLyrics-${widget._uId}`).css({
+										'visibility': 'collapse',
+										'opacity': 0
+									});
+								}
+							},
+							error: function ()
+							{
+								widget.$element.find(`#dinoRadioLyrics-${widget._uId}`).css({
+									'visibility': 'collapse',
+									'opacity': 0
+								});
+
+								if (widget.options.debug)
+								{
+									window.console.log('Error: Something went wrong with grabbing the lyrics!');
+								}
+							}
+				    	}
+				    );
 				},
 
 				generatePlaylistByTerm: function(searchStr)
@@ -2048,6 +2132,8 @@
 			/*---------------------------------------------*/
 			// Enable info on current playing song
 			grabSongRds: true,
+			// Enable current playing song: lyrics show grab
+			grabSongLyrics: true,
 			// Get current Station name
 			// and category from the stream
 			grabStationRds: true,

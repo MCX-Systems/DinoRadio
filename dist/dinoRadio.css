@@ -163,13 +163,13 @@
 	background-color: rgb(120, 120, 120);
 	border: 0;
 	border-radius: 50%;
-	box-shadow: inset 0 0 16px 16px rgb(20, 20, 20), 0 0 16px 8px rgb(20, 20, 20);
-	box-shadow: inset 0 0 16px 16px rgba(20, 20, 20, 0.70), 0 0 16px 8px rgba(20, 20, 20, 0.50);
+	box-shadow: inset 0 0 16px 16px rgb(40, 40, 40), 0 0 16px 8px rgb(40, 40, 40);
+	box-shadow: inset 0 0 16px 16px rgba(40, 40, 40, 0.70), 0 0 16px 8px rgba(40, 40, 40, 0.50);
 	height: 200px;
 	left: -200px;
 	margin: 0;
 	outline: none;
-	padding: 8px;
+	padding: 0;
 	position: absolute;
 	top: 0;
 	width: 200px;
@@ -178,41 +178,9 @@
 .dinoRadio .dinoRadioPoster
 {
 	border-radius: 50%;
-	height: 185px;
-	width: 185px;
-}
-
-.dinoRadio .dinoRadioLyrics
-{
-	color: rgb(255, 140, 0);
-	font-size: 16px !important;
-	height: 10px;
-	left: 12px;
-	position: absolute;
-	top: -1px;
-	width: 10px;
-	z-index: 30;
-}
-
-.dinoRadio .dinoRadioLyricsOverlay
-{
-	width: 202px;
-	height: 202px;
-	background-color: rgba(40, 40, 40, 1);
-	position: absolute;
-	top: 0;
-	left: -1px;
-	z-index: 20;
-	border-radius: 16px 10px 10px 10px;
-	box-shadow: inset 0 0 16px 16px rgb(20, 20, 20), 0 0 16px 8px rgb(20, 20, 20);
-	box-shadow: inset 0 0 16px 16px rgba(20, 20, 20, 0.20), 0 0 16px 8px rgba(20, 20, 20, 0.10);
-	opacity: 0;
-    visibility: collapse;
-}
-
-.dinoRadio .dinoRadioLyrics:hover
-{
-	color: rgb(255, 255, 0);
+	height: 100%;
+	width: 100%;
+	border: 2px solid rgb(80, 80, 80);
 }
 
 /*----------------------------
@@ -220,7 +188,8 @@
 -----------------------------*/
 
 .dinoRadio .dinoRadioInfo,
-.dinoRadio .dinoRadioPlayPause
+.dinoRadio .dinoRadioPlayPause,
+.dinoRadio .dinoRadioLyricsOverlay
 {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
 	-ms-flex-align: center;
@@ -229,7 +198,7 @@
 	-webkit-box-pack: center;
 	-webkit-transition: all .5s ease-in-out;
 	align-items: center;
-	background-color: rgb(120, 120, 120);
+	background-color: rgb(80, 80, 80);
 	border: 0;
 	border-radius: 50%;
 	box-shadow: inset 0 0 16px 0 rgb(20, 20, 20), 0 0 16px 0 rgb(20, 20, 20);
@@ -288,7 +257,7 @@
 {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
 	background-color: rgb(40, 40, 40);
-	background-color: rgba(40, 40, 40, 0.6);
+	background-color: rgba(80, 80, 80, .4);
 	margin: 0;
 	opacity: 1;
 	padding: 0;
@@ -317,12 +286,12 @@
 	background-color: rgb(219, 6, 13);
 	border-radius: 50%;
 	bottom: 0;
-	height: 8px;
+	height: 4px;
 	opacity: 0;
 	position: absolute;
 	right: 0;
 	visibility: collapse;
-	width: 8px;
+	width: 4px;
 	z-index: 20;
 }
 
@@ -386,6 +355,70 @@
 		filter: alpha(opacity=0);
 		opacity: 0;
 	}
+}
+
+/*----------------------------
+	DinoRadio Lyrics overlay
+-----------------------------*/
+
+.dinoRadio .dinoRadioLyricsOverlay
+{
+	background-color: rgb(60, 60, 60);
+	border-radius: 16px 10px 10px 10px;
+	color: rgb(255, 255, 255);
+	overflow-y: hidden;
+	height: 200px;
+	width: 200px;
+	font-size: 12px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.dinoRadio .dinoRadioLyricsOverlay strong
+{
+	color: rgb(7, 160, 198);
+}
+
+.dinoRadio .dinoRadioLyricsOverlay strong span
+{
+	color: rgb(255, 140, 0);
+}
+
+.dinoRadio .dinoRadioLyricsOverlay p
+{
+	overflow-y: scroll;
+	height: 200px;
+	width: 200px;
+	scrollbar-width: none; /* Firefox */
+	padding: 5px;
+}
+
+.dinoRadio .dinoRadioLyricsOverlay p::-webkit-scrollbar
+{
+	display: none; /* Safari and Chrome */
+}
+
+.dinoRadio .dinoRadioLyrics
+{
+	color: rgb(255, 140, 0);
+	font-size: 16px !important;
+	height: 10px;
+	left: 12px;
+	position: absolute;
+	top: -1px;
+	width: 10px;
+	opacity: 0;
+	visibility: collapse;
+	-webkit-animation: dinoBlinker 1.8s linear infinite;
+	animation: dinoBlinker 1.8s linear infinite;
+}
+
+.dinoRadio .dinoRadioLyrics:hover
+{
+	color: rgb(255, 255, 0);
+	cursor: pointer;
 }
 
 /*----------------------------
@@ -498,11 +531,11 @@
 	background-color: rgb(255, 140, 0);
 	border-radius: 50%;
 	float: left;
-	height: 10px;
-	margin-left: 5px;
-	margin-top: 10px;
+	height: 5px;
+	margin-left: 8px;
+	margin-top: 12px;
 	position: static;
-	width: 10px;
+	width: 5px;
 	z-index: 20;
 }
 
