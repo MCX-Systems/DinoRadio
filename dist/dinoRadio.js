@@ -1571,8 +1571,11 @@
 										bio = result[0].biographyDE;
 									}
 
-									const temp = `<span>${bio}</span>`;
-									widget.$element.find(`#dinoArtistBio-${widget._uId}`).empty().append(temp);
+									let post = document.createElement('span');
+									post.textContent = bio;
+									post.innerHTML = post.innerHTML.replace(/\n/g, '<br />');
+
+									widget.$element.find(`#dinoArtistBio-${widget._uId}`).empty().append(post);
 									widget._dinoArt = artist;
 
 									return;
