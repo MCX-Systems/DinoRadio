@@ -14,7 +14,7 @@ Jquery plugin for listening to web radio with playlist support.
 ![GitHub forks](https://img.shields.io/github/forks/MCX-Systems/DinoRadio?style=social)
 
 ## Example Page
-Live example page: [https://mcx-systems.net/DinoRadio](https://mcx-systems.net/DinoRadio/)
+Live example page: [http://mcx-systems.net/DinoRadio](http://mcx-systems.net/DinoRadio/)
 
 ## Preview Page Screenshot
 ![Screenshot](screenshot.jpeg)
