@@ -413,6 +413,7 @@
 	visibility: collapse;
 	-webkit-animation: dinoBlinker 1.8s linear infinite;
 	animation: dinoBlinker 1.8s linear infinite;
+	z-index: 30;
 }
 
 .dinoRadio .dinoRadioLyrics:hover
