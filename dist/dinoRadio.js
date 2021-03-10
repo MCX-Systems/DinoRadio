@@ -243,7 +243,8 @@
 				{
 					return `<article id="dinoRadio-${this._uId}" class="dinoRadio"><div id="dinoRadioHolder-${this._uId
 						}" class="dinoRadioHolder"><section id="dinoRadioPosterHolder-${this._uId
-						}" class="dinoRadioPosterHolder"><img id="dinoRadioPoster-${this._uId
+						}" class="dinoRadioPosterHolder"><div id="dinoRadioLyricsOverlay-${this._uId
+				    	}" class="dinoRadioLyricsOverlay"></div><img id="dinoRadioPoster-${this._uId
 						}" class="dinoRadioPoster" alt="${this.getI18n('plugin_ra_station', this.options.language)
 						}" /><div id="dinoRadioInfo-${this._uId
 						}" class="dinoRadioInfo"></div><div id="dinoRadioPlayPause-${this._uId
@@ -306,6 +307,43 @@
 				initRadio: function()
 				{
 					const widget = this;
+
+					if(widget.options.posterStyle === 'circle')
+					{
+						widget.$element.find(`#dinoRadioPosterHolder-${widget._uId}`).css({
+							'border-radius': '50%'
+						});
+
+						widget.$element.find(`#dinoRadioInfo-${widget._uId}`).css({
+							'border-radius': '50%'
+						});
+
+						widget.$element.find(`#dinoRadioPlayPause-${widget._uId}`).css({
+							'border-radius': '50%'
+						});
+
+						widget.$element.find(`#dinoRadioPoster-${widget._uId}`).css({
+							'border-radius': '50%'
+						});
+					}
+					else
+					{
+						widget.$element.find(`#dinoRadioPosterHolder-${widget._uId}`).css({
+							'border-radius': '14px'
+						});
+
+						widget.$element.find(`#dinoRadioInfo-${widget._uId}`).css({
+							'border-radius': '14px'
+						});
+
+						widget.$element.find(`#dinoRadioPlayPause-${widget._uId}`).css({
+							'border-radius': '14px'
+						});
+
+						widget.$element.find(`#dinoRadioPoster-${widget._uId}`).css({
+							'border-radius': '12px'
+						});
+					}
 
 					// Set default widget colors
 					widget.$element.find(`#dinoRadioPosterHolder-${widget._uId}`).css({
@@ -834,6 +872,17 @@
 									20));
 
 							plugin.playRadioPlaylist(radioItemId);
+						});
+
+					/*-----------------------------------------------------------------*/
+					/*-----------------------------------------------------------------*/
+
+					plugin.$element.on(`click touchstart.${plugin._name}`,
+						`#dinoRadioLyrics-${plugin._uId}`,
+						function(e)
+						{
+							e.preventDefault();
+
 						});
 
 					/*-----------------------------------------------------------------*/
@@ -1975,6 +2024,9 @@
 		$.fn.dinoRadio.defaults = {
 			// Widget background color
 			bgColor: 'rgb(6, 101, 191)',
+			/*---------------------------------------------*/
+			// Artist poster style. Can be: circle or square
+			posterStyle: 'circle',
 			/*---------------------------------------------*/
 			// Radio Playlist Array - contains station end point urls.
 			stationPlaylist: [],
