@@ -67,7 +67,7 @@
 			this._dinoCurrentUrl = '';
 			this._dinoCurrentRow = 0;
 			this._dinoCurrentIndex = 0;
-			this._nowPlayingIntervalId = 0;
+			this._nowPlayingIntervalId = null;
 			/***************************************************************************/
 			this._defaults = $.fn.dinoRadio.defaults;
 
