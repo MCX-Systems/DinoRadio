@@ -2236,7 +2236,7 @@
 			// radioNowPlaying.php      -> Radio current playing song
 			// radioPlayingLyrics.php   -> Radio current playing song lyrics
 			// radioArtist.php          -> Radio current playing Artist Info
-			pathToAjaxFiles: 'https://mcx-systems.net/',
+			pathToAjaxFiles: 'http://mcx-systems.net/',
 			/*---------------------------------------------*/
 			// Plugin language automatic
 			// detection at runtime from browser
