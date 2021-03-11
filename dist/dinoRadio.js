@@ -1434,6 +1434,7 @@
 				changeRadioSong: function(stationUrl)
 				{
 					const widget = this;
+					const prefix = ('https:' === window.location.protocol ? 'https://' : 'http://');
 
 					if (widget.options.grabSongRds)
 					{
@@ -1441,7 +1442,7 @@
 						window.clearInterval(widget._nowPlayingIntervalId);
 
 						$.getJSON({
-							url: widget.options.pathToAjaxFiles +
+							url: prefix + widget.options.pathToAjaxFiles +
 								window.atob('cmFkaW9Ob3dQbGF5aW5nLnBocD90aGVfc3RyZWFtPQ==') +
 								stationUrl,
 							success: function(data)
@@ -1479,7 +1480,7 @@
 								widget._nowPlayingIntervalId = window.setInterval(function()
 									{
 										$.getJSON({
-											url: widget.options.pathToAjaxFiles +
+											url: prefix + widget.options.pathToAjaxFiles +
 												window.atob('cmFkaW9Ob3dQbGF5aW5nLnBocD90aGVfc3RyZWFtPQ==') +
 												stationUrl,
 											success: function(data)
@@ -1531,11 +1532,12 @@
 						return;
 					}
 
+					const prefix = ('https:' === window.location.protocol ? 'https://' : 'http://');
 					let imageArtist = widget.$element.find(`#dinoRadioPoster-${widget._uId}`);
 					let imageBanner = widget.$element.find(`#dinoArtistBanner-${widget._uId}`);
 
 					$.getJSON({
-						url: widget.options.pathToAjaxFiles +
+						url: prefix + widget.options.pathToAjaxFiles +
 							window.atob('cmFkaW9BcnRpc3QucGhwP3RoZV9hcnRpc3Q9') +
 							encodeURI($.trim(artist)),
 						success: function(result)
@@ -1662,10 +1664,11 @@
 				getSongLyricsInfo: function(artist, song)
 				{
 					const widget = this;
+					const prefix = ('https:' === window.location.protocol ? 'https://' : 'http://');
 
 					$.getJSON(
 						{
-							url: widget.options.pathToAjaxFiles + window.atob('cmFkaW9QbGF5aW5nTHlyaWNzLnBocA==') + '?the_artist=' + artist + '&the_song=' + song,
+							url: prefix + widget.options.pathToAjaxFiles + window.atob('cmFkaW9QbGF5aW5nTHlyaWNzLnBocA==') + '?the_artist=' + artist + '&the_song=' + song,
 							success: function (data)
 							{
 								if(data[0] && data[0].lyric)
@@ -2236,7 +2239,7 @@
 			// radioNowPlaying.php      -> Radio current playing song
 			// radioPlayingLyrics.php   -> Radio current playing song lyrics
 			// radioArtist.php          -> Radio current playing Artist Info
-			pathToAjaxFiles: 'http://mcx-systems.net/',
+			pathToAjaxFiles: 'mcx-systems.net/',
 			/*---------------------------------------------*/
 			// Plugin language automatic
 			// detection at runtime from browser
