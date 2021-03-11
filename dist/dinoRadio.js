@@ -1511,10 +1511,8 @@
 												}
 											}
 										});
-									},
-									widget.options.nowPlayingInterval * 1000);
-							},
-							widget.options.nowPlayingInterval * 1000);
+									}, widget.options.nowPlayingInterval * 1000);
+							}, 1000);
 					}
 				},
 
@@ -1656,7 +1654,7 @@
 							url: widget.options.pathToAjaxFiles + window.atob('cmFkaW9QbGF5aW5nTHlyaWNzLnBocA==') + '?the_artist=' + artist + '&the_song=' + song,
 							success: function (data)
 							{
-								if(data[0].lyric)
+								if(data[0] && data[0].lyric)
 								{
 									let post = document.createElement('p');
 									post.textContent = data[0].lyric;
