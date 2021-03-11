@@ -431,13 +431,15 @@
 
 					/*---------------------------------------------------------------*/
 
+					const prefix = ('https:' === window.location.protocol ? 'https:' : 'http:');
+
 					if (!widget.options.stationPlaylist.length)
 					{
 						window.console.info(
 							window.atob('R2V0IGRlZmF1bHQgcmFkaW8gcGxheWxpc3QgZnJvbSBNQ1gtU3lzdGVtcyE='));
 						// Get default radio playlist from MCX-Systems because playlist array is empty!
 						$.getJSON({
-							url: window.atob('aHR0cHM6Ly9tY3gtc3lzdGVtcy5uZXQvcmFkaW9TdGF0aW9uUGxheWxpc3QucGhw'),
+							url: prefix + widget.options.pathToAjaxFiles + window.atob('cmFkaW9TdGF0aW9uUGxheWxpc3QucGhw'),
 							success: function(data)
 							{
 								widget.options.stationPlaylist = data;
@@ -501,7 +503,7 @@
 										if (widget.options.grabStationRds)
 										{
 											$.getJSON({
-												url: widget.options.pathToAjaxFiles +
+												url: prefix + widget.options.pathToAjaxFiles +
 													window.atob('cmFkaW9TdGF0aW9uSW5mby5waHA/dGhlX3N0cmVhbT0=') +
 													value.url,
 												success: function(data)
@@ -1434,7 +1436,7 @@
 				changeRadioSong: function(stationUrl)
 				{
 					const widget = this;
-					const prefix = ('https:' === window.location.protocol ? 'https://' : 'http://');
+					const prefix = ('https:' === window.location.protocol ? 'https:' : 'http:');
 
 					if (widget.options.grabSongRds)
 					{
@@ -1532,7 +1534,7 @@
 						return;
 					}
 
-					const prefix = ('https:' === window.location.protocol ? 'https://' : 'http://');
+					const prefix = ('https:' === window.location.protocol ? 'https:' : 'http:');
 					let imageArtist = widget.$element.find(`#dinoRadioPoster-${widget._uId}`);
 					let imageBanner = widget.$element.find(`#dinoArtistBanner-${widget._uId}`);
 
@@ -1664,7 +1666,7 @@
 				getSongLyricsInfo: function(artist, song)
 				{
 					const widget = this;
-					const prefix = ('https:' === window.location.protocol ? 'https://' : 'http://');
+					const prefix = ('https:' === window.location.protocol ? 'https:' : 'http:');
 
 					$.getJSON(
 						{
@@ -2239,7 +2241,7 @@
 			// radioNowPlaying.php      -> Radio current playing song
 			// radioPlayingLyrics.php   -> Radio current playing song lyrics
 			// radioArtist.php          -> Radio current playing Artist Info
-			pathToAjaxFiles: 'mcx-systems.net/',
+			pathToAjaxFiles: '//mcx-systems.net/',
 			/*---------------------------------------------*/
 			// Plugin language automatic
 			// detection at runtime from browser
