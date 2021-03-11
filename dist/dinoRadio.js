@@ -48,6 +48,7 @@
 			this._name = pluginName;
 			this._uId = this.createUniqId(8);
 			this._language = this.getUserLanguage();
+			this._prefix = ('https:' === window.location.protocol ? 'https://' : 'http://');
 			/***************************************************************************/
 			$(this.element).attr('data-radioId', this._uId);
 			this.dinoAudio = new window.Audio();
@@ -132,7 +133,6 @@
 				function's prototype.
 			*/
 			let widget = this;
-			const prefix = ('https:' === window.location.protocol ? 'https:' : 'http:');
 
 			/***************************************************************************/
 
@@ -153,7 +153,7 @@
 					const js = d.createElement(s);
 					js.id = id;
 					js.async = true;
-					js.src = prefix + '//connect.facebook.com/en_US/sdk.js';
+					js.src = widget._prefix + 'connect.facebook.com/en_US/sdk.js';
 					fjs.parentNode.insertBefore(js, fjs);
 				}(window.document, 'script', 'facebook-jssdk'));
 
@@ -184,7 +184,7 @@
 					const js = d.createElement(s);
 					js.id = id;
 					js.async = true;
-					js.src = prefix + '//platform.twitter.com/widgets.js';
+					js.src = widget._prefix + 'platform.twitter.com/widgets.js';
 					fjs.parentNode.insertBefore(js, fjs);
 				}(window.document, 'script', 'twitter-wjs'));
 			}
@@ -201,7 +201,7 @@
 					const js = d.createElement(s);
 					js.id = id;
 					js.async = true;
-					js.src = prefix + '//googletagmanager.com/gtag/js?id=' + widget.options.enableGoogleAnalyticsTag;
+					js.src = widget._prefix + 'googletagmanager.com/gtag/js?id=' + widget.options.enableGoogleAnalyticsTag;
 					fjs.parentNode.insertBefore(js, fjs);
 				}(window.document, 'script', 'ga'));
 
@@ -431,15 +431,13 @@
 
 					/*---------------------------------------------------------------*/
 
-					const prefix = ('https:' === window.location.protocol ? 'https:' : 'http:');
-
 					if (!widget.options.stationPlaylist.length)
 					{
 						window.console.info(
 							window.atob('R2V0IGRlZmF1bHQgcmFkaW8gcGxheWxpc3QgZnJvbSBNQ1gtU3lzdGVtcyE='));
 						// Get default radio playlist from MCX-Systems because playlist array is empty!
 						$.getJSON({
-							url: prefix + widget.options.pathToAjaxFiles + window.atob('cmFkaW9TdGF0aW9uUGxheWxpc3QucGhw'),
+							url: widget._prefix + widget.options.pathToAjaxFiles + '/' + window.atob('cmFkaW9TdGF0aW9uUGxheWxpc3QucGhw'),
 							success: function(data)
 							{
 								widget.options.stationPlaylist = data;
@@ -503,7 +501,7 @@
 										if (widget.options.grabStationRds)
 										{
 											$.getJSON({
-												url: prefix + widget.options.pathToAjaxFiles +
+												url: widget._prefix + widget.options.pathToAjaxFiles + '/' +
 													window.atob('cmFkaW9TdGF0aW9uSW5mby5waHA/dGhlX3N0cmVhbT0=') +
 													value.url,
 												success: function(data)
@@ -1020,14 +1018,13 @@
 						{
 							e.preventDefault();
 
-							const prefix = ('https:' === window.location.protocol ? 'https:' : 'http:');
 							const w = 440;
 							const h = 550;
 							const y = window.top.outerHeight / 2 + window.top.screenY - (h / 2);
 							const x = window.top.outerWidth / 2 + window.top.screenX - (w / 2);
 
 							const twit = plugin.getI18n('plugin_ra_twitter', plugin.options.language);
-							const url = `${prefix}//twitter.com/intent/tweet?url=${window.location.href}&text=${twit}`;
+							const url = `${plugin._prefix}twitter.com/intent/tweet?url=${window.location.href}&text=${twit}`;
 							const text = 'Twitter';
 
 							window.open(url,
@@ -1436,7 +1433,6 @@
 				changeRadioSong: function(stationUrl)
 				{
 					const widget = this;
-					const prefix = ('https:' === window.location.protocol ? 'https:' : 'http:');
 
 					if (widget.options.grabSongRds)
 					{
@@ -1444,7 +1440,7 @@
 						window.clearInterval(widget._nowPlayingIntervalId);
 
 						$.getJSON({
-							url: prefix + widget.options.pathToAjaxFiles +
+							url: widget._prefix + widget.options.pathToAjaxFiles + '/' +
 								window.atob('cmFkaW9Ob3dQbGF5aW5nLnBocD90aGVfc3RyZWFtPQ==') +
 								stationUrl,
 							success: function(data)
@@ -1482,7 +1478,7 @@
 								widget._nowPlayingIntervalId = window.setInterval(function()
 									{
 										$.getJSON({
-											url: prefix + widget.options.pathToAjaxFiles +
+											url: widget._prefix + widget.options.pathToAjaxFiles + '/' +
 												window.atob('cmFkaW9Ob3dQbGF5aW5nLnBocD90aGVfc3RyZWFtPQ==') +
 												stationUrl,
 											success: function(data)
@@ -1534,12 +1530,11 @@
 						return;
 					}
 
-					const prefix = ('https:' === window.location.protocol ? 'https:' : 'http:');
 					let imageArtist = widget.$element.find(`#dinoRadioPoster-${widget._uId}`);
 					let imageBanner = widget.$element.find(`#dinoArtistBanner-${widget._uId}`);
 
 					$.getJSON({
-						url: prefix + widget.options.pathToAjaxFiles +
+						url: widget._prefix + widget.options.pathToAjaxFiles + '/' +
 							window.atob('cmFkaW9BcnRpc3QucGhwP3RoZV9hcnRpc3Q9') +
 							encodeURI($.trim(artist)),
 						success: function(result)
@@ -1666,11 +1661,10 @@
 				getSongLyricsInfo: function(artist, song)
 				{
 					const widget = this;
-					const prefix = ('https:' === window.location.protocol ? 'https:' : 'http:');
 
 					$.getJSON(
 						{
-							url: prefix + widget.options.pathToAjaxFiles + window.atob('cmFkaW9QbGF5aW5nTHlyaWNzLnBocA==') + '?the_artist=' + artist + '&the_song=' + song,
+							url: widget._prefix + widget.options.pathToAjaxFiles + '/' + window.atob('cmFkaW9QbGF5aW5nTHlyaWNzLnBocA==') + '?the_artist=' + artist + '&the_song=' + song,
 							success: function (data)
 							{
 								if(data[0] && data[0].lyric)
@@ -2241,7 +2235,7 @@
 			// radioNowPlaying.php      -> Radio current playing song
 			// radioPlayingLyrics.php   -> Radio current playing song lyrics
 			// radioArtist.php          -> Radio current playing Artist Info
-			pathToAjaxFiles: '//mcx-systems.net/',
+			pathToAjaxFiles: 'mcx-systems.net',
 			/*---------------------------------------------*/
 			// Plugin language automatic
 			// detection at runtime from browser
