@@ -1463,6 +1463,11 @@
 								{
 									if (widget._dinoCurrentArtist !== data.songArtist)
 									{
+										widget.$element.find(`#dinoRadioLyrics-${widget._uId}`).css({
+											'visibility': 'collapse',
+											'opacity': 0
+										});
+
 										widget.changeCurrentSongTitle(data.songTitle, data.songArtist);
 
 										if (widget.options.grabArtistInfo)
@@ -1499,6 +1504,11 @@
 												{
 													if (widget._dinoCurrentArtist !== data.songArtist)
 													{
+														widget.$element.find(`#dinoRadioLyrics-${widget._uId}`).css({
+															'visibility': 'collapse',
+															'opacity': 0
+														});
+
 														widget.changeCurrentSongTitle(data.songTitle, data.songArtist);
 
 														if (widget.options.grabSongLyrics)
@@ -1745,13 +1755,6 @@
 									widget.$element.find(`#dinoRadioLyrics-${widget._uId}`).css({
 										'visibility': 'visible',
 										'opacity': 1
-									});
-								}
-								else
-								{
-									widget.$element.find(`#dinoRadioLyrics-${widget._uId}`).css({
-										'visibility': 'collapse',
-										'opacity': 0
 									});
 								}
 							})
