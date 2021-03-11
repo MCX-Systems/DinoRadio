@@ -61,6 +61,9 @@
 			this._dinoStationsArr = [];
 			this._dinoArt = '';
 			this._filterText = '';
+			this._dinoCurrentImage = '';
+			this._dinoCurrentSong = '';
+			this._dinoCurrentArtist = '';
 			this._dinoCurrentUrl = '';
 			this._dinoCurrentRow = 0;
 			this._dinoCurrentIndex = 0;
@@ -140,7 +143,7 @@
 
 			if (widget.options.enableFacebookShare)
 			{
-				(function(d, s, id)
+				(function (d, s, id)
 				{
 					const fjs = d.getElementsByTagName(s)[0];
 					if (d.getElementById(id))
@@ -149,11 +152,12 @@
 					}
 					const js = d.createElement(s);
 					js.id = id;
+					js.async = true;
 					js.src = prefix + '//connect.facebook.com/en_US/sdk.js';
 					fjs.parentNode.insertBefore(js, fjs);
 				}(window.document, 'script', 'facebook-jssdk'));
 
-				window.fbAsyncInit = function()
+				window.fbAsyncInit = function ()
 				{
 					if (window.FB)
 					{
@@ -179,9 +183,32 @@
 					}
 					const js = d.createElement(s);
 					js.id = id;
+					js.async = true;
 					js.src = prefix + '//platform.twitter.com/widgets.js';
 					fjs.parentNode.insertBefore(js, fjs);
 				}(window.document, 'script', 'twitter-wjs'));
+			}
+
+			if (widget.options.enableGoogleAnalytics)
+			{
+				(function(d, s, id)
+				{
+					const fjs = d.getElementsByTagName(s)[0];
+					if (d.getElementById(id))
+					{
+						return;
+					}
+					const js = d.createElement(s);
+					js.id = id;
+					js.async = true;
+					js.src = prefix + '//googletagmanager.com/gtag/js?id=' + widget.options.enableGoogleAnalyticsTag;
+					fjs.parentNode.insertBefore(js, fjs);
+				}(window.document, 'script', 'ga'));
+
+				window.dataLayer = window.dataLayer || [];
+				function gtag(){dataLayer.push(arguments);}
+				gtag('js', new Date());
+				gtag('config', widget.options.enableGoogleAnalyticsTag, {'page_path': window.location.pathname});
 			}
 
 			if (!widget._flag)
@@ -284,20 +311,20 @@
 						}" class="dinoRadioEqualiser"><ul class="dinoRadioEqualiserColumn"><li class="dinoRadioEqualiserColourBar"></li></ul><ul class="dinoRadioEqualiserColumn"><li class="dinoRadioEqualiserColourBar"></li></ul><ul class="dinoRadioEqualiserColumn"><li class="dinoRadioEqualiserColourBar"></li></ul><ul class="dinoRadioEqualiserColumn"><li class="dinoRadioEqualiserColourBar"></li></ul><ul class="dinoRadioEqualiserColumn"><li class="dinoRadioEqualiserColourBar"></li></ul></div></section><nav id="dinoRadioControls-${
 						this._uId}" class="dinoRadioControls"><a href="#" id="dinoRadioPlay-${this._uId
 						}" class="dinoRadioPlay" title="${this.getI18n('plugin_ra_play', this.options.language)
-						}"><i class="dinoIcon dino-icon-play-3"></i></a><a href="#" id="dinoRadioPrev-${
+						}" data-toggle="tooltip"><i class="dinoIcon dino-icon-play-3"></i></a><a href="#" id="dinoRadioPrev-${
 						this._uId
 						}" class="dinoRadioPrev" title="${this.getI18n('plugin_ra_prev', this.options.language)
-						}"><i class="dinoIcon dino-icon-step-backward"></i></a><a href="#" id="dinoRadioNext-${
+						}" data-toggle="tooltip"><i class="dinoIcon dino-icon-step-backward"></i></a><a href="#" id="dinoRadioNext-${
 						this._uId
 						}" class="dinoRadioNext" title="${this.getI18n('plugin_ra_next', this.options.language)
-						}"><i class="dinoIcon dino-icon-step-forward"></i></a><a href="#" id="dinoRadioVolumeButton-${
+						}" data-toggle="tooltip"><i class="dinoIcon dino-icon-step-forward"></i></a><a href="#" id="dinoRadioVolumeButton-${
 						this._uId
 						}" class="dinoRadioVolumeButton" title="${this.getI18n('plugin_ra_mute', this.options.language)
-						}"><i class="dinoIcon dino-icon-volume"></i></a><a href="#" id="dinoRadioShowHidePlaylist-${
+						}" data-toggle="tooltip"><i class="dinoIcon dino-icon-volume"></i></a><a href="#" id="dinoRadioShowHidePlaylist-${
 						this._uId
 						}" class="dinoRadioShowHidePlaylist" title="${this.getI18n('plugin_ra_playlist',
 							this.options.language)
-						}"><i class="dinoIcon dino-icon-indent-left-1"></i></a></nav><svg id="dinoBlurFilterSvg-${
+						}" data-toggle="tooltip"><i class="dinoIcon dino-icon-indent-left-1"></i></a></nav><svg id="dinoBlurFilterSvg-${
 						this._uId
 						}" xmlns="http://www.w3.org/2000/svg" style="display: none;"><defs><filter id="dinoBlurFilter-${
 						this._uId
@@ -1019,18 +1046,18 @@
 								if (window.FB)
 								{
 									window.FB.ui({
-											method: 'share',
-											link: window.location.href,
-											href: window.location.href
-										},
-										function(response)
+										method: 'share',
+										name: document.title,
+										href: window.location.href,
+										link: window.location.href,
+									},
+									function(response)
+									{
+										if (plugin.options.debug)
 										{
-											if (plugin.options.debug)
-											{
-												window.console.log(response);
-											}
+											window.console.log(response);
 										}
-									);
+									});
 								}
 							}
 						}
@@ -1408,28 +1435,34 @@
 				{
 					const widget = this;
 
-					// now_playing interval call
-					window.clearInterval(widget._nowPlayingIntervalId);
-
 					if (widget.options.grabSongRds)
 					{
+						// now_playing interval call
+						window.clearInterval(widget._nowPlayingIntervalId);
+
 						$.getJSON({
 							url: widget.options.pathToAjaxFiles +
 								window.atob('cmFkaW9Ob3dQbGF5aW5nLnBocD90aGVfc3RyZWFtPQ==') +
 								stationUrl,
 							success: function(data)
 							{
-								widget.changeCurrentSongTitle(data.songTitle, data.songArtist);
-
-								if(widget.options.grabSongLyrics)
+								if(widget._dinoCurrentArtist !== data.songArtist)
 								{
-									widget.getSongLyricsInfo(data.songArtist, data.songTitle);
+									widget.changeCurrentSongTitle(data.songTitle, data.songArtist);
+
+									if (widget.options.grabSongLyrics)
+									{
+										widget.getSongLyricsInfo(data.songArtist, data.songTitle);
+									}
+
+									if (widget.options.grabArtistInfo)
+									{
+										widget.getArtistInfo(data.songArtist);
+									}
 								}
 
-								if (widget.options.grabArtistInfo)
-								{
-									widget.getArtistInfo(data.songArtist);
-								}
+								widget._dinoCurrentSong = data.songTitle;
+								widget._dinoCurrentArtist = data.songArtist;
 							},
 							error: function()
 							{
@@ -1451,17 +1484,23 @@
 												stationUrl,
 											success: function(data)
 											{
-												widget.changeCurrentSongTitle(data.songTitle, data.songArtist);
-
-												if(widget.options.grabSongLyrics)
+												if(widget._dinoCurrentArtist !== data.songArtist)
 												{
-													widget.getSongLyricsInfo(data.songArtist, data.songTitle);
+													widget.changeCurrentSongTitle(data.songTitle, data.songArtist);
+
+													if (widget.options.grabSongLyrics)
+													{
+														widget.getSongLyricsInfo(data.songArtist, data.songTitle);
+													}
+
+													if (widget.options.grabArtistInfo)
+													{
+														widget.getArtistInfo(data.songArtist);
+													}
 												}
 
-												if (widget.options.grabArtistInfo)
-												{
-													widget.getArtistInfo(data.songArtist);
-												}
+												widget._dinoCurrentSong = data.songTitle;
+												widget._dinoCurrentArtist = data.songArtist;
 											},
 											error: function()
 											{
@@ -1475,7 +1514,7 @@
 									},
 									widget.options.nowPlayingInterval * 1000);
 							},
-							3000);
+							widget.options.nowPlayingInterval * 1000);
 					}
 				},
 
@@ -1514,6 +1553,7 @@
 										{
 											imageArtist.fadeOut(2000, function ()
 											{
+												widget._dinoCurrentImage = result[0].artistThumb;
 												imageArtist.attr('src', result[0].artistThumb);
 												imageArtist.fadeIn(2000);
 											});
@@ -2053,7 +2093,7 @@
 						return i18N[lang][key];
 					}
 
-					return key;
+					return i18N['en'][key];
 				},
 
 				/***************************************************************************/
@@ -2175,6 +2215,8 @@
 			enableFacebookShare: true,
 			facebookAppID: '513778246690715',
 			/*---------------------------------------------*/
+			enableGoogleAnalytics: true,
+			enableGoogleAnalyticsTag: 'G-92Z320V70M',
 			// Path to radio API data files:
 			//
 			// radioStationPlaylist.php -> Default playlist if none specified
