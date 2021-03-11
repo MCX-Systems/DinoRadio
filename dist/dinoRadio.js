@@ -1531,15 +1531,15 @@
 						return;
 					}
 
-					$.ajax({
+					let imageArtist = widget.$element.find(`#dinoRadioPoster-${widget._uId}`);
+					let imageBanner = widget.$element.find(`#dinoArtistBanner-${widget._uId}`);
+
+					$.getJSON({
 						url: widget.options.pathToAjaxFiles +
 							window.atob('cmFkaW9BcnRpc3QucGhwP3RoZV9hcnRpc3Q9') +
 							encodeURI($.trim(artist)),
 						success: function(result)
 						{
-							let imageArtist = widget.$element.find(`#dinoRadioPoster-${widget._uId}`);
-							let imageBanner = widget.$element.find(`#dinoArtistBanner-${widget._uId}`);
-
 							if (result[0] !== undefined && result[0] !== null)
 							{
 								if (result[0].artistThumb !== '')
@@ -1637,6 +1637,20 @@
 						},
 						error: function()
 						{
+							widget._dinoArt = artist;
+
+							imageArtist.fadeOut(2000, function ()
+							{
+								imageArtist.attr('src', `data:image/png;base64,${widget.getImage(0)}`);
+								imageArtist.fadeIn(2000);
+							});
+
+							imageBanner.fadeOut(2000, function ()
+							{
+								imageBanner.attr('src', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==');
+								imageBanner.fadeIn(2000);
+							});
+
 							if (widget.options.debug)
 							{
 								window.console.log('Error: Something went wrong with loading the LastFM Data!');
@@ -2156,7 +2170,7 @@
 		};
 
 		/* Return current version */
-		$.fn.dinoRadio.version = '2.1.2021';
+		$.fn.dinoRadio.version = '2.2.2021';
 
 		/*
 			Attach the default plugin options directly to the plugin object. This
@@ -2220,6 +2234,7 @@
 			// radioStationPlaylist.php -> Default playlist if none specified
 			// radioStationInfo.php     -> Radio Station Info
 			// radioNowPlaying.php      -> Radio current playing song
+			// radioPlayingLyrics.php   -> Radio current playing song lyrics
 			// radioArtist.php          -> Radio current playing Artist Info
 			pathToAjaxFiles: 'https://mcx-systems.net/',
 			/*---------------------------------------------*/
