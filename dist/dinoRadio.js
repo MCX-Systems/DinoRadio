@@ -208,10 +208,10 @@
 						'www.googletagmanager.com/gtag/js?id=' +
 						widget.options.enableGoogleAnalyticsTag;
 					fjs.parentNode.insertBefore(js, fjs);
-				}(window.document, 'script', 'gtag'));
+				}(window.document, 'script', 'dino_gtag'));
 
-				gtag('js', new Date());
-				gtag('config', widget.options.enableGoogleAnalyticsTag,
+				dino_gtag('js', new Date());
+				dino_gtag('config', widget.options.enableGoogleAnalyticsTag,
 				{
 					'allow_google_signals': true,
 					'app_id': widget._uId,
@@ -464,7 +464,7 @@
 								if (widget.options.enableGoogleAnalytics)
 								{
 									let err = textStatus + ', ' + error;
-									gtag('event', 'dino_exception_playlist', {
+									dino_gtag('event', 'dino_exception_playlist', {
 										'description': err,
 										'fatal': false // set to true if the error is fatal
 									});
@@ -556,7 +556,7 @@
 													if (widget.options.enableGoogleAnalytics)
 													{
 														let err = textStatus + ', ' + error;
-														gtag('event', 'dino_exception_stations', {
+														dino_gtag('event', 'dino_exception_stations', {
 															'description': err,
 															'fatal': false // set to true if the error is fatal
 														});
@@ -965,7 +965,7 @@
 							// Google Analytics
 							if (plugin.options.enableGoogleAnalytics)
 							{
-								gtag('event', 'dino_show_lyrics', {
+								dino_gtag('event', 'dino_show_lyrics', {
 									'event_label': plugin._dinoCurrentSong,
 									'event_category': 'dino_radio',
 									'non_interaction': true
@@ -1048,7 +1048,7 @@
 							// Google Analytics
 							if (plugin.options.enableGoogleAnalytics)
 							{
-								gtag('event', 'dino_share_mail', {
+								dino_gtag('event', 'dino_share_mail', {
 									'event_label': 'Click',
 									'event_category': 'dino_radio',
 									'non_interaction': true
@@ -1076,7 +1076,7 @@
 							// Google Analytics
 							if (plugin.options.enableGoogleAnalytics)
 							{
-								gtag('event', 'dino_share_twitter', {
+								dino_gtag('event', 'dino_share_twitter', {
 									'event_label': 'Click',
 									'event_category': 'dino_radio',
 									'non_interaction': true
@@ -1109,7 +1109,7 @@
 							// Google Analytics
 							if (plugin.options.enableGoogleAnalytics)
 							{
-								gtag('event', 'dino_share_facebook', {
+								dino_gtag('event', 'dino_share_facebook', {
 									'event_label': 'Click',
 									'event_category': 'dino_radio',
 									'non_interaction': true
@@ -1230,7 +1230,7 @@
 									// Google Analytics
 									if (plugin.options.enableGoogleAnalytics)
 									{
-										gtag('event', 'dino_exception_media', {
+										dino_gtag('event', 'dino_exception_media', {
 											'description': 'You aborted the video playback.',
 											'fatal': false // set to true if the error is fatal
 										});
@@ -1246,7 +1246,7 @@
 									// Google Analytics
 									if (plugin.options.enableGoogleAnalytics)
 									{
-										gtag('event', 'dino_exception_media', {
+										dino_gtag('event', 'dino_exception_media', {
 											'description': 'A network error caused the audio download to fail.',
 											'fatal': false // set to true if the error is fatal
 										});
@@ -1262,7 +1262,7 @@
 									// Google Analytics
 									if (plugin.options.enableGoogleAnalytics)
 									{
-										gtag('event', 'dino_exception_media', {
+										dino_gtag('event', 'dino_exception_media', {
 											'description': 'The audio playback was aborted due to a corruption problem or because the video used features your browser did not support.',
 											'fatal': false // set to true if the error is fatal
 										});
@@ -1279,7 +1279,7 @@
 									// Google Analytics
 									if (plugin.options.enableGoogleAnalytics)
 									{
-										gtag('event', 'dino_exception_media', {
+										dino_gtag('event', 'dino_exception_media', {
 											'description': 'The video audio not be loaded, either because the server or network failed or because the format is not supported.',
 											'fatal': false // set to true if the error is fatal
 										});
@@ -1296,7 +1296,7 @@
 									// Google Analytics
 									if (plugin.options.enableGoogleAnalytics)
 									{
-										gtag('event', 'dino_exception_media', {
+										dino_gtag('event', 'dino_exception_media', {
 											'description': 'An unknown error occurred.',
 											'fatal': false // set to true if the error is fatal
 										});
@@ -1598,7 +1598,7 @@
 								if (widget.options.enableGoogleAnalytics)
 								{
 									let err = textStatus + ', ' + error;
-									gtag('event', 'dino_exception_change_song', {
+									dino_gtag('event', 'dino_exception_change_song', {
 										'description': err,
 										'fatal': false // set to true if the error is fatal
 									});
@@ -1653,7 +1653,7 @@
 												if (widget.options.enableGoogleAnalytics)
 												{
 													let err = textStatus + ', ' + error;
-													gtag('event', 'dino_exception_change_song', {
+													dino_gtag('event', 'dino_exception_change_song', {
 														'description': err,
 														'fatal': false // set to true if the error is fatal
 													});
@@ -1830,7 +1830,7 @@
 							if (widget.options.enableGoogleAnalytics)
 							{
 								let err = textStatus + ', ' + error;
-								gtag('event', 'dino_exception_get_artist', {
+								dino_gtag('event', 'dino_exception_get_artist', {
 									'description': err,
 									'fatal': false // set to true if the error is fatal
 								});
@@ -1897,7 +1897,7 @@
 							if (widget.options.enableGoogleAnalytics)
 							{
 								let err = textStatus + ', ' + error;
-								gtag('event', 'dino_exception_get_lyrics', {
+								dino_gtag('event', 'dino_exception_get_lyrics', {
 									'description': err,
 									'fatal': false // set to true if the error is fatal
 								});
@@ -2348,7 +2348,7 @@
 			});
 
 		// Google Analytics
-		function gtag()
+		function dino_gtag()
 		{
 			dataLayer.push(arguments);
 		}
@@ -2386,7 +2386,7 @@
 		};
 
 		/* Return current version */
-		$.fn.dinoRadio.version = '2.2.2021';
+		$.fn.dinoRadio.version = '2.3.2021';
 
 		/*
 			Attach the default plugin options directly to the plugin object. This
