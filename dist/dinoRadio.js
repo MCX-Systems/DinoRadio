@@ -35,6 +35,9 @@
 		// Holds all instances of created audio objects
 		const dinoRadioPlayers = [];
 
+		// Google Analytics
+		window.dataLayer = window.dataLayer || [];
+
 		// Create the plugin constructor
 		function Plugin(element, options)
 		{
@@ -202,20 +205,21 @@
 					js.id = id;
 					js.async = true;
 					js.src = widget._prefix +
-						'googletagmanager.com/gtag/js?id=' +
+						'www.googletagmanager.com/gtag/js?id=' +
 						widget.options.enableGoogleAnalyticsTag;
 					fjs.parentNode.insertBefore(js, fjs);
-				}(window.document, 'script', 'ga'));
-
-				window.dataLayer = window.dataLayer || [];
-
-				function gtag()
-				{
-					dataLayer.push(arguments);
-				}
+				}(window.document, 'script', 'gtag'));
 
 				gtag('js', new Date());
-				gtag('config', widget.options.enableGoogleAnalyticsTag, { 'page_path': window.location.pathname });
+				gtag('config', widget.options.enableGoogleAnalyticsTag,
+				{
+					'allow_google_signals': true,
+					'app_id': widget._uId,
+					'app_name': widget.capitalizeFirstLetter(widget._name),
+					'app_version': $.fn.dinoRadio.version,
+					'page_title' : window.document.title,
+					'page_path': window.location.pathname
+				});
 			}
 
 			if (!widget._flag)
@@ -455,8 +459,17 @@
 										window.console.log(widget.options.stationPlaylist);
 									}
 								})
-							.fail(function()
+							.fail(function(jqxhr, textStatus, error)
 							{
+								if (widget.options.enableGoogleAnalytics)
+								{
+									let err = textStatus + ', ' + error;
+									gtag('event', 'dino_exception_playlist', {
+										'description': err,
+										'fatal': false // set to true if the error is fatal
+									});
+								}
+
 								window.console.error('Error getting default playlist!');
 							});
 					}
@@ -538,8 +551,17 @@
 																	20));
 														}
 													})
-												.fail(function()
+												.fail(function(jqxhr, textStatus, error)
 												{
+													if (widget.options.enableGoogleAnalytics)
+													{
+														let err = textStatus + ', ' + error;
+														gtag('event', 'dino_exception_stations', {
+															'description': err,
+															'fatal': false // set to true if the error is fatal
+														});
+													}
+
 													if (widget.options.debug)
 													{
 														window.console.log(
@@ -940,6 +962,16 @@
 						{
 							e.preventDefault();
 
+							// Google Analytics
+							if (plugin.options.enableGoogleAnalytics)
+							{
+								gtag('event', 'dino_show_lyrics', {
+									'event_label': plugin._dinoCurrentSong,
+									'event_category': 'dino_radio',
+									'non_interaction': true
+								});
+							}
+
 							if (plugin.options.grabSongLyrics)
 							{
 								if (plugin.$element.find(`#dinoRadioLyricsOverlay-${plugin._uId}`)
@@ -1013,6 +1045,16 @@
 						{
 							e.preventDefault();
 
+							// Google Analytics
+							if (plugin.options.enableGoogleAnalytics)
+							{
+								gtag('event', 'dino_share_mail', {
+									'event_label': 'Click',
+									'event_category': 'dino_radio',
+									'non_interaction': true
+								});
+							}
+
 							const uri = window.location.href;
 							const p = window.atob('TUNYLVN5c3RlbXM=');
 							const i = plugin.capitalizeFirstLetter(plugin._name);
@@ -1030,6 +1072,16 @@
 						function(e)
 						{
 							e.preventDefault();
+
+							// Google Analytics
+							if (plugin.options.enableGoogleAnalytics)
+							{
+								gtag('event', 'dino_share_twitter', {
+									'event_label': 'Click',
+									'event_category': 'dino_radio',
+									'non_interaction': true
+								});
+							}
 
 							const w = 440;
 							const h = 550;
@@ -1053,6 +1105,16 @@
 						function(e)
 						{
 							e.preventDefault();
+
+							// Google Analytics
+							if (plugin.options.enableGoogleAnalytics)
+							{
+								gtag('event', 'dino_share_facebook', {
+									'event_label': 'Click',
+									'event_category': 'dino_radio',
+									'non_interaction': true
+								});
+							}
 
 							if (plugin.options.enableFacebookShare)
 							{
@@ -1165,6 +1227,15 @@
 							switch (e.target.error.code)
 							{
 								case e.target.error.MEDIA_ERR_ABORTED:
+									// Google Analytics
+									if (plugin.options.enableGoogleAnalytics)
+									{
+										gtag('event', 'dino_exception_media', {
+											'description': 'You aborted the video playback.',
+											'fatal': false // set to true if the error is fatal
+										});
+									}
+
 									if (plugin.options.debug)
 									{
 										window.console.error('You aborted the video playback.');
@@ -1172,6 +1243,15 @@
 									break;
 
 								case e.target.error.MEDIA_ERR_NETWORK:
+									// Google Analytics
+									if (plugin.options.enableGoogleAnalytics)
+									{
+										gtag('event', 'dino_exception_media', {
+											'description': 'A network error caused the audio download to fail.',
+											'fatal': false // set to true if the error is fatal
+										});
+									}
+
 									if (plugin.options.debug)
 									{
 										window.console.error('A network error caused the audio download to fail.');
@@ -1179,6 +1259,15 @@
 									break;
 
 								case e.target.error.MEDIA_ERR_DECODE:
+									// Google Analytics
+									if (plugin.options.enableGoogleAnalytics)
+									{
+										gtag('event', 'dino_exception_media', {
+											'description': 'The audio playback was aborted due to a corruption problem or because the video used features your browser did not support.',
+											'fatal': false // set to true if the error is fatal
+										});
+									}
+
 									if (plugin.options.debug)
 									{
 										window.console.error(
@@ -1187,6 +1276,15 @@
 									break;
 
 								case e.target.error.MEDIA_ERR_SRC_NOT_SUPPORTED:
+									// Google Analytics
+									if (plugin.options.enableGoogleAnalytics)
+									{
+										gtag('event', 'dino_exception_media', {
+											'description': 'The video audio not be loaded, either because the server or network failed or because the format is not supported.',
+											'fatal': false // set to true if the error is fatal
+										});
+									}
+
 									if (plugin.options.debug)
 									{
 										window.console.error(
@@ -1195,6 +1293,15 @@
 									break;
 
 								default:
+									// Google Analytics
+									if (plugin.options.enableGoogleAnalytics)
+									{
+										gtag('event', 'dino_exception_media', {
+											'description': 'An unknown error occurred.',
+											'fatal': false // set to true if the error is fatal
+										});
+									}
+
 									if (plugin.options.debug)
 									{
 										window.console.error('An unknown error occurred.');
@@ -1486,8 +1593,17 @@
 									widget.getSongLyricsInfo(data.songArtist, data.songTitle);
 								}
 							})
-							.fail(function()
+							.fail(function(jqxhr, textStatus, error)
 							{
+								if (widget.options.enableGoogleAnalytics)
+								{
+									let err = textStatus + ', ' + error;
+									gtag('event', 'dino_exception_change_song', {
+										'description': err,
+										'fatal': false // set to true if the error is fatal
+									});
+								}
+
 								if (widget.options.debug)
 								{
 									window.console.log(
@@ -1532,8 +1648,17 @@
 													widget.getSongLyricsInfo(data.songArtist, data.songTitle);
 												}
 											})
-											.fail(function()
+											.fail(function(jqxhr, textStatus, error)
 											{
+												if (widget.options.enableGoogleAnalytics)
+												{
+													let err = textStatus + ', ' + error;
+													gtag('event', 'dino_exception_change_song', {
+														'description': err,
+														'fatal': false // set to true if the error is fatal
+													});
+												}
+
 												if (widget.options.debug)
 												{
 													window.console.log(
@@ -1700,8 +1825,17 @@
 										});
 								}
 							})
-						.fail(function()
+						.fail(function(jqxhr, textStatus, error)
 						{
+							if (widget.options.enableGoogleAnalytics)
+							{
+								let err = textStatus + ', ' + error;
+								gtag('event', 'dino_exception_get_artist', {
+									'description': err,
+									'fatal': false // set to true if the error is fatal
+								});
+							}
+
 							widget._dinoArt = artist;
 
 							imageArtist.fadeOut(2000,
@@ -1758,8 +1892,17 @@
 									});
 								}
 							})
-						.fail(function()
+						.fail(function(jqxhr, textStatus, error)
 						{
+							if (widget.options.enableGoogleAnalytics)
+							{
+								let err = textStatus + ', ' + error;
+								gtag('event', 'dino_exception_get_lyrics', {
+									'description': err,
+									'fatal': false // set to true if the error is fatal
+								});
+							}
+
 							widget.$element.find(`#dinoRadioLyrics-${widget._uId}`).css({
 								'visibility': 'collapse',
 								'opacity': 0
@@ -2203,6 +2346,12 @@
 
 				/***************************************************************************/
 			});
+
+		// Google Analytics
+		function gtag()
+		{
+			dataLayer.push(arguments);
+		}
 
 		/*
 			Create a lightweight plugin wrapper around the "Plugin" constructor,
