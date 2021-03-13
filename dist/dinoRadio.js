@@ -517,6 +517,7 @@
 													20));
 											widget.dinoAudio.src = value.url;
 											widget.changeRadioSong(value.url);
+											widget.updateTag(value.station);
 										}
 
 										if (widget.options.grabStationRds)
@@ -927,6 +928,7 @@
 
 							const radioItemId = $(this).data('position');
 
+							plugin.updateTag($(this).find('.dinoRadioStation').text());
 							plugin.$element.find(`#dinoRadioStation-${plugin._uId}`).text(
 								plugin.checkStrLength($(this).find('.dinoRadioStation').text(),
 									20));
@@ -1088,10 +1090,9 @@
 							const y = window.top.outerHeight / 2 + window.top.screenY - (h / 2);
 							const x = window.top.outerWidth / 2 + window.top.screenX - (w / 2);
 
-							const twit = plugin.getI18n('plugin_ra_twitter', plugin.options.language);
-							const url =
-								`${plugin._prefix}twitter.com/intent/tweet?url=${window.location.href}&text=${twit}`;
-							const text = 'Twitter';
+							const twit = plugin.getI18n('plugin_ra_twitter', plugin.options.language) + plugin._dinoCurrentStation + plugin.getI18n('plugin_ra_twitter_curr', plugin.options.language) + plugin._dinoCurrentArtist + '-' + plugin._dinoCurrentSong;
+							const url = `${plugin._prefix}twitter.com/intent/tweet?url=${window.location.href}&text=${twit}`;
+							const text = plugin.capitalizeFirstLetter(plugin._name);
 
 							window.open(url,
 								text,
@@ -1482,6 +1483,7 @@
 						`#dinoRadioItem-${widget._dinoCurrentRow}-${widget._uId} .dinoRadioStation`);
 					widget.$element.find(`#dinoRadioStation-${widget._uId}`)
 						.text(widget.checkStrLength(row.text(), 20));
+					widget.updateTag(row.text());
 				},
 
 				/***************************************************************************/
@@ -1538,6 +1540,7 @@
 						`#dinoRadioItem-${widget._dinoCurrentRow}-${widget._uId} .dinoRadioStation`);
 					widget.$element.find(`#dinoRadioStation-${widget._uId}`)
 						.text(widget.checkStrLength(row.text(), 20));
+					widget.updateTag(row.text());
 				},
 
 				/***************************************************************************/
@@ -1969,6 +1972,16 @@
 					return ($(b).data('position')) > ($(a).data('position')) ? 1 : -1;
 				},
 
+				updateTag: function (data)
+				{
+					this.$element.attr("data-radioTag", data);
+				},
+
+				getTag: function ()
+				{
+					return this.$element.attr("data-radioTag");
+				},
+
 				/***************************************************************************/
 				/***************************************************************************/
 
@@ -2254,7 +2267,8 @@
 							'plugin_ra_mail_on': ' on ',
 							'plugin_ra_mail_from': ' from ',
 							'plugin_ra_mail': 'Check out this online radio listener ',
-							'plugin_ra_twitter': 'I\'m listening to this radio station:'
+							'plugin_ra_twitter': 'I\'m listening to this radio station:',
+							'plugin_ra_twitter_curr': ' currently playing: '
 						},
 						'sl':
 						{
@@ -2280,7 +2294,8 @@
 							'plugin_ra_mail_on': ' na ',
 							'plugin_ra_mail_from': ' iz ',
 							'plugin_ra_mail': 'Oglejte si to spletno radijsko poslušalko ',
-							'plugin_ra_twitter': 'Poslušam to radijsko postajo:'
+							'plugin_ra_twitter': 'Poslušam to radijsko postajo:',
+							'plugin_ra_twitter_curr': ' trenutno se predvaja: '
 						},
 						'de':
 						{
@@ -2306,7 +2321,8 @@
 							'plugin_ra_mail_on': ' auf ',
 							'plugin_ra_mail_from': ' von ',
 							'plugin_ra_mail': 'Schauen Sie sich diesen Online-Radiohörer an ',
-							'plugin_ra_twitter': 'Ich höre diesen Radiosender:'
+							'plugin_ra_twitter': 'Ich höre diesen Radiosender:',
+							'plugin_ra_twitter_curr': ' spielt gerade: '
 						}
 					};
 
@@ -2425,6 +2441,8 @@
 			// Radio interval for updating current playing song
 			nowPlayingInterval: 30,
 			/*---------------------------------------------*/
+			// get current song ID3 TAG
+			grabId3Tag: true,
 			// Enable info on current playing song
 			grabSongRds: true,
 			// Enable current playing song: lyrics show grab
@@ -2447,11 +2465,11 @@
 			enableGoogleAnalyticsTag: 'G-92Z320V70M',
 			// Path to radio API data files:
 			//
-			// radioStationPlaylist.php -> Default playlist if none specified
-			// radioStationInfo.php     -> Radio Station Info
-			// radioNowPlaying.php      -> Radio current playing song
-			// radioPlayingLyrics.php   -> Radio current playing song lyrics
-			// radioArtist.php          -> Radio current playing Artist Info
+			// radioPlaylist.php     -> Default playlist if none specified
+			// radioInfo.php         -> Radio Station Info
+			// radioPlaying.php      -> Radio current playing song
+			// radioLyrics.php       -> Radio current playing song lyrics
+			// radioArtist.php       -> Radio current playing Artist Info
 			pathToAjaxFiles: 'mcx-systems.net',
 			/*---------------------------------------------*/
 			// Plugin language automatic
