@@ -1679,6 +1679,9 @@
 				{
 					$(`#dinoRadioSongTitle-${this._uId}`).html(title);
 					$(`#dinoRadioSongArtist-${this._uId}`).html(artist);
+
+					this._dinoCurrentArtist = artist;
+					this._dinoCurrentSong = title;
 				},
 
 				getArtistInfo: function(artist)
@@ -1705,100 +1708,39 @@
 								{
 									if (result[0].artistThumb !== '')
 									{
-										const ex1 = widget.getFilename(result[0].artistThumb);
-										if (ex1)
-										{
-											if (ex1.ext !== '')
-											{
-												imageArtist.fadeOut(2000,
-													function()
-													{
-														widget._dinoCurrentImage = result[0].artistThumb;
-														imageArtist.attr('src', result[0].artistThumb);
-														imageArtist.fadeIn(2000);
-													});
-											}
-											else
-											{
-												imageArtist.fadeOut(2000,
-													function()
-													{
-														imageArtist.attr('src',
-															`data:image/png;base64,${widget.getImage(0)}`);
-														imageArtist.fadeIn(2000);
-													});
-											}
-										}
-										else
-										{
-											imageArtist.fadeOut(2000,
-												function()
-												{
-													imageArtist.attr('src',
-														`data:image/png;base64,${widget.getImage(0)}`);
-													imageArtist.fadeIn(2000);
-												});
-										}
-
-										const ex2 = widget.getFilename(result[0].artistBanner);
-										if (ex2)
-										{
-											if (ex2.ext !== '')
-											{
-												imageBanner.fadeOut(2000,
-													function()
-													{
-														imageBanner.attr('src', result[0].artistBanner);
-														imageBanner.fadeIn(2000);
-													});
-											}
-											else
-											{
-												imageBanner.fadeOut(2000,
-													function()
-													{
-														imageBanner.attr('src',
-															'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==');
-														imageBanner.fadeIn(2000);
-													});
-											}
-										}
-										else
-										{
-											imageBanner.fadeOut(2000,
-												function()
-												{
-													imageBanner.attr('src',
-														'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==');
-													imageBanner.fadeIn(2000);
-												});
-										}
-
-										let bio = result[0].biographyEN;
-										if (widget.options.language === 'de' && result[0].biographyDE !== '')
-										{
-											bio = result[0].biographyDE;
-										}
-
-										const post = window.document.createElement('span');
-										post.textContent = bio;
-										post.innerHTML = post.innerHTML.replace(/\n/g, '<br />');
-										post.innerHTML = `<strong>${result[0].artist}</strong><hr />${post.innerHTML}`;
-
-										widget.$element.find(`#dinoArtistBio-${widget._uId}`).empty().append(post);
-										widget._dinoArt = artist;
-									}
-									else
-									{
-										widget._dinoArt = artist;
-
 										imageArtist.fadeOut(2000,
 											function()
 											{
-												imageArtist.attr('src', `data:image/png;base64,${widget.getImage(0)}`);
+												widget._dinoCurrentImage = result[0].artistThumb;
+												let p = widget._prefix + widget.options.pathToAjaxFiles + '/radio/artists';
+												imageArtist.attr('src', p + '/' + widget._dinoCurrentImage);
 												imageArtist.fadeIn(2000);
 											});
+                                    }
+									else
+									{
+										imageArtist.fadeOut(2000,
+											function()
+											{
+												imageArtist.attr('src',
+													`data:image/png;base64,${widget.getImage(0)}`);
+												imageArtist.fadeIn(2000);
+											});
+									}
 
+									if (result[0].artistBanner !== '')
+					                {
+						                imageBanner.fadeOut(2000,
+							                function()
+							                {
+								                let v = widget._prefix + widget.options.pathToAjaxFiles + '/radio/artists';
+								                imageBanner.attr('src', v + '/' + result[0].artistBanner);
+								                imageBanner.fadeIn(2000);
+							                });
+
+									}
+									else
+									{
 										imageBanner.fadeOut(2000,
 											function()
 											{
@@ -1807,9 +1749,32 @@
 												imageBanner.fadeIn(2000);
 											});
 									}
+
+									let bio = result[0].biographyEN;
+									if (widget.options.language === 'de' && result[0].biographyDE !== null && result[0].biographyDE !== undefined && result[0].biographyDE !== '')
+									{
+										bio = result[0].biographyDE;
+									}
+
+									if (bio === undefined)
+									{
+										bio = '';
+									}
+
+									const post = window.document.createElement('span');
+									post.innerHTML = bio;
+									post.innerHTML = post.innerHTML.replace(/\n/g, '<br />');
+									post.innerHTML = `<strong>${result[0].artist}</strong><hr />${post.innerHTML}`;
+
+									widget.$element.find(`#dinoArtistBio-${widget._uId}`).empty().append(post).text();
+									widget._dinoArt = artist;
 								}
 								else
 								{
+									const post = window.document.createElement('span');
+									post.innerHTML = `<strong>${widget._dinoCurrentArtist}</strong><hr />`;
+
+									widget.$element.find(`#dinoArtistBio-${widget._uId}`).empty().append(post);
 									widget._dinoArt = artist;
 
 									imageArtist.fadeOut(2000,
@@ -2148,20 +2113,6 @@
 					{
 						return str;
 					}
-				},
-
-				getFilename: function(url)
-				{
-					if (url === undefined || url === null)
-					{
-						return{ filename: null, ext: null };
-					}
-
-					// get the part after last /, then replace any query and hash part
-					url = url.split('/').pop().replace(/#\/(.*?)$/, '').replace(/\?(.*?)$/, '');
-					url = url.split('.'); // separates filename and extension
-
-					return { filename: (url[0] || ''), ext: (url[1] || '') };
 				},
 
 				/***************************************************************************/
